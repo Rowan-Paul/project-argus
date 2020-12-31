@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function DarkModeToggleUI(props) {
+  // currentTheme gives the color of the toggle svg
   const [currentTheme, setCurrentTheme] = useState("black");
 
   useEffect(() => {
