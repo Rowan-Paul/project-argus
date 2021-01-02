@@ -25,3 +25,7 @@ jobs:
             npm i
             npm run build
             pm2 restart static-page-server-5000
+            cd /var/www/orion
+            git pull
+            npm i
+            pm2 restart app
