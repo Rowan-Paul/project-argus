@@ -24,8 +24,4 @@ jobs:
             source ~/.nvm/nvm.sh
             npm i
             npm run build
-            pm2 restart static-page-server-5000
-            cd /var/www/orion
-            git pull
-            npm i
-            pm2 restart app
+            pm2 restart ecosystem.config.js
