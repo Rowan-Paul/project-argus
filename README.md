@@ -11,6 +11,7 @@ The app will make use of the following technologies:
 - Node
 - MongoDB
 - Tailwind CSS
+- React Router
 
 As the project progresses, there will be more technologies added as necessary.
 
@@ -28,4 +29,4 @@ Each app will be seperated as to be able to have them work completly independent
 
 ## Documentation
 
-If you wish to know more, navigate to the docs folder to read more.
+If you wish to know more, navigate to the wiki to read more.
