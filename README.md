@@ -23,7 +23,7 @@ There are several different parts of Project Argus that track different stuff:
 - Cepheus: this will track tv and movies
 - Delphinus: this will track games
 - Lyra: this will track music
-- Orian: the backend server and database
+- Orion: the backend server and database
 
 Each app will be seperated as to be able to have them work completly independent from each other.
 
