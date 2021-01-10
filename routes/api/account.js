@@ -2,6 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
+const encryptor = require("simple-encryptor")(process.env.ENCRYPT_PASSWORD);
 
 const User = require("../../models/User");
 const UserSession = require("../../models/UserSession");
@@ -98,9 +99,14 @@ router.post("/signin", (req, res, next) => {
           console.log(err);
           return res.sendStatus(500);
         }
-        return res
-          .status(201)
-          .send({ message: "Valid sign in", token: doc._id });
+        return res.status(201).send({
+          message: "Valid sign in",
+          token: encryptor.encrypt({
+            random: doc.random,
+            id: doc._id,
+            timestamp: doc.timestamp,
+          }),
+        });
       });
     }
   );
@@ -109,14 +115,17 @@ router.post("/signin", (req, res, next) => {
 // Logout of account
 router.get("/logout", (req, res, next) => {
   // Get the token
-  const { query } = req;
-  const { token } = query;
+  const { body } = req;
+  const { token } = body;
 
-  // ?token=test
+  var tokenDec = encryptor.decrypt(token);
+
   // Verify the token is one of a kind and it's not deleted.
   UserSession.findOneAndUpdate(
     {
-      _id: token,
+      _id: tokenDec.id,
+      random: tokenDec.random,
+      timestamp: tokenDec.timestamp,
       isDeleted: false,
     },
     {
@@ -130,7 +139,7 @@ router.get("/logout", (req, res, next) => {
         console.log(err);
         return res.sendStatus(500);
       }
-      return res.sendStatus(200);
+      return res.sendStatus(201);
     }
   );
 });
@@ -138,14 +147,25 @@ router.get("/logout", (req, res, next) => {
 // Verify the token
 router.get("/verify", (req, res, next) => {
   // Get the token
-  const { query } = req;
-  const { token } = query;
+  const { body } = req;
+  const { token } = body;
 
-  // ?token=test
+  var tokenDec = encryptor.decrypt(token);
+  if (
+    tokenDec === null ||
+    !("random" in tokenDec) ||
+    !("id" in tokenDec) ||
+    !("timestamp" in tokenDec)
+  ) {
+    return res.status(400).send("Incorrect token");
+  }
+
   // Verify the token is one of a kind and it's not deleted.
   UserSession.find(
     {
-      _id: token,
+      _id: tokenDec.id,
+      random: tokenDec.random,
+      timestamp: tokenDec.timestamp,
       isDeleted: false,
     },
     (err, sessions) => {

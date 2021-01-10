@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 
+const utils = require("../utils");
+
 const UserSessionSchema = new mongoose.Schema({
   userId: {
     type: String,
-    default: "",
+  },
+  random: {
+    type: String,
+    default: utils.makeid(5),
   },
   timestamp: {
     type: Date,
