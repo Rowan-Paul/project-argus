@@ -2,7 +2,9 @@
 
 const express = require("express");
 const router = express.Router();
-const encryptor = require("simple-encryptor")(process.env.ENCRYPT_PASSWORD);
+const encryptor = require("simple-encryptor")(
+  process.env.KEY || "secretpasswordofmysupersecretkey"
+);
 
 const User = require("../../models/User");
 const UserSession = require("../../models/UserSession");
@@ -100,7 +102,7 @@ router.post("/signin", (req, res, next) => {
           return res.sendStatus(500);
         }
         return res.status(201).send({
-          message: "Valid sign in",
+          message: "Signed in",
           token: encryptor.encrypt({
             random: doc.random,
             id: doc._id,
@@ -139,7 +141,7 @@ router.get("/logout", (req, res, next) => {
         console.log(err);
         return res.sendStatus(500);
       }
-      return res.sendStatus(201);
+      return res.status(201).send("Logged out");
     }
   );
 });

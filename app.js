@@ -17,21 +17,9 @@ require("./models/User");
 // IMPORT ROUTES
 const accountRouter = require("./routes/api/account");
 
-// CORS
-var whitelist = ["https://projectarg.us", "http://localhost:3001"];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
 // MIDDLEWARE
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
+app.use(cors({ origin: true, credentials: true }));
 
 // ROUTES MIDDLEWARE
 app.use("/api/account", accountRouter);
