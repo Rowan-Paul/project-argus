@@ -5,13 +5,22 @@ const INITIAL_STATE = {
   redirect: false,
   token: localStorage.token ? localStorage.token : "",
   error: "",
+  email: "",
+  password: "", //TODO: check if that is secure?
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.SIGNED_IN:
       localStorage.token = action.payload;
-      return { ...state, loggedIn: true, token: action.payload, error: "" };
+      return {
+        ...state,
+        loggedIn: true,
+        email: "",
+        password: "",
+        token: action.payload,
+        error: "",
+      };
 
     case types.SIGNED_OUT:
       localStorage.removeItem("token");
@@ -50,6 +59,12 @@ const reducer = (state = INITIAL_STATE, action) => {
 
     case types.ERROR:
       return { ...state, error: action.payload };
+
+    case types.UPDATE_EMAIL:
+      return { ...state, email: action.payload };
+
+    case types.UPDATE_PASSWORD:
+      return { ...state, password: action.payload };
 
     default:
       return state;

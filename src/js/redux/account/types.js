@@ -6,3 +6,5 @@ export const VERIFIED = `VERIFIED`;
 export const UNVERIFIED = `UNVERIFIED`;
 export const REDIRECTED = `REDIRECTED`;
 export const ERROR = `ERROR`;
+export const UPDATE_EMAIL = `UPDATE_EMAIL`;
+export const UPDATE_PASSWORD = `UPDATE_PASSWORD`;

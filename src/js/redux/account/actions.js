@@ -32,11 +32,11 @@ export const fetchSignUp = (email, password) => (dispatch) => {
 };
 
 // sign in user
-export const fetchSignIn = (email, password) => (dispatch) => {
+export const fetchSignIn = () => (dispatch, getState) => {
   const url = "http://localhost:3000/api/account/signin";
   const data = {
-    email: email,
-    password: password,
+    email: getState().account.email,
+    password: getState().account.password,
   };
 
   fetch(url, {
@@ -167,6 +167,22 @@ export const fetchDelete = (email, password) => (dispatch) => {
     });
 };
 
+// set redirect to false
 export const redirected = () => {
   return { type: types.REDIRECTED };
+};
+
+// set email
+export const updateEmail = (email) => {
+  return { type: types.UPDATE_EMAIL, payload: email };
+};
+
+// set password
+export const updatePassword = (password) => {
+  return { type: types.UPDATE_PASSWORD, payload: password };
+};
+
+// set error
+export const setError = (error) => {
+  return { type: types.ERROR, payload: error };
 };
