@@ -26,4 +26,13 @@ function makeid(length) {
   return result;
 }
 
+/**
+ * Allows throwing an error inside a ternary operator
+ * @param error error to throw
+ */
+function _throw(error) {
+  throw error;
+}
+
 exports.makeid = makeid;
+exports._throw = _throw;

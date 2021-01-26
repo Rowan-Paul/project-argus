@@ -9,6 +9,8 @@ const encryptor = require("simple-encryptor")(
 const User = require("../../models/User");
 const UserSession = require("../../models/UserSession");
 
+const utils = require("../../utils");
+
 // Create an account
 router.post("/signup", (req, res, next) => {
   const { body } = req;
@@ -114,13 +116,15 @@ router.post("/signin", (req, res, next) => {
   );
 });
 
-// Logout of account
-router.put("/logout", (req, res, next) => {
+// Sign out account
+router.put("/signout", (req, res, next) => {
   // Get the token
   const { body } = req;
   const { token } = body;
 
-  var tokenDec = encryptor.decrypt(token);
+  var tokenDec = token
+    ? encryptor.decrypt(token)
+    : utils._throw("Error: Token is incorrect");
 
   // Verify the token is one of a kind and it's not deleted.
   UserSession.findOneAndUpdate(
