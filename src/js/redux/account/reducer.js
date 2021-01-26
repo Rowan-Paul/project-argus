@@ -1,6 +1,7 @@
 import * as types from "./types";
 
 const INITIAL_STATE = {
+  loggedIn: false,
   redirect: false,
   token: localStorage.token ? localStorage.token : "",
   error: "",
@@ -8,16 +9,41 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.REGISTERED:
-      return { ...state, redirect: true, error: "" };
-
     case types.SIGNED_IN:
       localStorage.token = action.payload;
-      return { ...state, redirect: true, token: action.payload, error: "" };
+      return { ...state, loggedIn: true, token: action.payload, error: "" };
 
     case types.SIGNED_OUT:
       localStorage.removeItem("token");
-      return { ...state, redirect: true, token: "", error: "" };
+      return {
+        ...state,
+        loggedIn: false,
+        redirect: true,
+        token: "",
+        error: "",
+      };
+
+    case types.VERIFIED:
+      return { ...state, loggedIn: true, error: "" };
+
+    case types.UNVERIFIED:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        loggedIn: false,
+        token: "",
+        error: action.payload,
+      };
+
+    case types.DELETED:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        loggedIn: false,
+        redirect: true,
+        token: "",
+        error: "",
+      };
 
     case types.REDIRECTED:
       return { ...state, redirect: false, error: "" };
