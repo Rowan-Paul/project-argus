@@ -7,8 +7,7 @@ import { PagesList } from "./components/PagesList";
 
 function NavBarUI({ fixed }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [pages, setPages] = useState([
+  const [pages] = useState([
     {
       name: "Home",
       address: "/",
@@ -16,6 +15,10 @@ function NavBarUI({ fixed }) {
     {
       name: "About",
       address: "/about",
+    },
+    {
+      name: "Login",
+      address: "/login",
     },
   ]);
 

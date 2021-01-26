@@ -5,6 +5,8 @@ import { LandingPage } from "./landing-page/LandingPage";
 import { NavBar } from "./common/navbar/NavBar";
 import { Footer } from "./common/footer/Footer";
 
+import { LoginPage } from "./login-page/LoginPage";
+
 function AppUI() {
   useState(() => {
     if (localStorage.theme === "dark") {
@@ -20,6 +22,7 @@ function AppUI() {
         <NavBar className="h-10" />
         <Switch>
           <Route exact path="/" component={LandingPage} />
+          <Route exact path="/login" component={LoginPage} />
         </Switch>
         <Footer className="h-10" />
       </div>
