@@ -157,7 +157,7 @@ router.put("/signout", (req, res, next) => {
 });
 
 // Verify the token
-router.get("/verify", (req, res, next) => {
+router.put("/verify", (req, res, next) => {
   // Get the token
   const { body } = req;
   const { token } = body;
@@ -199,33 +199,48 @@ router.get("/verify", (req, res, next) => {
 // Delete account
 router.put("/delete", (req, res, next) => {
   const { body } = req;
+  const { password } = body;
   let { email } = body;
 
   if (!email) {
     return res.status(400).send("Error: Email cannot be blank.");
   }
 
+  if (!password) {
+    return res.status(400).send("Error: Password cannot be blank.");
+  }
+
   email = email.toLowerCase();
   email = email.trim();
 
-  // Verify the token is one of a kind and it's not deleted.
-  User.findOneAndUpdate(
+  User.find(
     {
       email: email,
-      isDeleted: false,
     },
-    {
-      $set: {
-        isDeleted: true,
-      },
-    },
-    null,
-    (err, sessions) => {
+    (err, users) => {
       if (err) {
-        console.log(err);
+        console.log("err 2:", err);
         return res.sendStatus(500);
       }
-      return res.status(200).send("Account deleted");
+
+      if (users.length != 1) {
+        return res.status(400).send("Error: Invalid username");
+      }
+
+      const user = users[0];
+
+      if (!user.validPassword(password)) {
+        return res.status(400).send("Error: Invalid password");
+      }
+
+      user.isDeleted = true;
+      user.save((err, doc) => {
+        if (err) {
+          console.log(err);
+          return res.sendStatus(500);
+        }
+        return res.status(200).send("Account deleted");
+      });
     }
   );
 });
