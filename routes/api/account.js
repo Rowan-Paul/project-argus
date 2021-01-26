@@ -115,7 +115,7 @@ router.post("/signin", (req, res, next) => {
 });
 
 // Logout of account
-router.get("/logout", (req, res, next) => {
+router.put("/logout", (req, res, next) => {
   // Get the token
   const { body } = req;
   const { token } = body;
@@ -141,7 +141,7 @@ router.get("/logout", (req, res, next) => {
         console.log(err);
         return res.sendStatus(500);
       }
-      return res.status(201).send("Logged out");
+      return res.status(200).send("Logged out");
     }
   );
 });
