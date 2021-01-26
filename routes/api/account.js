@@ -122,9 +122,15 @@ router.put("/signout", (req, res, next) => {
   const { body } = req;
   const { token } = body;
 
-  var tokenDec = token
-    ? encryptor.decrypt(token)
-    : utils._throw("Error: Token is incorrect");
+  var tokenDec = encryptor.decrypt(token);
+  if (
+    tokenDec === null ||
+    !("random" in tokenDec) ||
+    !("id" in tokenDec) ||
+    !("timestamp" in tokenDec)
+  ) {
+    return res.status(400).send("Incorrect token");
+  }
 
   // Verify the token is one of a kind and it's not deleted.
   UserSession.findOneAndUpdate(
@@ -186,6 +192,40 @@ router.get("/verify", (req, res, next) => {
         // DO ACTION
         return res.sendStatus(200);
       }
+    }
+  );
+});
+
+// Delete account
+router.put("/delete", (req, res, next) => {
+  const { body } = req;
+  let { email } = body;
+
+  if (!email) {
+    return res.status(400).send("Error: Email cannot be blank.");
+  }
+
+  email = email.toLowerCase();
+  email = email.trim();
+
+  // Verify the token is one of a kind and it's not deleted.
+  User.findOneAndUpdate(
+    {
+      email: email,
+      isDeleted: false,
+    },
+    {
+      $set: {
+        isDeleted: true,
+      },
+    },
+    null,
+    (err, sessions) => {
+      if (err) {
+        console.log(err);
+        return res.sendStatus(500);
+      }
+      return res.status(200).send("Account deleted");
     }
   );
 });
