@@ -56,11 +56,11 @@ function LoginPageUI(props) {
       <form id="signIn" className="mt-8 max-w-md" onKeyDown={keyDownEvent}>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">
-            <span className="text-gray-700">Email</span>
+            <span className="dark:text-primary-dark text-gray-700">Email</span>
             <input
               type="email"
               id="email"
-              className="mt-1 block w-full"
+              className="text-gray-700 mt-1 block w-full"
               placeholder="john@example.com"
               required
               onChange={(e) => {
@@ -69,11 +69,13 @@ function LoginPageUI(props) {
             />
           </label>
           <label className="block">
-            <span className="text-gray-700">Password</span>
+            <span className="dark:text-primary-dark text-gray-700">
+              Password
+            </span>
             <input
               type="password"
               id="password"
-              className="mt-1 block w-full"
+              className="text-gray-700 mt-1 block w-full"
               required
               onChange={(e) => {
                 props.updatePassword(e.target.value);
@@ -81,16 +83,14 @@ function LoginPageUI(props) {
             />
           </label>
         </div>
-        <button
-          type="submit"
-          className="m-2"
-          onSubmit={(e) => {
-            e.preventDefault();
+        <div
+          className="cursor-pointer mt-5 ml-3"
+          onClick={(e) => {
             signinClicked();
           }}
         >
           Login
-        </button>
+        </div>
         <p>{props.error ? "Error: " + props.error : ""}</p>
       </form>
     </div>
