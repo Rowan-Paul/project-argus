@@ -77,12 +77,12 @@ function SignUpPageUI(props) {
             />
           </label>
         </div>
-        <div class="block">
-          <div class="mt-2">
+        <div className="block">
+          <div className="mt-2">
             <div>
-              <label class="inline-flex items-center">
+              <label className="inline-flex items-center">
                 <input type="checkbox" required />
-                <span class="ml-2">I agree</span>
+                <span className="ml-2">I agree</span>
               </label>
             </div>
           </div>

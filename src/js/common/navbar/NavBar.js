@@ -45,7 +45,7 @@ function NavBarUI({ fixed }) {
             id="example-navbar-danger"
           >
             <DarkModeToggle position="pages" />
-            <PagesList pages={pages} />
+            <PagesList setNavbarOpen={() => setNavbarOpen()} pages={pages} />
           </div>
         </div>
       </nav>
