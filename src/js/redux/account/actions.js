@@ -1,11 +1,11 @@
 import * as types from "./types";
 
 // register user
-export const fetchSignUp = (email, password) => (dispatch) => {
+export const fetchSignUp = () => (dispatch, getState) => {
   const url = "http://localhost:3000/api/account/signup";
   const data = {
-    email: email,
-    password: password,
+    email: getState().account.email,
+    password: getState().account.password,
   };
 
   fetch(url, {
@@ -18,7 +18,7 @@ export const fetchSignUp = (email, password) => (dispatch) => {
   })
     .then((response) => {
       if (response.status === 201) {
-        dispatch(fetchSignIn(email, password));
+        dispatch(fetchSignIn());
       } else {
         throw response.statusText;
       }

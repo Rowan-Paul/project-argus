@@ -1,43 +1,36 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import {
   fetchSignUp,
-  fetchSignIn,
-  fetchSignOut,
-  redirected,
-  fetchVerify,
-  fetchDelete,
   updateEmail,
   updatePassword,
   setError,
 } from "../redux/account/actions";
 
-function LoginPageUI(props) {
+function SignUpPageUI(props) {
   useEffect(() => {
     if (props.loggedIn) {
       props.history.push("/account");
     }
   });
 
-  const signinClicked = async () => {
-    if (document.getElementById("signIn").checkValidity()) {
-      props.fetchSignIn();
+  const signUpClicked = async () => {
+    if (document.getElementById("signup").checkValidity()) {
+      props.fetchSignUp();
     } else {
-      props.setError("Fill in both your email and username");
+      props.setError("The form is not complete");
     }
   };
 
   const keyDownEvent = (e) => {
+    props.setError("");
     if (e.keyCode === 13) {
       e.preventDefault();
-      signinClicked();
+      signUpClicked();
     }
   };
-
-  //   const signupClicked = () => {
-  //     props.fetchSignUp("rp-flynn@outlook.com", "password");
-  //   };
 
   //   const logoutClicked = async () => {
   //     props.fetchSignOut(props.token);
@@ -53,7 +46,8 @@ function LoginPageUI(props) {
 
   return (
     <div className="flex justify-center">
-      <form id="signIn" className="mt-8 max-w-md" onKeyDown={keyDownEvent}>
+      <form id="signup" className="mt-8 max-w-md" onKeyDown={keyDownEvent}>
+        <h1 className="text-lg mb-5">Sign up</h1>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">
             <span className="dark:text-primary-dark text-gray-700">Email</span>
@@ -83,15 +77,30 @@ function LoginPageUI(props) {
             />
           </label>
         </div>
+        <div class="block">
+          <div class="mt-2">
+            <div>
+              <label class="inline-flex items-center">
+                <input type="checkbox" required />
+                <span class="ml-2">I agree</span>
+              </label>
+            </div>
+          </div>
+        </div>
         <div
           className="cursor-pointer mt-5 ml-3"
           onClick={(e) => {
-            signinClicked();
+            signUpClicked();
           }}
         >
           Login
         </div>
-        <p>{props.error ? "Error: " + props.error : ""}</p>
+        <p className="mt-5 mb-5 text-red-500">
+          {props.error ? "Error: " + props.error : ""}
+        </p>
+        <p>
+          Have an account? <Link to="/signin">Sign In</Link>
+        </p>
       </form>
     </div>
   );
@@ -99,24 +108,17 @@ function LoginPageUI(props) {
 
 const mapStateToProps = (state) => ({
   loggedIn: state.account.loggedIn,
-  redirect: state.account.redirect,
-  token: state.account.token,
   error: state.account.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchSignUp: (email, password) => dispatch(fetchSignUp(email, password)),
-  fetchSignIn: () => dispatch(fetchSignIn()),
-  fetchSignOut: (token) => dispatch(fetchSignOut(token)),
-  fetchVerify: (token) => dispatch(fetchVerify(token)),
-  fetchDelete: (email, password) => dispatch(fetchDelete(email, password)),
-  redirected: () => dispatch(redirected()),
+  fetchSignUp: () => dispatch(fetchSignUp()),
   updateEmail: (email) => dispatch(updateEmail(email)),
   updatePassword: (password) => dispatch(updatePassword(password)),
   setError: (error) => dispatch(setError(error)),
 });
 
-export const LoginPage = connect(
+export const SignUpPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginPageUI);
+)(SignUpPageUI);

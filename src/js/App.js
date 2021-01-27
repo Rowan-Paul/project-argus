@@ -5,7 +5,8 @@ import { LandingPage } from "./landing-page/LandingPage";
 import { NavBar } from "./common/navbar/NavBar";
 import { Footer } from "./common/footer/Footer";
 
-import { LoginPage } from "./login-page/LoginPage";
+import { SignInPage } from "./account/SignInPage";
+import { SignUpPage } from "./account/SignUpPage";
 
 function AppUI() {
   useState(() => {
@@ -23,7 +24,8 @@ function AppUI() {
         <div className="m-20">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/signin" component={SignInPage} />
+            <Route exact path="/signup" component={SignUpPage} />
           </Switch>
         </div>
         <Footer className="h-10" />

@@ -17,8 +17,8 @@ function NavBarUI({ fixed }) {
       address: "/about",
     },
     {
-      name: "Login",
-      address: "/login",
+      name: "Sign In",
+      address: "/signin",
     },
   ]);
 
