@@ -25,7 +25,7 @@ function SignInPageUI(props) {
   };
 
   const keyDownEvent = (e) => {
-    props.setError("");
+    if (props.error) props.setError("");
     if (e.keyCode === 13) {
       e.preventDefault();
       signinClicked();

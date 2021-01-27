@@ -25,24 +25,12 @@ function SignUpPageUI(props) {
   };
 
   const keyDownEvent = (e) => {
-    props.setError("");
+    if (props.error) props.setError("");
     if (e.keyCode === 13) {
       e.preventDefault();
       signUpClicked();
     }
   };
-
-  //   const logoutClicked = async () => {
-  //     props.fetchSignOut(props.token);
-  //   };
-
-  //   const verifyClicked = async () => {
-  //     props.fetchVerify(props.token);
-  //   };
-
-  //   const deleteClicked = async () => {
-  //     props.fetchDelete("rp-flynn@outlook.com", "password");
-  //   };
 
   return (
     <div className="flex justify-center">
