@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 import { LandingPage } from "./landing-page/LandingPage";
@@ -9,7 +9,7 @@ import { SignInPage } from "./account/SignInPage";
 import { SignUpPage } from "./account/SignUpPage";
 
 function AppUI() {
-  useState(() => {
+  useEffect(() => {
     if (localStorage.theme === "dark") {
       document.querySelector("html").classList.add("dark");
     } else {
