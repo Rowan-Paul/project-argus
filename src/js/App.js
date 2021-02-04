@@ -9,6 +9,7 @@ import { Footer } from "./common/footer/Footer";
 import { SignInPage } from "./account/SignInPage";
 import { SignUpPage } from "./account/SignUpPage";
 import { fetchVerify } from "./redux/account/actions";
+import { SignOutPage } from "./account/SignOutPage";
 
 function AppUI(props) {
   useEffect(() => {
@@ -39,6 +40,7 @@ function AppUI(props) {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/signin" component={SignInPage} />
           <Route exact path="/signup" component={SignUpPage} />
+          <Route exact path="/signout" component={SignOutPage} />
         </Switch>
         <Footer className="h-10" />
       </div>

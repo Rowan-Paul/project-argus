@@ -74,10 +74,10 @@ export const fetchSignIn = () => (dispatch, getState) => {
 };
 
 // sign out user
-export const fetchSignOut = (token) => (dispatch) => {
+export const fetchSignOut = (token) => (dispatch, getState) => {
   const url = `${api}account/signout`;
   const data = {
-    token: token,
+    token: getState().account.token,
   };
 
   fetch(url, {

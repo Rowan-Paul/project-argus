@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import { PageLink } from "./PageLink";
 
@@ -6,14 +7,19 @@ function PagesListUI(props) {
   const [pagesArray, setPagesArray] = useState([]);
 
   useEffect(() => {
+    setPagesArray([]);
     props.pages.forEach((page) => {
       setPagesArray((pagesArray) => [
         ...pagesArray,
-        <PageLink setNavbarOpen={() => props.setNavbarOpen()} key={page.name} name={page.name} address={page.address} />,
+        <PageLink
+          setNavbarOpen={() => props.setNavbarOpen()}
+          key={page.name}
+          name={page.name}
+          address={page.address}
+        />,
       ]);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps,
-  }, []);
+  }, [props]);
 
   if (pagesArray.length > 1) {
     return (
@@ -26,4 +32,10 @@ function PagesListUI(props) {
   }
 }
 
-export const PagesList = PagesListUI;
+const mapStateToProps = (state) => ({
+  loggedIn: state.account.loggedIn,
+  pages: state.account.pages,
+  error: state.account.error,
+});
+
+export const PagesList = connect(mapStateToProps, null)(PagesListUI);

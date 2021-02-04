@@ -7,6 +7,20 @@ const INITIAL_STATE = {
   error: "",
   email: "",
   password: "", //TODO: check if that is secure?
+  pages: [
+    {
+      name: "Home",
+      address: "/",
+    },
+    {
+      name: "About",
+      address: "/about",
+    },
+    {
+      name: "Sign In",
+      address: "/signin",
+    },
+  ],
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -20,6 +34,24 @@ const reducer = (state = INITIAL_STATE, action) => {
         password: "",
         token: action.payload,
         error: "",
+        pages: [
+          {
+            name: "Home",
+            address: "/",
+          },
+          {
+            name: "About",
+            address: "/about",
+          },
+          {
+            name: "Account",
+            address: "/account",
+          },
+          {
+            name: "Sign out",
+            address: "/signout",
+          },
+        ],
       };
 
     case types.SIGNED_OUT:
@@ -30,10 +62,46 @@ const reducer = (state = INITIAL_STATE, action) => {
         redirect: true,
         token: "",
         error: "",
+        pages: [
+          {
+            name: "Home",
+            address: "/",
+          },
+          {
+            name: "About",
+            address: "/about",
+          },
+          {
+            name: "Sign In",
+            address: "/signin",
+          },
+        ],
       };
 
     case types.VERIFIED:
-      return { ...state, loggedIn: true, error: "" };
+      return {
+        ...state,
+        loggedIn: true,
+        error: "",
+        pages: [
+          {
+            name: "Home",
+            address: "/",
+          },
+          {
+            name: "About",
+            address: "/about",
+          },
+          {
+            name: "Account",
+            address: "/account",
+          },
+          {
+            name: "Sign Out",
+            address: "/signout",
+          },
+        ],
+      };
 
     case types.UNVERIFIED:
       localStorage.removeItem("token");
@@ -42,6 +110,20 @@ const reducer = (state = INITIAL_STATE, action) => {
         loggedIn: false,
         token: "",
         error: action.payload,
+        pages: [
+          {
+            name: "Home",
+            address: "/",
+          },
+          {
+            name: "About",
+            address: "/about",
+          },
+          {
+            name: "Sign In",
+            address: "/signin",
+          },
+        ],
       };
 
     case types.DELETED:
@@ -52,6 +134,20 @@ const reducer = (state = INITIAL_STATE, action) => {
         redirect: true,
         token: "",
         error: "",
+        pages: [
+          {
+            name: "Home",
+            address: "/",
+          },
+          {
+            name: "About",
+            address: "/about",
+          },
+          {
+            name: "Sign In",
+            address: "/signin",
+          },
+        ],
       };
 
     case types.REDIRECTED:
