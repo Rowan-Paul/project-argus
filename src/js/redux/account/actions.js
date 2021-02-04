@@ -107,10 +107,10 @@ export const fetchSignOut = (token) => (dispatch) => {
 };
 
 // verify user
-export const fetchVerify = (token) => (dispatch) => {
+export const fetchVerify = () => (dispatch, getState) => {
   const url = `${api}account/verify`;
   const data = {
-    token: token,
+    token: getState().account.token,
   };
 
   fetch(url, {

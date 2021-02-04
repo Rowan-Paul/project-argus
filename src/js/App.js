@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 import { LandingPage } from "./landing-page/LandingPage";
@@ -7,8 +8,9 @@ import { Footer } from "./common/footer/Footer";
 
 import { SignInPage } from "./account/SignInPage";
 import { SignUpPage } from "./account/SignUpPage";
+import { fetchVerify } from "./redux/account/actions";
 
-function AppUI() {
+function AppUI(props) {
   useEffect(() => {
     if (
       window.matchMedia &&
@@ -23,7 +25,11 @@ function AppUI() {
     } else {
       document.querySelector("html").classList.remove("dark");
     }
-  }, []);
+
+    if (!props.loggedIn && localStorage.token) {
+      props.fetchVerify();
+    }
+  });
 
   return (
     <Router>
@@ -40,4 +46,13 @@ function AppUI() {
   );
 }
 
-export const App = AppUI;
+const mapStateToProps = (state) => ({
+  loggedIn: state.account.loggedIn,
+  error: state.account.error,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchVerify: () => dispatch(fetchVerify()),
+});
+
+export const App = connect(mapStateToProps, mapDispatchToProps)(AppUI);
