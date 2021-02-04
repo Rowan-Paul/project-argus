@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 import { LandingPage } from "./landing-page/LandingPage";
@@ -7,8 +8,11 @@ import { Footer } from "./common/footer/Footer";
 
 import { SignInPage } from "./account/SignInPage";
 import { SignUpPage } from "./account/SignUpPage";
+import { fetchVerify } from "./redux/account/actions";
+import { SignOutPage } from "./account/SignOutPage";
+import { AccountPage } from "./account/AccountPage";
 
-function AppUI() {
+function AppUI(props) {
   useEffect(() => {
     if (
       window.matchMedia &&
@@ -23,7 +27,11 @@ function AppUI() {
     } else {
       document.querySelector("html").classList.remove("dark");
     }
-  }, []);
+
+    if (!props.loggedIn && props.token) {
+      props.fetchVerify();
+    }
+  });
 
   return (
     <Router>
@@ -33,6 +41,8 @@ function AppUI() {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/signin" component={SignInPage} />
           <Route exact path="/signup" component={SignUpPage} />
+          <Route exact path="/signout" component={SignOutPage} />
+          <Route exact path="/account" component={AccountPage} />
         </Switch>
         <Footer className="h-10" />
       </div>
@@ -40,4 +50,14 @@ function AppUI() {
   );
 }
 
-export const App = AppUI;
+const mapStateToProps = (state) => ({
+  loggedIn: state.account.loggedIn,
+  token: state.account.token,
+  error: state.account.error,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchVerify: () => dispatch(fetchVerify()),
+});
+
+export const App = connect(mapStateToProps, mapDispatchToProps)(AppUI);

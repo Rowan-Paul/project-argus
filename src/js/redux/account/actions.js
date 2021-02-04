@@ -74,10 +74,10 @@ export const fetchSignIn = () => (dispatch, getState) => {
 };
 
 // sign out user
-export const fetchSignOut = (token) => (dispatch) => {
+export const fetchSignOut = (token) => (dispatch, getState) => {
   const url = `${api}account/signout`;
   const data = {
-    token: token,
+    token: getState().account.token,
   };
 
   fetch(url, {
@@ -107,10 +107,10 @@ export const fetchSignOut = (token) => (dispatch) => {
 };
 
 // verify user
-export const fetchVerify = (token) => (dispatch) => {
+export const fetchVerify = () => (dispatch, getState) => {
   const url = `${api}account/verify`;
   const data = {
-    token: token,
+    token: getState().account.token,
   };
 
   fetch(url, {
@@ -140,11 +140,11 @@ export const fetchVerify = (token) => (dispatch) => {
 };
 
 // delete user
-export const fetchDelete = (email, password) => (dispatch) => {
+export const fetchDelete = () => (dispatch, getState) => {
   const url = `${api}account/delete`;
   const data = {
-    email: email,
-    password: password,
+    email: getState().account.email,
+    password: getState().account.password,
   };
 
   fetch(url, {
