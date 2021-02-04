@@ -21,13 +21,11 @@ function AppUI() {
     <Router>
       <div className="flex flex-col min-h-screen justify-between">
         <NavBar className="h-10" />
-        <div className="m-20">
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/signin" component={SignInPage} />
-            <Route exact path="/signup" component={SignUpPage} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/signin" component={SignInPage} />
+          <Route exact path="/signup" component={SignUpPage} />
+        </Switch>
         <Footer className="h-10" />
       </div>
     </Router>
