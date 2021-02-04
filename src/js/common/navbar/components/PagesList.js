@@ -9,7 +9,7 @@ function PagesListUI(props) {
     props.pages.forEach((page) => {
       setPagesArray((pagesArray) => [
         ...pagesArray,
-        <PageLink key={page.name} name={page.name} address={page.address} />,
+        <PageLink setNavbarOpen={() => props.setNavbarOpen()} key={page.name} name={page.name} address={page.address} />,
       ]);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps,

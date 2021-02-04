@@ -9,7 +9,7 @@ function LandingPageUI() {
     <React.Fragment>
       <div
         id="start"
-        className="text-black dark:text-primary-dark bg-gradient-to-l from-secondary-light dark:from-secondary-dark to-accent-light dark:to-accent-dark p-20 min-h-screen container mx-auto flex flex-col md:flex-row items-center"
+        className="text-black dark:text-primary-dark bg-gradient-to-l from-secondary-light dark:from-secondary-dark to-accent-light dark:to-accent-dark p-20 min-h-screen flex flex-col md:flex-row items-center"
       >
         <WelcomeText />
         <WelcomeImage />

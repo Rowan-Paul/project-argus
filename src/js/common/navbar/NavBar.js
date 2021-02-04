@@ -7,8 +7,7 @@ import { PagesList } from "./components/PagesList";
 
 function NavBarUI({ fixed }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [pages, setPages] = useState([
+  const [pages] = useState([
     {
       name: "Home",
       address: "/",
@@ -16,6 +15,10 @@ function NavBarUI({ fixed }) {
     {
       name: "About",
       address: "/about",
+    },
+    {
+      name: "Sign In",
+      address: "/signin",
     },
   ]);
 
@@ -42,7 +45,7 @@ function NavBarUI({ fixed }) {
             id="example-navbar-danger"
           >
             <DarkModeToggle position="pages" />
-            <PagesList pages={pages} />
+            <PagesList setNavbarOpen={() => setNavbarOpen()} pages={pages} />
           </div>
         </div>
       </nav>
