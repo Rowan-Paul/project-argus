@@ -26,7 +26,7 @@ function AppUI(props) {
       document.querySelector("html").classList.remove("dark");
     }
 
-    if (!props.loggedIn && localStorage.token) {
+    if (!props.loggedIn && props.token) {
       props.fetchVerify();
     }
   });
@@ -48,6 +48,7 @@ function AppUI(props) {
 
 const mapStateToProps = (state) => ({
   loggedIn: state.account.loggedIn,
+  token: state.account.token,
   error: state.account.error,
 });
 
