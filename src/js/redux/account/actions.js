@@ -1,8 +1,13 @@
 import * as types from "./types";
 
+let api = "http://localhost:3000/";
+if (process.env.NODE_ENV === "production") {
+  api = "http://127.0.0.1:3000/";
+}
+
 // register user
 export const fetchSignUp = () => (dispatch, getState) => {
-  const url = "http://localhost:3000/api/account/signup";
+  const url = `${api}account/signup`;
   const data = {
     email: getState().account.email,
     password: getState().account.password,
@@ -33,7 +38,7 @@ export const fetchSignUp = () => (dispatch, getState) => {
 
 // sign in user
 export const fetchSignIn = () => (dispatch, getState) => {
-  const url = "http://localhost:3000/api/account/signin";
+  const url = `${api}account/signin`;
   const data = {
     email: getState().account.email,
     password: getState().account.password,
@@ -70,7 +75,7 @@ export const fetchSignIn = () => (dispatch, getState) => {
 
 // sign out user
 export const fetchSignOut = (token) => (dispatch) => {
-  const url = "http://localhost:3000/api/account/signout";
+  const url = `${api}account/signout`;
   const data = {
     token: token,
   };
@@ -103,7 +108,7 @@ export const fetchSignOut = (token) => (dispatch) => {
 
 // verify user
 export const fetchVerify = (token) => (dispatch) => {
-  const url = "http://localhost:3000/api/account/verify";
+  const url = `${api}account/verify`;
   const data = {
     token: token,
   };
@@ -136,7 +141,7 @@ export const fetchVerify = (token) => (dispatch) => {
 
 // delete user
 export const fetchDelete = (email, password) => (dispatch) => {
-  const url = "http://localhost:3000/api/account/delete";
+  const url = `${api}account/delete`;
   const data = {
     email: email,
     password: password,
