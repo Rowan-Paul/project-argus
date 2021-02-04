@@ -81,7 +81,7 @@ function SignUpPageUI(props) {
             signUpClicked();
           }}
         >
-          Login
+          Sign up
         </div>
         <p className="mt-5 mb-5 text-red-500">
           {props.error ? "Error: " + props.error : ""}
