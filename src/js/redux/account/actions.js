@@ -1,8 +1,8 @@
 import * as types from "./types";
 
-let api = "http://localhost:3000/";
+let api = "http://localhost:3000/api/";
 if (process.env.NODE_ENV === "production") {
-  api = "https://api.projectarg.us/api";
+  api = "https://api.projectarg.us/api/";
 }
 
 // register user
