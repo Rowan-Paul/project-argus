@@ -25,7 +25,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use("/api/account", accountRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.redirect("https://projectarg.us/");
 });
 
 // CREATE SERVER
