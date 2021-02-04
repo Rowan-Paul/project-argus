@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   token: localStorage.token ? localStorage.token : "",
   error: "",
   email: "",
-  password: "", //TODO: check if that is secure?
+  password: "",
   pages: [
     {
       name: "Home",

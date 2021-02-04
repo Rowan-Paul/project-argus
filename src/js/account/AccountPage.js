@@ -11,10 +11,6 @@ import {
 function AccountPageUI(props) {
   useEffect(() => {
     if (!props.loggedIn) {
-      props.history.push("/signin"); //TODO: this should be done in React Router
-    }
-
-    if (props.redirect) {
       props.history.push("/");
     }
   });
