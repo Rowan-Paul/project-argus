@@ -10,6 +10,14 @@ import { SignUpPage } from "./account/SignUpPage";
 
 function AppUI() {
   useEffect(() => {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches &&
+      localStorage.theme !== "light"
+    ) {
+      localStorage.theme = "dark";
+    }
+
     if (localStorage.theme === "dark") {
       document.querySelector("html").classList.add("dark");
     } else {

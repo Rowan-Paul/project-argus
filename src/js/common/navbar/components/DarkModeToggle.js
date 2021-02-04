@@ -5,7 +5,12 @@ function DarkModeToggleUI(props) {
   const [currentTheme, setCurrentTheme] = useState("black");
 
   useEffect(() => {
-    if (localStorage.theme === "dark") {
+    if (
+      localStorage.theme === "dark" ||
+      (window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches &&
+        localStorage.theme !== "light")
+    ) {
       setCurrentTheme("white");
     } else {
       setCurrentTheme("black");
