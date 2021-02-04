@@ -2,7 +2,7 @@ import * as types from "./types";
 
 let api = "http://localhost:3000/";
 if (process.env.NODE_ENV === "production") {
-  api = "http://127.0.0.1:3000/";
+  api = "https://api.projectarg.us/";
 }
 
 // register user
