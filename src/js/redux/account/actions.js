@@ -140,11 +140,11 @@ export const fetchVerify = () => (dispatch, getState) => {
 };
 
 // delete user
-export const fetchDelete = (email, password) => (dispatch) => {
+export const fetchDelete = () => (dispatch, getState) => {
   const url = `${api}account/delete`;
   const data = {
-    email: email,
-    password: password,
+    email: getState().account.email,
+    password: getState().account.password,
   };
 
   fetch(url, {
