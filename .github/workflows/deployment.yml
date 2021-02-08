@@ -1,4 +1,4 @@
-name: Node Github CI
+name: Build and deploy app
 
 on:
   push:
