@@ -18,11 +18,11 @@ router.post("/signup", (req, res, next) => {
   let { email } = body;
 
   if (!email) {
-    return res.status(400).send("Error: Email cannot be blank.");
+    return res.status(401).send("Error: Email cannot be blank.");
   }
 
   if (!password) {
-    return res.status(400).send("Error: Password cannot be blank.");
+    return res.status(401).send("Error: Password cannot be blank.");
   }
 
   email = email.toLowerCase();
@@ -39,7 +39,7 @@ router.post("/signup", (req, res, next) => {
       if (err) {
         return res.sendStatus(500);
       } else if (previousUsers.length > 0) {
-        return res.status(400).send("Error: Account already exist.");
+        return res.status(401).send("Error: Account already exist.");
       }
 
       // Save the new user
@@ -64,11 +64,11 @@ router.post("/signin", (req, res, next) => {
   let { email } = body;
 
   if (!email) {
-    return res.status(400).send("Error: Email cannot be blank.");
+    return res.status(401).send("Error: Email cannot be blank.");
   }
 
   if (!password) {
-    return res.status(400).send("Error: Password cannot be blank.");
+    return res.status(401).send("Error: Password cannot be blank.");
   }
 
   email = email.toLowerCase();
@@ -85,13 +85,13 @@ router.post("/signin", (req, res, next) => {
       }
 
       if (users.length != 1) {
-        return res.status(400).send("Error: Invalid username");
+        return res.status(401).send("Error: Invalid username");
       }
 
       const user = users[0];
 
       if (!user.validPassword(password)) {
-        return res.status(400).send("Error: Invalid password");
+        return res.status(401).send("Error: Invalid password");
       }
 
       // Otherwise correct user
@@ -129,7 +129,7 @@ router.put("/signout", (req, res, next) => {
     !("id" in tokenDec) ||
     !("timestamp" in tokenDec)
   ) {
-    return res.status(400).send("Incorrect token");
+    return res.status(401).send("Incorrect token");
   }
 
   // Verify the token is one of a kind and it's not deleted.
@@ -169,7 +169,7 @@ router.put("/verify", (req, res, next) => {
     !("id" in tokenDec) ||
     !("timestamp" in tokenDec)
   ) {
-    return res.status(400).send("Incorrect token");
+    return res.status(401).send("Incorrect token");
   }
 
   // Verify the token is one of a kind and it's not deleted.
@@ -187,7 +187,7 @@ router.put("/verify", (req, res, next) => {
       }
 
       if (sessions.length != 1) {
-        return res.sendStatus(400);
+        return res.sendStatus(401);
       } else {
         // DO ACTION
         return res.sendStatus(200);
@@ -203,11 +203,11 @@ router.delete("/", (req, res, next) => {
   let { email } = body;
 
   if (!email) {
-    return res.status(400).send("Error: Email cannot be blank.");
+    return res.status(401).send("Error: Email cannot be blank.");
   }
 
   if (!password) {
-    return res.status(400).send("Error: Password cannot be blank.");
+    return res.status(401).send("Error: Password cannot be blank.");
   }
 
   email = email.toLowerCase();
@@ -224,13 +224,13 @@ router.delete("/", (req, res, next) => {
       }
 
       if (users.length != 1) {
-        return res.status(400).send("Error: Invalid username");
+        return res.status(401).send("Error: Invalid username");
       }
 
       const user = users[0];
 
       if (!user.validPassword(password)) {
-        return res.status(400).send("Error: Invalid password");
+        return res.status(401).send("Error: Invalid password");
       }
 
       user.isDeleted = true;
