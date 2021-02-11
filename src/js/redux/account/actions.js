@@ -2,7 +2,7 @@ import * as types from "./types";
 
 let api = "http://localhost:3000/api/";
 if (process.env.NODE_ENV === "production") {
-  api = "https://api.projectarg.us/api/";
+  api = "https://api.projectarg.us/api/v1/";
 }
 
 // register user
@@ -141,14 +141,14 @@ export const fetchVerify = () => (dispatch, getState) => {
 
 // delete user
 export const fetchDelete = () => (dispatch, getState) => {
-  const url = `${api}account/delete`;
+  const url = `${api}account`;
   const data = {
     email: getState().account.email,
     password: getState().account.password,
   };
 
   fetch(url, {
-    method: "PUT",
+    method: "DELETE",
     cache: "no-cache",
     headers: {
       "Content-Type": "application/json",
