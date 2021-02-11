@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(cors({ origin: true, credentials: true }));
 
 // ROUTES MIDDLEWARE
-app.use("/api/account", accountRouter);
+app.use("/api/v1/account", accountRouter);
 
 app.get("/", (req, res) => {
   res.redirect("https://projectarg.us/");

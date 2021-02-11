@@ -197,7 +197,7 @@ router.put("/verify", (req, res, next) => {
 });
 
 // Delete account
-router.put("/delete", (req, res, next) => {
+router.delete("/", (req, res, next) => {
   const { body } = req;
   const { password } = body;
   let { email } = body;
