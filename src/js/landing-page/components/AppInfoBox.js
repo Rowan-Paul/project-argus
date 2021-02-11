@@ -22,6 +22,15 @@ function AppInfoBoxUI(props) {
       </svg>
       <span className="font-bold text-xl">&nbsp;{props.name}</span>
       <p>{props.description}</p>
+
+      <a
+        href={`https://${props.name}.projectarg.us`}
+        target="_blank"
+        rel="noreferrer"
+        className="bg-transparent hover:bg-black dark:hover:bg-black dark:hover:text-white dark:bg-white text-primary dark:text-black hover:text-white rounded shadow hover:shadow-lg py-2 px-4 border border-black hover:border-transparent dark:hover:border-white mt-5 inline-block"
+      >
+        Go to {props.name}
+      </a>
     </span>
   );
 }
