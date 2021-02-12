@@ -34,13 +34,13 @@ function AccountPageUI(props) {
   return (
     <div className="flex justify-center">
       <form id="delete" className="mt-8 max-w-md" onKeyDown={keyDownEvent}>
-        <h1 className="text-lg mb-5">Account</h1>
+        <h1>Account</h1>
         <p>
           Welcome to your account page. On this page you can delete your
           account, with more coming soon.
         </p>
 
-        <h2 className=" mt-5 mb-5">Delete account</h2>
+        <h2>Delete account</h2>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">
             <span className="dark:text-primary-dark text-gray-700">Email</span>

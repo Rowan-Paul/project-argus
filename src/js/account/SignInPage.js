@@ -35,7 +35,7 @@ function SignInPageUI(props) {
   return (
     <div className="flex justify-center">
       <form id="signIn" className="mt-8 max-w-md" onKeyDown={keyDownEvent}>
-        <h1 className="text-lg mb-5">Sign in</h1>
+        <h1>Sign in</h1>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">
             <span className="dark:text-primary-dark text-gray-700">Email</span>
