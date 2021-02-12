@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   loggedIn: false,
   redirect: false,
   token: localStorage.token ? localStorage.token : "",
+  user: {},
   error: "",
   email: "",
   password: "",
@@ -26,13 +27,13 @@ const INITIAL_STATE = {
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.SIGNED_IN:
-      localStorage.token = action.payload;
+      localStorage.token = action.payload.token;
       return {
         ...state,
         loggedIn: true,
+        user: action.payload.user,
         email: "",
         password: "",
-        token: action.payload,
         error: "",
         pages: [
           {
@@ -61,6 +62,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         loggedIn: false,
         redirect: true,
         token: "",
+        user: {},
         error: "",
         pages: [
           {
@@ -82,6 +84,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loggedIn: true,
+        user: action.payload,
         error: "",
         pages: [
           {
@@ -109,6 +112,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         loggedIn: false,
         token: "",
+        user: {},
         error: action.payload,
         pages: [
           {
@@ -133,6 +137,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         loggedIn: false,
         redirect: true,
         token: "",
+        user: {},
         error: "",
         pages: [
           {

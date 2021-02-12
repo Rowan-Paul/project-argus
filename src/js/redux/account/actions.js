@@ -62,7 +62,7 @@ export const fetchSignIn = () => (dispatch, getState) => {
     .then((response) => {
       dispatch({
         type: types.SIGNED_IN,
-        payload: response.token,
+        payload: { token: response.token, user: response.user },
       });
     })
     .catch((statusText) => {
@@ -92,7 +92,6 @@ export const fetchSignOut = (token) => (dispatch, getState) => {
       if (response.status === 200) {
         dispatch({
           type: types.SIGNED_OUT,
-          payload: response.token,
         });
       } else {
         throw response.statusText;
@@ -123,13 +122,16 @@ export const fetchVerify = () => (dispatch, getState) => {
   })
     .then((response) => {
       if (response.status === 200) {
-        dispatch({
-          type: types.VERIFIED,
-          payload: response.token,
-        });
+        return response.json();
       } else {
         throw response.statusText;
       }
+    })
+    .then((response) => {
+      dispatch({
+        type: types.VERIFIED,
+        payload: response.email,
+      });
     })
     .catch((statusText) => {
       dispatch({
