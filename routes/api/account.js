@@ -75,10 +75,11 @@ router.post("/signin", (req, res, next) => {
   User.find(
     {
       email: email,
+      isDeleted: false,
     },
     (err, users) => {
       if (err) {
-        console.log("err 2:", err);
+        console.log(err);
         return res.sendStatus(500);
       }
 
@@ -205,7 +206,6 @@ router.put("/verify", (req, res, next) => {
   );
 });
 
-// TODO: remove all user sessions from this user
 // Delete account
 router.delete("/", (req, res, next) => {
   const { body } = req;
@@ -229,7 +229,7 @@ router.delete("/", (req, res, next) => {
     },
     (err, users) => {
       if (err) {
-        console.log("err 2:", err);
+        console.log(err);
         return res.sendStatus(500);
       }
 
@@ -249,7 +249,31 @@ router.delete("/", (req, res, next) => {
           console.log(err);
           return res.sendStatus(500);
         }
-        return res.status(200).send("Account deleted");
+
+        UserSession.find(
+          {
+            userId: user._id,
+            isDeleted: false,
+          },
+          (err, sessions) => {
+            if (err) {
+              console.log(err);
+              return res.sendStatus(500);
+            }
+
+            sessions.forEach((session) => {
+              session.isDeleted = true;
+              session.save((err, doc) => {
+                if (err) {
+                  console.log(err);
+                  return res.sendStatus(500);
+                }
+              });
+            });
+
+            return res.status(200).send("Account deleted");
+          }
+        );
       });
     }
   );
