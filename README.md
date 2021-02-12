@@ -6,14 +6,10 @@ Project Argus tracks everything for you; movies, tv shows, music and games. All 
 
 The app will make use of the following technologies:
 
+- MongoDB
+- Express
 - React
 - Redux
-- Node
-- MongoDB
-- Tailwind CSS
-- React Router
-
-As the project progresses, there will be more technologies added as necessary.
 
 ## Different apps
 
