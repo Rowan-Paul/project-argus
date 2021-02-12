@@ -102,6 +102,12 @@ router.post("/signin", (req, res, next) => {
           console.log(err);
           return res.sendStatus(500);
         }
+
+        // I could just return users.email, but for
+        // future expansion gonna keep it like this
+        let filteredUser = {
+          email: user.email,
+        };
         return res.status(201).send({
           message: "Signed in",
           token: encryptor.encrypt({
@@ -109,6 +115,7 @@ router.post("/signin", (req, res, next) => {
             id: doc._id,
             timestamp: doc.timestamp,
           }),
+          user: filteredUser,
         });
       });
     }
