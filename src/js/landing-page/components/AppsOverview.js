@@ -11,7 +11,10 @@ function AppsOverviewUI() {
           What is project argus?
         </p>
         <p className="text-grey-darkest text-center">
-          project-argus contains 3 different apps:
+          project-argus aims to let you track all kinds of different things.
+          <br></br>
+          There are currently 3 different apps, each with it's own things to
+          track:
         </p>
         <p className="pt-4"></p>
 

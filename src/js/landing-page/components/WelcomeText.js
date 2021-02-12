@@ -7,10 +7,10 @@ function WelcomeTextUI() {
       <p className="uppercase tracking-loose">Track everthing</p>
       <h1 className="text-2xl md:text-4xl my-4">project argus</h1>
       <p className="leading-normal mb-4">
-        project argus is the app that connects alls the different tracking apps.
-        Wow that's a weird sentence. But the point is, you can go to all the
-        different apps from this app. And this is also the place to manage your
-        account.
+        project argus aims to let you track everything: from movies to podcasts.
+        On this part of the site you can read about project argus and the
+        different apps. There is also the possibility to manage your account
+        that you can use on all project argus sites.
       </p>
       <HashLink
         smooth
