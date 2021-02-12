@@ -14,6 +14,7 @@ import { AccountPage } from "./account/AccountPage";
 import { NotFound } from "./common/NotFound";
 
 import { fetchVerify } from "./redux/account/actions";
+import { AboutPage } from "./about-page/AboutPage";
 
 function AppUI(props) {
   useEffect(() => {
@@ -42,6 +43,7 @@ function AppUI(props) {
         <NavBar className="h-10" />
         <Switch>
           <Route exact path="/" component={LandingPage} />
+          <Route exact path="/about" component={AboutPage} />
           <Route exact path="/signin" component={SignInPage} />
           <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/signout" component={SignOutPage} />
