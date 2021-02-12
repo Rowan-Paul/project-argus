@@ -19,7 +19,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /var/www/orion
-            git fetch -all
+            git fetch --all
             git reset --hard origin/main
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
