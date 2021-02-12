@@ -9,8 +9,6 @@ const encryptor = require("simple-encryptor")(
 const User = require("../../models/User");
 const UserSession = require("../../models/UserSession");
 
-const utils = require("../../utils");
-
 // Create an account
 router.post("/signup", (req, res, next) => {
   const { body } = req;
@@ -189,13 +187,25 @@ router.put("/verify", (req, res, next) => {
       if (sessions.length != 1) {
         return res.sendStatus(401);
       } else {
-        // DO ACTION
-        return res.sendStatus(200);
+        User.findById(sessions[0].userId, (err, users) => {
+          if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+          }
+
+          // I could just return users.email, but for
+          // future expansion gonna keep it like this
+          let filteredUsers = {
+            email: users.email,
+          };
+          return res.status(200).send(filteredUsers);
+        });
       }
     }
   );
 });
 
+// TODO: remove all user sessions from this user
 // Delete account
 router.delete("/", (req, res, next) => {
   const { body } = req;
