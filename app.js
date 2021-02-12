@@ -25,7 +25,19 @@ const accountRouter = require("./routes/api/account");
 
 // MIDDLEWARE
 app.use(bodyParser.json());
-app.use(cors({ origin: true, credentials: true }));
+
+var whitelist = ["http://localhost:3001", "https://projectarg.us"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
 // Authorize middleware
 app.use("/api/v1/movies", function (req, res, next) {
