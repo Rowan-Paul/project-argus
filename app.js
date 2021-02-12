@@ -1,6 +1,7 @@
 "use-strict";
 
 require("dotenv").config();
+require("./scheduler");
 
 const express = require("express");
 const mongoose = require("mongoose");
