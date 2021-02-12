@@ -9,8 +9,6 @@ const encryptor = require("simple-encryptor")(
 const User = require("../../models/User");
 const UserSession = require("../../models/UserSession");
 
-const utils = require("../../utils");
-
 // Create an account
 router.post("/signup", (req, res, next) => {
   const { body } = req;
@@ -77,10 +75,11 @@ router.post("/signin", (req, res, next) => {
   User.find(
     {
       email: email,
+      isDeleted: false,
     },
     (err, users) => {
       if (err) {
-        console.log("err 2:", err);
+        console.log(err);
         return res.sendStatus(500);
       }
 
@@ -189,8 +188,19 @@ router.put("/verify", (req, res, next) => {
       if (sessions.length != 1) {
         return res.sendStatus(401);
       } else {
-        // DO ACTION
-        return res.sendStatus(200);
+        User.findById(sessions[0].userId, (err, users) => {
+          if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+          }
+
+          // I could just return users.email, but for
+          // future expansion gonna keep it like this
+          let filteredUsers = {
+            email: users.email,
+          };
+          return res.status(200).send(filteredUsers);
+        });
       }
     }
   );
@@ -219,7 +229,7 @@ router.delete("/", (req, res, next) => {
     },
     (err, users) => {
       if (err) {
-        console.log("err 2:", err);
+        console.log(err);
         return res.sendStatus(500);
       }
 
@@ -239,7 +249,31 @@ router.delete("/", (req, res, next) => {
           console.log(err);
           return res.sendStatus(500);
         }
-        return res.status(200).send("Account deleted");
+
+        UserSession.find(
+          {
+            userId: user._id,
+            isDeleted: false,
+          },
+          (err, sessions) => {
+            if (err) {
+              console.log(err);
+              return res.sendStatus(500);
+            }
+
+            sessions.forEach((session) => {
+              session.isDeleted = true;
+              session.save((err, doc) => {
+                if (err) {
+                  console.log(err);
+                  return res.sendStatus(500);
+                }
+              });
+            });
+
+            return res.status(200).send("Account deleted");
+          }
+        );
       });
     }
   );
