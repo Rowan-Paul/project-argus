@@ -19,7 +19,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /var/www/andromeda
-            git pull
+            git fetch -all
+            git reset --hard origin/main
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm i
