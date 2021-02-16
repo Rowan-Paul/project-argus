@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 const Movie = require("../../../models/Movie");
+const History = require("../../../models/History");
 
 // Create a movie
 router.post("/", (req, res) => {
@@ -52,6 +53,33 @@ router.get("/:movie", (req, res) => {
       return res.send(movies);
     }
   );
+});
+
+// Mark a movie as watched
+router.post("/:movie/watched", (req, res) => {
+  const { params } = req;
+  const { movie } = params;
+
+  const { body } = req;
+  const { date } = body;
+
+  if (!movie) {
+    return res.status(400).status("Movie is required");
+  }
+
+  const newHistory = new History();
+  newHistory.itemId = movie;
+  newHistory.userId = "602bc6ff7e6d101458d1eb4d"; //TODO: get user id from auth bearer or something
+  if (date) {
+    newHistory.date = date;
+  }
+
+  newHistory.save((err) => {
+    if (err) {
+      return res.status(500).send("Failed to mark as watched");
+    }
+    return res.sendStatus(201);
+  });
 });
 
 module.exports = router;
