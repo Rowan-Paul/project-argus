@@ -19,9 +19,11 @@ const encryptor = require("simple-encryptor")(
 
 // IMPORT MODELS
 require("./models/User");
+require("./models/Movie");
 
 // IMPORT ROUTES
 const accountRouter = require("./routes/api/v1/account");
+const movieRouter = require("./routes/api/v1/movies");
 
 // MIDDLEWARE
 app.use(bodyParser.json());
@@ -29,48 +31,49 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Authorize middleware
-app.use("/api/v1/movies", function (req, res, next) {
-  if (req.headers.authorization === undefined) {
-    res.sendStatus(401);
-  } else {
-    const authHeader = req.headers.authorization;
+// app.use("/api/v1/movies", function (req, res, next) {
+//   if (req.headers.authorization === undefined) {
+//     res.sendStatus(401);
+//   } else {
+//     const authHeader = req.headers.authorization;
 
-    var tokenDec = encryptor.decrypt(authHeader.split(" ")[1]);
+//     var tokenDec = encryptor.decrypt(authHeader.split(" ")[1]);
 
-    if (
-      tokenDec === null ||
-      !("random" in tokenDec) ||
-      !("id" in tokenDec) ||
-      !("timestamp" in tokenDec)
-    ) {
-      res.sendStatus(401);
-    }
+//     if (
+//       tokenDec === null ||
+//       !("random" in tokenDec) ||
+//       !("id" in tokenDec) ||
+//       !("timestamp" in tokenDec)
+//     ) {
+//       res.sendStatus(401);
+//     }
 
-    // Verify the token is one of a kind and it's not deleted.
-    UserSession.find(
-      {
-        _id: tokenDec.id,
-        random: tokenDec.random,
-        timestamp: tokenDec.timestamp,
-        isDeleted: false,
-      },
-      (err, sessions) => {
-        if (err) {
-          res.sendStatus(401);
-        }
+//     // Verify the token is one of a kind and it's not deleted.
+//     UserSession.find(
+//       {
+//         _id: tokenDec.id,
+//         random: tokenDec.random,
+//         timestamp: tokenDec.timestamp,
+//         isDeleted: false,
+//       },
+//       (err, sessions) => {
+//         if (err) {
+//           res.sendStatus(401);
+//         }
 
-        if (sessions.length != 1) {
-          res.sendStatus(401);
-        } else {
-          next();
-        }
-      }
-    );
-  }
-});
+//         if (sessions.length != 1) {
+//           res.sendStatus(401);
+//         } else {
+//           next();
+//         }
+//       }
+//     );
+//   }
+// });
 
 // ROUTES MIDDLEWARE
 app.use("/api/v1/account", accountRouter);
+app.use("/api/v1/movies", movieRouter);
 
 app.get("/", (req, res) => {
   res.redirect("https://projectarg.us/");
