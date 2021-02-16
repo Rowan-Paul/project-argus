@@ -26,7 +26,11 @@ const accountRouter = require("./routes/api/account");
 // MIDDLEWARE
 app.use(bodyParser.json());
 
-var whitelist = ["http://localhost:3001", "https://projectarg.us"];
+var whitelist = [
+  "http://localhost:3001",
+  "https://projectarg.us",
+  "https://status.projectarg.us",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
