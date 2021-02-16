@@ -20,6 +20,7 @@ const encryptor = require("simple-encryptor")(
 // IMPORT MODELS
 require("./models/User");
 require("./models/Movie");
+require("./models/History");
 
 // IMPORT ROUTES
 const accountRouter = require("./routes/api/v1/account");
