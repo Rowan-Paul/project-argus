@@ -31,4 +31,27 @@ router.post("/", (req, res) => {
   });
 });
 
+// Get information for a movie
+router.get("/:movie", (req, res) => {
+  const { params } = req;
+  const { movie } = params;
+
+  if (!movie) {
+    return res.sendStatus(400);
+  }
+
+  Movie.find(
+    // movie can be both the title or _id of the movie
+    { $or: [{ _id: movie }, { title: movie }] },
+    { _id: 0, __v: 0 },
+    (err, movies) => {
+      if (err || movies.length < 1) {
+        return res.status(404).send("Failed to find movie");
+      }
+
+      return res.send(movies);
+    }
+  );
+});
+
 module.exports = router;
