@@ -6,8 +6,8 @@ const encryptor = require("simple-encryptor")(
   process.env.KEY || "secretpasswordofmysupersecretkey"
 );
 
-const User = require("../../models/User");
-const UserSession = require("../../models/UserSession");
+const User = require("../../../models/User");
+const UserSession = require("../../../models/UserSession");
 
 // Create an account
 router.post("/signup", (req, res, next) => {

@@ -21,7 +21,7 @@ const encryptor = require("simple-encryptor")(
 require("./models/User");
 
 // IMPORT ROUTES
-const accountRouter = require("./routes/api/account");
+const accountRouter = require("./routes/api/v1/account");
 
 // MIDDLEWARE
 app.use(bodyParser.json());
