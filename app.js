@@ -32,6 +32,7 @@ var whitelist = [
   "https://status.projectarg.us",
 ];
 app.use(
+  "/api",
   cors({
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
