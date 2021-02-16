@@ -10,7 +10,7 @@ const User = require("../../../models/User");
 const UserSession = require("../../../models/UserSession");
 
 // Create an account
-router.post("/signup", (req, res, next) => {
+router.post("/signup", (req, res) => {
   const { body } = req;
   const { password } = body;
   let { email } = body;
@@ -56,7 +56,7 @@ router.post("/signup", (req, res, next) => {
 });
 
 // Signin to account
-router.post("/signin", (req, res, next) => {
+router.post("/signin", (req, res) => {
   const { body } = req;
   const { password } = body;
   let { email } = body;
@@ -123,7 +123,7 @@ router.post("/signin", (req, res, next) => {
 });
 
 // Sign out account
-router.put("/signout", (req, res, next) => {
+router.put("/signout", (req, res) => {
   // Get the token
   const { body } = req;
   const { token } = body;
@@ -163,7 +163,7 @@ router.put("/signout", (req, res, next) => {
 });
 
 // Verify the token
-router.put("/verify", (req, res, next) => {
+router.put("/verify", (req, res) => {
   // Get the token
   const { body } = req;
   const { token } = body;
@@ -214,7 +214,7 @@ router.put("/verify", (req, res, next) => {
 });
 
 // Delete account
-router.delete("/", (req, res, next) => {
+router.delete("/", (req, res) => {
   const { body } = req;
   const { password } = body;
   let { email } = body;
