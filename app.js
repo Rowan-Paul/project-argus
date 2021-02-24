@@ -1,35 +1,35 @@
-"use-strict";
+'use-strict'
 
-require("dotenv").config();
-require("./scheduler");
+require('dotenv').config()
+require('./scheduler')
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express')
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 
-const app = express();
-const cors = require("cors");
-const port = process.env.PORT || "3000";
-const dbName = "orion";
+const app = express()
+const cors = require('cors')
+const port = process.env.PORT || '3000'
+const dbName = 'orion'
 
-const UserSession = require("./models/UserSession");
-const encryptor = require("simple-encryptor")(
-  process.env.KEY || "secretpasswordofmysupersecretkey"
-);
+const UserSession = require('./models/UserSession')
+const encryptor = require('simple-encryptor')(
+  process.env.KEY || 'secretpasswordofmysupersecretkey'
+)
 
 // IMPORT MODELS
-require("./models/User");
-require("./models/Movie");
-require("./models/History");
+require('./models/User')
+require('./models/Movie')
+require('./models/History')
+require('./models/PopularMovie')
 
 // IMPORT ROUTES
-const accountRouter = require("./routes/api/v1/account");
-const movieRouter = require("./routes/api/v1/movies");
+const accountRouter = require('./routes/api/v1/account')
+const movieRouter = require('./routes/api/v1/movies')
 
 // MIDDLEWARE
-app.use(bodyParser.json());
-
-app.use(cors());
+app.use(bodyParser.json())
+app.use(cors())
 
 // Authorize middleware
 // app.use("/api/v1/movies", function (req, res, next) {
@@ -73,12 +73,12 @@ app.use(cors());
 // });
 
 // ROUTES MIDDLEWARE
-app.use("/api/v1/account", accountRouter);
-app.use("/api/v1/movies", movieRouter);
+app.use('/api/v1/account', accountRouter)
+app.use('/api/v1/movies', movieRouter)
 
-app.get("/", (req, res) => {
-  res.redirect("https://projectarg.us/");
-});
+app.get('/', (req, res) => {
+  res.redirect('https://projectarg.us/')
+})
 
 // CREATE SERVER
 const server = app.listen(port, () => {
@@ -90,7 +90,7 @@ const server = app.listen(port, () => {
       useFindAndModify: false,
     },
     () => {
-      console.log(`Orion server listening on port ${port}!`);
+      console.log(`Orion server listening on port ${port}!`)
     }
-  );
-});
+  )
+})

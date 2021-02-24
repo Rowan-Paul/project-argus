@@ -6,9 +6,9 @@
  * Using Math.round() will give you a non-uniform distribution!
  */
 function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 /**
@@ -16,14 +16,14 @@ function getRandomInt(min, max) {
  * @param length the length of the id
  */
 function makeid(length) {
-  var result = "";
+  var result = ''
   var characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  var charactersLength = characters.length
   for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
-  return result;
+  return result
 }
 
 /**
@@ -31,8 +31,8 @@ function makeid(length) {
  * @param error error to throw
  */
 function _throw(error) {
-  throw error;
+  throw error
 }
 
-exports.makeid = makeid;
-exports._throw = _throw;
+exports.makeid = makeid
+exports._throw = _throw
