@@ -4,7 +4,7 @@ const User = require('./models/User')
 const UserSession = require('./models/UserSession')
 const PopularMovie = require('./models/PopularMovie')
 
-var cron = require('node-cron')
+const cron = require('node-cron')
 const fetch = require('node-fetch')
 
 // Delete sessions and accounts that are set for deleted

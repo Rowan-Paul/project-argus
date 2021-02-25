@@ -7,7 +7,7 @@ const Movie = require('../../../models/Movie')
 const History = require('../../../models/History')
 const PopularMovie = require('../../../models/PopularMovie')
 
-// Get information for a movie
+// Get a list of popular movies cached from tmdb
 router.get('/popular', (req, res) => {
   PopularMovie.find({}, (err, movies) => {
     if (err || movies.length < 1) {
