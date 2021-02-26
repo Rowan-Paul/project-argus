@@ -28,25 +28,47 @@ cron.schedule('0 0 * * *', () => {
     if (err) {
       console.log(err)
     }
-  }).then(() => {
-    fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
-    )
-      .then((response) => response.json())
-      .then((movies) => {
-        movies.results.forEach((result) => {
-          const backdrop = new Backdrop()
+  })
+    .then(() => {
+      fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
+      )
+        .then((response) => response.json())
+        .then((movies) => {
+          movies.results.forEach((result) => {
+            const backdrop = new Backdrop()
 
-          backdrop.title = result.title
-          backdrop.backdropPath = result.backdrop_path
-          backdrop.type = 'movie'
+            backdrop.title = result.title
+            backdrop.backdropPath = result.backdrop_path
+            backdrop.type = 'movie'
 
-          backdrop.save((err, doc) => {
-            if (err) {
-              console.log(err)
-            }
+            backdrop.save((err, doc) => {
+              if (err) {
+                console.log(err)
+              }
+            })
           })
         })
-      })
-  })
+    })
+    .then(() => {
+      fetch(
+        `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=1`
+      )
+        .then((response) => response.json())
+        .then((movies) => {
+          movies.results.forEach((result) => {
+            const backdrop = new Backdrop()
+
+            backdrop.title = result.name
+            backdrop.backdropPath = result.backdrop_path
+            backdrop.type = 'tv'
+
+            backdrop.save((err, doc) => {
+              if (err) {
+                console.log(err)
+              }
+            })
+          })
+        })
+    })
 })
