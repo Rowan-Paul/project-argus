@@ -53,9 +53,16 @@ router.get('/:movie', (req, res) => {
     return res.sendStatus(400)
   }
 
+  // check if movie is object id, if not replace it by a
+  // 'fake' objectid so it doesn't error mongo
+  var ObjectId = require('mongoose').Types.ObjectId
+  var objId = new ObjectId(movie.length < 12 ? '123456789012' : movie)
+
   Movie.find(
     // movie can be both the title or _id of the movie
-    { $or: [{ _id: movie }, { title: movie }] },
+    {
+      $or: [{ _id: objId }, { title: { $regex: movie, $options: 'i' } }],
+    },
     { _id: 0, __v: 0 },
     (err, movies) => {
       if (err || movies.length < 1) {
