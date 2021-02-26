@@ -1,9 +1,11 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux'
 
-import accountReducer from "./account/reducer";
+import { mainReducer } from './main/reducer'
+import { accountReducer } from './account/reducer'
 
 const rootReducer = combineReducers({
+  main: mainReducer,
   account: accountReducer,
-});
+})
 
-export default rootReducer;
+export default rootReducer
