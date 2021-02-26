@@ -21,7 +21,7 @@ const encryptor = require('simple-encryptor')(
 require('./models/User')
 require('./models/Movie')
 require('./models/History')
-require('./models/PopularMovie')
+require('./models/Backdrop')
 
 // IMPORT ROUTES
 const accountRouter = require('./routes/api/v1/account')

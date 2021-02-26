@@ -5,11 +5,11 @@ const router = express.Router()
 
 const Movie = require('../../../models/Movie')
 const History = require('../../../models/History')
-const PopularMovie = require('../../../models/PopularMovie')
+const Backdrop = require('../../../models/Backdrop')
 
 // Get a list of popular movies cached from tmdb
 router.get('/popular', (req, res) => {
-  PopularMovie.find({}, (err, movies) => {
+  Backdrop.find({}, (err, movies) => {
     if (err || movies.length < 1) {
       return res.status(404).send('Failed to find movie')
     }

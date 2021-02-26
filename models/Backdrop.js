@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const PopularMovieSchema = new mongoose.Schema({
+const BackdropSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -14,6 +14,10 @@ const PopularMovieSchema = new mongoose.Schema({
     default: Date.now(),
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
 })
 
-module.exports = mongoose.model('PopularMovie', PopularMovieSchema)
+module.exports = mongoose.model('Backdrop', BackdropSchema)

@@ -2,7 +2,7 @@
 
 const User = require('./models/User')
 const UserSession = require('./models/UserSession')
-const PopularMovie = require('./models/PopularMovie')
+const Backdrop = require('./models/Backdrop')
 
 const cron = require('node-cron')
 const fetch = require('node-fetch')
@@ -24,7 +24,7 @@ cron.schedule('0 0 * * fri', () => {
 
 // Fetch popular movies every day
 cron.schedule('0 0 * * *', () => {
-  PopularMovie.deleteMany({}, (err) => {
+  Backdrop.deleteMany({}, (err) => {
     if (err) {
       console.log(err)
     }
@@ -35,11 +35,13 @@ cron.schedule('0 0 * * *', () => {
       .then((response) => response.json())
       .then((movies) => {
         movies.results.forEach((result) => {
-          const popularMovie = new PopularMovie()
-          popularMovie.title = result.title
-          popularMovie.backdropPath = result.backdrop_path
+          const backdrop = new Backdrop()
 
-          popularMovie.save((err, doc) => {
+          backdrop.title = result.title
+          backdrop.backdropPath = result.backdrop_path
+          backdrop.type = 'movie'
+
+          backdrop.save((err, doc) => {
             if (err) {
               console.log(err)
             }
