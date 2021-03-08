@@ -5,6 +5,7 @@
 @layer base {
   h1 {
     @apply text-2xl;
+    @apply mb-5;
   }
 
   h2 {
