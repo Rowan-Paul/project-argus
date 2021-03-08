@@ -26,7 +26,7 @@ function AppUI(props) {
     if (!props.loggedIn && props.token) {
       props.fetchVerify()
     }
-  }, [])
+  }, [props, props.loggedIn, props.token])
 
   useEffect(() => {
     if (

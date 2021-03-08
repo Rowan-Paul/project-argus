@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-
 import { fetchBackdrop } from '../redux/main/actions'
 
 function BackdropUI(props) {
   useEffect(() => {
     props.fetchBackdrop()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

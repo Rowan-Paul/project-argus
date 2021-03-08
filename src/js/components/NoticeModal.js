@@ -34,7 +34,7 @@ function NoticeModalUI(props) {
 
       return () => clearInterval(waitToFade)
     }
-  })
+  }, [props])
 
   return (
     <div

@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import { connect } from 'react-redux'
-import { searchMovie } from '../redux/movies/actions'
 import { MovieComponent } from './components/MovieComponent'
 import { SearchBox } from './components/SearchBox'
 
@@ -15,6 +13,7 @@ function DashboardUI(props) {
           overview={movie.overview}
           id={movie._id}
           isWatched={movie.isWatched}
+          backdrop="RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"
         />
       )
     })
