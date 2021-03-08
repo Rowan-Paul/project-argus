@@ -7,6 +7,9 @@ const Movie = require('../../../models/Movie')
 const History = require('../../../models/History')
 const Backdrop = require('../../../models/Backdrop')
 
+const authHeaderHandler = require('../../../authHeaderHandler')
+const { response } = require('express')
+
 // Get a list of popular movies cached from tmdb
 router.get('/popular', (req, res) => {
   Backdrop.find({}, (err, movies) => {
@@ -79,12 +82,20 @@ router.get('/:movie', (req, res) => {
 })
 
 // Mark a movie as watched
-router.post('/:movie/watched', (req, res) => {
+router.post('/:movie/watched', async (req, res) => {
   const { params } = req
   const { movie } = params
 
   const { body } = req
   const { date } = body
+
+  const authHeader = await authHeaderHandler.verifyAuthHandler(
+    req.headers.authorization
+  )
+
+  if (authHeader.isAuthenticated) {
+    return res.sendStatus(401)
+  }
 
   if (!movie) {
     return res.status(400).send('Movie is required')
@@ -92,7 +103,7 @@ router.post('/:movie/watched', (req, res) => {
 
   const newHistory = new History()
   newHistory.itemId = movie
-  newHistory.userId = '602bc6ff7e6d101458d1eb4d' //TODO: get user id from auth bearer or something
+  newHistory.userId = authHeader.userId
   if (date) {
     newHistory.date = date
   }
@@ -106,14 +117,19 @@ router.post('/:movie/watched', (req, res) => {
 })
 
 // Check if a movie is watched
-router.get('/:movie/watched', (req, res) => {
+router.get('/:movie/watched', async (req, res) => {
   const { params } = req
   const { movie } = params
 
-  // in the future, this should be gotten from auth token or something
-  const user = '602bc6ff7e6d101458d1eb4d'
+  const authHeader = await authHeaderHandler.verifyAuthHandler(
+    req.headers.authorization
+  )
 
-  History.find({ itemId: movie, userId: user }, (err, results) => {
+  if (authHeader.isAuthenticated) {
+    return res.sendStatus(401)
+  }
+
+  History.find({ itemId: movie, userId: authHeader.userId }, (err, results) => {
     if (err) {
       return res.status(500).send('Something went wrong')
     }
