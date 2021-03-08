@@ -6,7 +6,7 @@ function MovieComponentUI(props) {
 
   useEffect(() => {
     setImgUrl(
-      `https://www.themoviedb.org/t/p/${getResponsiveImage()}/${props.backdrop}`
+      `https://www.themoviedb.org/t/p/${getResponsiveImage()}/${props.poster}`
     )
   }, [props.backdrop])
 

@@ -13,7 +13,7 @@ function DashboardUI(props) {
           overview={movie.overview}
           id={movie._id}
           isWatched={movie.isWatched}
-          backdrop="RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"
+          poster={movie.poster}
         />
       )
     })
