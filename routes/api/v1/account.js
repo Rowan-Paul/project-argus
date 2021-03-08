@@ -9,6 +9,8 @@ const encryptor = require('simple-encryptor')(
 const User = require('../../../models/User')
 const UserSession = require('../../../models/UserSession')
 
+const authHeaderHandler = require('../../../authHeaderHandler')
+
 // Create an account
 router.post('/signup', (req, res) => {
   const { body } = req
@@ -168,54 +170,28 @@ router.put('/signout', (req, res) => {
 })
 
 // Verify the token
-router.put('/verify', (req, res) => {
-  // Get the token
-  const { body } = req
-  const { token } = body
+router.put('/verify', async (req, res) => {
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
 
-  var tokenDec = encryptor.decrypt(token)
-  if (
-    tokenDec === null ||
-    !('random' in tokenDec) ||
-    !('id' in tokenDec) ||
-    !('timestamp' in tokenDec)
-  ) {
-    return res.status(401).send('Incorrect token')
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
   }
 
-  // Verify the token is one of a kind and it's not deleted.
-  UserSession.find(
-    {
-      _id: tokenDec.id,
-      random: tokenDec.random,
-      timestamp: tokenDec.timestamp,
-      isDeleted: false,
-    },
-    (err, sessions) => {
-      if (err) {
-        console.log(err)
-        return res.sendStatus(500)
-      }
-
-      if (sessions.length != 1) {
-        return res.sendStatus(401)
-      } else {
-        User.findById(sessions[0].userId, (err, users) => {
-          if (err) {
-            console.log(err)
-            return res.sendStatus(500)
-          }
-
-          let filteredUsers = {
-            email: users.email,
-            firstName: users.firstName,
-            lastName: users.lastName,
-          }
-          return res.status(200).send(filteredUsers)
-        })
-      }
+  User.findById(authHeader.userId, (err, users) => {
+    if (err) {
+      console.log(err)
+      return res.sendStatus(500)
     }
-  )
+
+    let filteredUsers = {
+      email: users.email,
+      firstName: users.firstName,
+      lastName: users.lastName,
+    }
+    return res.status(200).send(filteredUsers)
+  })
 })
 
 // Delete account

@@ -8,7 +8,6 @@ const History = require('../../../models/History')
 const Backdrop = require('../../../models/Backdrop')
 
 const authHeaderHandler = require('../../../authHeaderHandler')
-const { response } = require('express')
 
 // Get a list of popular movies cached from tmdb
 router.get('/popular', (req, res) => {
@@ -89,11 +88,11 @@ router.post('/:movie/watched', async (req, res) => {
   const { body } = req
   const { date } = body
 
-  const authHeader = await authHeaderHandler.verifyAuthHandler(
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
     req.headers.authorization
   )
 
-  if (authHeader.isAuthenticated) {
+  if (!authHeader.authenticated) {
     return res.sendStatus(401)
   }
 
@@ -121,11 +120,11 @@ router.get('/:movie/watched', async (req, res) => {
   const { params } = req
   const { movie } = params
 
-  const authHeader = await authHeaderHandler.verifyAuthHandler(
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
     req.headers.authorization
   )
 
-  if (authHeader.isAuthenticated) {
+  if (!authHeader.authenticated) {
     return res.sendStatus(401)
   }
 

@@ -51,5 +51,5 @@ function verifyAuthHeader(authHeader) {
 }
 
 module.exports = {
-  check,
+  verifyAuthHeader,
 }
