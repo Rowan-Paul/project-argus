@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { fetchSignUp } from '../../redux/account/actions'
-import { LargeInput } from './LargeInput'
-import { SmallInput } from './SmallInput'
-import { SubmitButton } from './SubmitButton'
+import { LargeInput } from '../../components/inputFields/LargeInput'
+import { SmallInput } from '../../components/inputFields/SmallInput'
+import { SubmitButton } from '../../components/inputFields/SubmitButton'
 import { setNotice } from '../../redux/main/actions'
 
 function SignUpFieldUI(props) {

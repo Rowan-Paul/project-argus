@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { connect } from 'react-redux'
 import { fetchDelete } from '../../redux/account/actions'
 import { setNotice } from '../../redux/main/actions'
-import { LargeInput } from './LargeInput'
-import { SubmitButton } from './SubmitButton'
+import { LargeInput } from '../../components/inputFields/LargeInput'
+import { SubmitButton } from '../../components/inputFields/SubmitButton'
 
 function DeleteAccountFieldUI(props) {
   const [email, setEmail] = useState('')
