@@ -13,7 +13,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         // This time, we need to make a copy of the old array
         activeMovies: state.activeMovies.map((movie) => {
           // If this isn't the item we're looking for, leave it alone
-          if (movie.title !== action.payload) {
+          if (movie._id !== action.payload) {
             return movie
           }
 

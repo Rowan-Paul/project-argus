@@ -23,6 +23,9 @@ export const markAsWatched = (movie) => (dispatch) => {
   })
     .then((response) => {
       if (response.status === 201) {
+        dispatch(
+          setNotice({ message: 'Movie added to watched', type: 'success' })
+        )
         dispatch({ type: types.WATCHED, payload: movie })
       } else {
         throw response.statusText
@@ -54,10 +57,44 @@ export const searchMovie = (movie) => (dispatch) => {
     })
     .then((movies) => {
       dispatch({ type: types.FETCHED_MOVIES, payload: movies })
+
+      movies.forEach((movie) => {
+        dispatch(checkWatched(movie._id))
+      })
     })
     .catch((statusText) => {
       console.log('Failed get movie:', statusText)
 
       dispatch(setNotice({ message: 'Failed to find movie', type: 'error' }))
+    })
+}
+
+export const checkWatched = (movie) => (dispatch) => {
+  const url = `${api}/movies/${movie}/watched`
+
+  fetch(url, {
+    method: 'GET',
+    cache: 'no-cache',
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        throw response.statusText
+      }
+    })
+    .then((movie) => {
+      if (movie.timesWatched < 1) {
+        return ''
+      } else {
+        dispatch({ type: types.WATCHED, payload: movie._id })
+      }
+    })
+    .catch((statusText) => {
+      console.log('Failed to check status of movie', statusText)
+
+      dispatch(
+        setNotice({ message: 'Failed to check status of movie', type: 'error' })
+      )
     })
 }
