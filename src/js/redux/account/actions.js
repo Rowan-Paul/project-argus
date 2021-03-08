@@ -110,17 +110,15 @@ export const fetchSignOut = () => (dispatch, getState) => {
 // verify user
 export const fetchVerify = () => (dispatch, getState) => {
   const url = `${api}/account/verify`
-  const data = {
-    token: getState().account.token,
-  }
+  const bearer = 'Bearer ' + getState().account.token
 
   fetch(url, {
     method: 'PUT',
     cache: 'no-cache',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json',
+      authorization: bearer,
     },
-    body: JSON.stringify(data),
   })
     .then((response) => {
       if (response.status === 200) {

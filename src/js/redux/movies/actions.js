@@ -6,40 +6,6 @@ if (process.env.NODE_ENV === 'production') {
   api = 'https://api.projectarg.us/api/v1'
 }
 
-// mark movie as watched
-export const markAsWatched = (movie) => (dispatch) => {
-  const url = `${api}/movies/${movie}/watched`
-  const data = {
-    date: Date.now(),
-  }
-
-  fetch(url, {
-    method: 'POST',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (response.status === 201) {
-        dispatch(
-          setNotice({ message: 'Movie added to watched', type: 'success' })
-        )
-        dispatch({ type: types.WATCHED, payload: movie })
-      } else {
-        throw response.statusText
-      }
-    })
-    .catch((statusText) => {
-      console.log('Failed to mark as watched:', statusText)
-
-      dispatch(
-        setNotice({ message: 'Failed to mark as watched', type: 'error' })
-      )
-    })
-}
-
 // search movie
 export const searchMovie = (movie) => (dispatch) => {
   const url = `${api}/movies/${movie}`
@@ -69,12 +35,54 @@ export const searchMovie = (movie) => (dispatch) => {
     })
 }
 
-export const checkWatched = (movie) => (dispatch) => {
+// mark movie as watched
+export const markAsWatched = (movie) => (dispatch, getState) => {
   const url = `${api}/movies/${movie}/watched`
+  const bearer = 'Bearer ' + getState().account.token
+  const data = {
+    date: Date.now(),
+  }
+
+  fetch(url, {
+    method: 'POST',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      authorization: bearer,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (response.status === 201) {
+        dispatch(
+          setNotice({ message: 'Movie added to watched', type: 'success' })
+        )
+        dispatch({ type: types.WATCHED, payload: movie })
+      } else {
+        throw response.statusText
+      }
+    })
+    .catch((statusText) => {
+      console.log('Failed to mark as watched:', statusText)
+
+      dispatch(
+        setNotice({ message: 'Failed to mark as watched', type: 'error' })
+      )
+    })
+}
+
+export const checkWatched = (movie) => (dispatch, getState) => {
+  const url = `${api}/movies/${movie}/watched`
+  const bearer = 'Bearer ' + getState().account.token
 
   fetch(url, {
     method: 'GET',
     cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      authorization: bearer,
+    },
   })
     .then((response) => {
       if (response.status === 200) {
