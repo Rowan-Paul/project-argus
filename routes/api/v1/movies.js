@@ -63,7 +63,7 @@ router.get('/:movie', (req, res) => {
     {
       $or: [{ _id: objId }, { title: { $regex: movie, $options: 'i' } }],
     },
-    { _id: 0, __v: 0 },
+    { __v: 0 },
     (err, movies) => {
       if (err || movies.length < 1) {
         return res.status(404).send('Failed to find movie')
@@ -83,7 +83,7 @@ router.post('/:movie/watched', (req, res) => {
   const { date } = body
 
   if (!movie) {
-    return res.status(400).status('Movie is required')
+    return res.status(400).send('Movie is required')
   }
 
   const newHistory = new History()
@@ -98,6 +98,23 @@ router.post('/:movie/watched', (req, res) => {
       return res.status(500).send('Failed to mark as watched')
     }
     return res.sendStatus(201)
+  })
+})
+
+// Check if a movie is watched
+router.get('/:movie/watched', (req, res) => {
+  const { params } = req
+  const { movie } = params
+
+  // in the future, this should be gotten from auth token or something
+  const user = '602bc6ff7e6d101458d1eb4d'
+
+  History.find({ itemId: movie, userId: user }, (err, results) => {
+    if (err) {
+      return res.status(500).send('Something went wrong')
+    }
+
+    return res.send({ _id: movie, timesWatched: results.length })
   })
 })
 
