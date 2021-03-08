@@ -24,6 +24,7 @@ router.post('/', (req, res) => {
   const { title } = body
   const { year } = body
   const { overview } = body
+  const { poster } = body
 
   if (!title || !year) {
     return res.status(400).send('Title and year are required')
@@ -34,6 +35,9 @@ router.post('/', (req, res) => {
   newMovie.year = year
   if (overview) {
     newMovie.overview = overview
+  }
+  if (poster) {
+    newMovie.poster = poster
   }
 
   newMovie.save((err) => {
