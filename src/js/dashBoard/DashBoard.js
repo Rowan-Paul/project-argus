@@ -9,6 +9,7 @@ function DashboardUI(props) {
     props.activeMovies.forEach((movie) => {
       moviesArray.push(
         <MovieComponent
+          key={movie.title}
           title={movie.title}
           overview={movie.overview}
           id={movie._id}

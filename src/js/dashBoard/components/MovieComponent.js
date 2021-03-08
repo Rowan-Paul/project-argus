@@ -25,7 +25,7 @@ function MovieComponentUI(props) {
   }
 
   return (
-    <div key={props.title} className="lg:flex">
+    <div className="lg:flex">
       <div className="flex-grow lg:mr-10 p-2">
         <img
           src={imgUrl}
