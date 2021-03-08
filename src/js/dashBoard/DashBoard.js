@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
-import { markAsWatched, searchMovie } from '../redux/movies/actions'
+import { searchMovie } from '../redux/movies/actions'
+import { MovieComponent } from './components/MovieComponent'
 
 function DashboardUI(props) {
   const [query, setQuery] = useState('')
@@ -10,13 +11,12 @@ function DashboardUI(props) {
   if (props.activeMovies) {
     props.activeMovies.forEach((movie) => {
       moviesArray.push(
-        <div>
-          <h2>{movie.title}</h2>
-          <p>{movie.overview}</p>
-          <button onClick={() => props.markAsWatched(movie.title)}>
-            {movie.isWatched ? 'Watched' : 'Mark as watched'}
-          </button>
-        </div>
+        <MovieComponent
+          title={movie.title}
+          overview={movie.overview}
+          id={movie._id}
+          isWatched={movie.isWatched}
+        />
       )
     })
   }
@@ -33,7 +33,7 @@ function DashboardUI(props) {
       />
       <button onClick={() => props.searchMovie(query)}>Search</button>
 
-      {moviesArray}
+      <div className="grid lg:grid-cols-2 gap-10 mt-5">{moviesArray}</div>
     </div>
   )
 }
@@ -43,7 +43,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  markAsWatched: (movie) => dispatch(markAsWatched(movie)),
   searchMovie: (query) => dispatch(searchMovie(query)),
 })
 
