@@ -1,3 +1,3 @@
 # andromeda
 
-andromeda gives an overview of all the different apps in [project argus](https://github.com/Rowan-Paul/project-argus/). For an overview of what's planned and happening, check [this project in the project-argus repo](https://github.com/Rowan-Paul/project-argus/projects/3)
+andromeda is the front end client of [project argus](https://github.com/Rowan-Paul/project-argus/). For documentation, visit the [wiki](https://github.com/Rowan-Paul/project-argus/wiki). If you find a mistake or have a feature request, make an issue on the [here](https://github.com/Rowan-Paul/project-argus/issues).
