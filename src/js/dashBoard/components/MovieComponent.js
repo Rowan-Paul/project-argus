@@ -30,7 +30,7 @@ function MovieComponentUI(props) {
         <img
           src={imgUrl}
           alt={`${props.title} poster`}
-          className="max-h-48 m-auto lg:max-h-60 lg:float-left mb-10 lg:mr-10"
+          className="h-48 w-32 m-auto lg:max-h-60 lg:float-left mb-10 lg:mr-10"
         />
         <h2>{props.title}</h2>
         <p className="line-clamp-2 lg:line-clamp-5">{props.overview}</p>

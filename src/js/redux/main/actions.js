@@ -23,15 +23,6 @@ export const fetchBackdrop = () => (dispatch) => {
     .then((movies) => dispatch(setBackdrop(movies)))
     .catch((statusText) => {
       console.log("Can't get movies:", statusText)
-
-      dispatch(
-        setBackdrop([
-          {
-            backdropPath: '/nNmJRkg8wWnRmzQDe2FwKbPIsJV.jpg',
-            title: 'The Avengers',
-          },
-        ])
-      )
     })
 }
 
