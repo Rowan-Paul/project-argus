@@ -26,4 +26,4 @@ Each app will be seperated as to be able to have them work completly independent
 
 ## Documentation
 
-If you wish to know more, navigate to the wiki to read more.
+If you wish to know more, navigate to the [wiki](https://github.com/Rowan-Paul/project-argus/wiki) to read more about the app. If you wish to see a roadmap, check [projects](https://github.com/Rowan-Paul/project-argus/projects)
