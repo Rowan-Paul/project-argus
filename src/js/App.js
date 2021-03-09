@@ -103,6 +103,39 @@ function AppUI(props) {
         <div className="flex flex-col min-h-screen justify-between">
           <div>
             <NavBar />
+            <NoticeModal />
+
+            <Switch>
+              {/* LANDINGSPAGE */}
+              <Route exact path="/">
+                {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
+              </Route>
+
+              {/* ABOUT */}
+              <Route exact path="/about" component={About} />
+
+              {/* ACCOUNT - IF LOGGED OUT */}
+              <Route exact path="/signin">
+                {() => (props.loggedIn ? <Redirect to="/" /> : <SignInPage />)}
+              </Route>
+              <Route exact path="/signup">
+                {() => (props.loggedIn ? <Redirect to="/" /> : <SignUpPage />)}
+              </Route>
+
+              {/* ACCOUNT - IF LOGGED IN */}
+              <Route exact path="/signout">
+                <Redirect to="/signin" />
+              </Route>
+              <Route exact path="/account">
+                <Redirect to="/signin" />
+              </Route>
+              <Route exact path="/account/admin">
+                <Redirect to="/signin" />
+              </Route>
+
+              {/* MISCELLANEOUS */}
+              <Route component={NotFound} />
+            </Switch>
           </div>{' '}
           <Footer className="" />
         </div>{' '}

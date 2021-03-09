@@ -6,9 +6,13 @@ function MovieComponentUI(props) {
   const [imgUrl, setImgUrl] = useState('')
 
   useEffect(() => {
-    setImgUrl(
-      `https://www.themoviedb.org/t/p/${getResponsiveImage()}/${props.poster}`
-    )
+    if (props.poster === undefined) {
+      setImgUrl('https://via.placeholder.com/342x513?text=No+Poster+Found')
+    } else {
+      setImgUrl(
+        `https://www.themoviedb.org/t/p/${getResponsiveImage()}/${props.poster}`
+      )
+    }
   }, [props.poster])
 
   function getResponsiveImage() {

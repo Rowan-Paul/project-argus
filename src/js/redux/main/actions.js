@@ -23,6 +23,14 @@ export const fetchBackdrop = () => (dispatch) => {
     .then((movies) => dispatch(setBackdrop(movies)))
     .catch((statusText) => {
       console.log("Can't get movies:", statusText)
+
+      dispatch({
+        type: types.BACKDROP_SET,
+        payload: {
+          imgUrl: 'https://via.placeholder.com/780x439?text=No+Backdrop+Found',
+          imgName: 'Something went horribly wrong...',
+        },
+      })
     })
 }
 
