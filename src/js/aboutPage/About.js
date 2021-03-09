@@ -3,13 +3,30 @@ function AboutUI() {
     <div className="p-10 pt-20 lg:p-20">
       <h1>About</h1>
       <p>
-        project argus is a side project for me,{' '}
-        <a href="rowanpaulflynn.com">Rowan Paul</a>. The website isn't finished
-        by a long shot, but that also means you{' '}
-        <a href="https://github.com/Rowan-Paul/project-argus">
-          help develop this site by visiting the GitHub repo
+        project argus tracks everything for you; movies, tv shows, music,
+        podcasts, audiobooks and games. All in a modern, open source web
+        application. project argus is a side project for me,{' '}
+        <a href="rowanpaulflynn.com">Rowan Paul</a>. I work on this during my
+        spare time because I like to program things. For version management I
+        use GitHub and since this entire project is open source, you can see all
+        the source code in the{' '}
+        <a
+          href="https://github.com/Rowan-Paul/project-argus"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          different repositories
         </a>
-        .
+        . You can also request features or report bugs there by creating an
+        issue.
+      </p>
+      <h2>Contact</h2>
+      <p>You can contact me using the form below.</p>
+      <h2>Donations</h2>
+      <p>
+        If you wish to support this project or just buy me a cup of tea, you can
+        do so by donating here using credit card, iDeal or PayPal. All
+        donations, however small are greatly appreciated.
       </p>
       <h2>Attributions</h2>
       <img
@@ -21,7 +38,14 @@ function AboutUI() {
         This product uses the TMDb API but is not endorsed or certified by TMDb.
         <br></br>TMDb is a great resource to find everything related to movies
         and tv shows, go{' '}
-        <a href="https://www.themoviedb.org/">check them out</a>.
+        <a
+          href="https://www.themoviedb.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          check them out
+        </a>
+        .
       </p>
     </div>
   )
