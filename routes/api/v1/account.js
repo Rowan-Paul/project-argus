@@ -267,4 +267,43 @@ router.delete('/', (req, res) => {
   )
 })
 
+// Make account admin
+router.post('/admin', async (req, res) => {
+  const { body } = req
+  const { newAdmin } = body
+
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  // only do this is authheader succeed !!!
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
+  User.findOneAndUpdate(
+    {
+      _id: newAdmin,
+      isDeleted: false,
+    },
+    {
+      $set: {
+        isAdmin: true,
+      },
+    },
+    (err, response) => {
+      if (err) {
+        return res.sendStatus(500)
+      }
+      return res.status(201).send('Permission applied')
+    }
+  )
+})
+
 module.exports = router

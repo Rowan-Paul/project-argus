@@ -6,6 +6,7 @@ const encryptor = require('simple-encryptor')(
   process.env.KEY || 'secretpasswordofmysupersecretkey'
 )
 
+const User = require('./models/User')
 const UserSession = require('./models/UserSession')
 
 function verifyAuthHeader(authHeader) {
@@ -50,6 +51,30 @@ function verifyAuthHeader(authHeader) {
   }
 }
 
+function checkAdmin(userId) {
+  if (userId === undefined) {
+    return { isAdmin: false }
+  }
+
+  const result = User.findOneAndUpdate(
+    {
+      _id: userId,
+      isDeleted: false,
+      isAdmin: true,
+    },
+    (err, response) => {
+      if (err) {
+        return { isAdmin: false }
+      }
+
+      return { isAdmin: true }
+    }
+  )
+
+  return result
+}
+
 module.exports = {
   verifyAuthHeader,
+  checkAdmin,
 }

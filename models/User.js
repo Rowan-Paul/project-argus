@@ -28,6 +28,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 })
 
 UserSchema.methods.generateHash = function (password) {
