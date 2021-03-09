@@ -1,15 +1,6 @@
 # project-argus
 
-Project Argus tracks everything for you; movies, tv shows, music and games. All in a modern looking web application, all open source.
-
-## Technologies
-
-The app will make use of the following technologies:
-
-- MongoDB
-- Express
-- React
-- Redux
+project argus tracks everything for you; movies, tv shows, music, podcasts, audiobooks and games. All in a modern, open source web application.
 
 ## Different apps
 
@@ -22,8 +13,6 @@ There are several different parts of Project Argus that track different stuff:
 | andromeda            | Frontend application                   | [GitHub](https://github.com/Rowan-Paul/andromeda)            | [projectarg.us](https://projectarg.us/)                |
 | orion                | Backend server                         | [GitHub](https://github.com/Rowan-Paul/orion)                | [api.projectarg.us](https://api.projectarg.us/)        |
 
-Each app will be seperated as to be able to have them work completly independent from each other.
-
 ## Documentation
 
-If you wish to know more, navigate to the [wiki](https://github.com/Rowan-Paul/project-argus/wiki) to read more about the app. If you wish to see a roadmap, check [projects](https://github.com/Rowan-Paul/project-argus/projects)
+The app is build using ReactJS and ExpressJS using a MongoDB database and deployed on an Ubuntu VPS. If you wish to know more, navigate to the [wiki](https://github.com/Rowan-Paul/project-argus/wiki) to read more about the app. If you wish to see a roadmap, check [projects](https://github.com/Rowan-Paul/project-argus/projects)
