@@ -113,6 +113,7 @@ router.post('/signin', (req, res) => {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          isAdmin: users.isAdmin,
         }
 
         return res.status(201).send({
@@ -189,6 +190,7 @@ router.put('/verify', async (req, res) => {
       email: users.email,
       firstName: users.firstName,
       lastName: users.lastName,
+      isAdmin: users.isAdmin,
     }
     return res.status(200).send(filteredUsers)
   })
@@ -276,7 +278,6 @@ router.post('/admin', async (req, res) => {
     req.headers.authorization
   )
 
-  // only do this is authheader succeed !!!
   const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
 
   if (!authHeader.authenticated) {
@@ -287,9 +288,15 @@ router.post('/admin', async (req, res) => {
     return res.sendStatus(401)
   }
 
+  // check if newAdmin is object id, if not replace it by a
+  // 'fake' objectid so it doesn't error mongo
+  var ObjectId = require('mongoose').Types.ObjectId
+  var objId = new ObjectId(newAdmin.includes('@') ? '123456789012' : newAdmin)
+
   User.findOneAndUpdate(
+    // newAdmin can be both the id or email
     {
-      _id: newAdmin,
+      $or: [{ _id: objId }, { email: newAdmin }],
       isDeleted: false,
     },
     {
