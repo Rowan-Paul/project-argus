@@ -50,52 +50,65 @@ function AppUI(props) {
     return null
   }
 
-  return (
-    <Router>
-      <div className="flex flex-col min-h-screen justify-between">
-        <div>
-          <NavBar />
-          <NoticeModal />
-          <Switch>
-            {/* LANDINGSPAGE */}
-            <Route exact path="/">
-              {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
-            </Route>
+  if (props.verified) {
+    return (
+      <Router>
+        <div className="flex flex-col min-h-screen justify-between">
+          <div>
+            <NavBar />
+            <NoticeModal />
+            <Switch>
+              {/* LANDINGSPAGE */}
+              <Route exact path="/">
+                {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
+              </Route>
 
-            {/* ABOUT */}
-            <Route exact path="/about" component={About} />
+              {/* ABOUT */}
+              <Route exact path="/about" component={About} />
 
-            {/* ACCOUNT - IF LOGGED OUT */}
-            <Route exact path="/signin">
-              {() => (props.loggedIn ? <Redirect to="/" /> : <SignInPage />)}
-            </Route>
-            <Route exact path="/signup">
-              {() => (props.loggedIn ? <Redirect to="/" /> : <SignUpPage />)}
-            </Route>
+              {/* ACCOUNT - IF LOGGED OUT */}
+              <Route exact path="/signin">
+                {() => (props.loggedIn ? <Redirect to="/" /> : <SignInPage />)}
+              </Route>
+              <Route exact path="/signup">
+                {() => (props.loggedIn ? <Redirect to="/" /> : <SignUpPage />)}
+              </Route>
 
-            {/* ACCOUNT - IF LOGGED IN */}
-            <Route exact path="/signout">
-              {() => (props.loggedIn ? signOut() : <Redirect to="/" />)}
-            </Route>
-            <Route exact path="/account">
-              {() =>
-                props.loggedIn ? <AccountPage /> : <Redirect to="/signin" />
-              }
-            </Route>
-            <Route exact path="/account/admin">
-              {() =>
-                props.isAdmin ? <AdminPage /> : <Redirect to="/account" />
-              }
-            </Route>
+              {/* ACCOUNT - IF LOGGED IN */}
+              <Route exact path="/signout">
+                {() => (props.loggedIn ? signOut() : <Redirect to="/" />)}
+              </Route>
+              <Route exact path="/account">
+                {() =>
+                  props.loggedIn ? <AccountPage /> : <Redirect to="/signin" />
+                }
+              </Route>
+              <Route exact path="/account/admin">
+                {() =>
+                  props.isAdmin ? <AdminPage /> : <Redirect to="/account" />
+                }
+              </Route>
 
-            {/* MISCELLANEOUS */}
-            <Route component={NotFound} />
-          </Switch>
+              {/* MISCELLANEOUS */}
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+          <Footer className="" />
         </div>
-        <Footer className="" />
-      </div>
-    </Router>
-  )
+      </Router>
+    )
+  } else {
+    return (
+      <Router>
+        <div className="flex flex-col min-h-screen justify-between">
+          <div>
+            <NavBar />
+          </div>{' '}
+          <Footer className="" />
+        </div>{' '}
+      </Router>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -103,6 +116,7 @@ const mapStateToProps = (state) => ({
   isAdmin: state.account.user.isAdmin,
   token: state.account.token,
   notice: state.main.notice,
+  verified: state.account.verified,
 })
 
 const mapDispatchToProps = (dispatch) => ({

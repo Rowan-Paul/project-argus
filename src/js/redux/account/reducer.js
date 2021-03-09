@@ -3,6 +3,7 @@ import * as types from './types'
 const INITIAL_STATE = {
   token: localStorage.token ? localStorage.token : '',
   loggedIn: false,
+  verified: false,
   user: {},
 }
 
@@ -30,6 +31,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loggedIn: true,
+        verified: true,
         user: action.payload,
       }
 
