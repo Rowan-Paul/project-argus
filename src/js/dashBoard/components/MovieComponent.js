@@ -29,18 +29,21 @@ function MovieComponentUI(props) {
   }
 
   return (
-    <div className="lg:flex">
-      <div className="flex-grow lg:mr-10 p-2">
-        <img
-          src={imgUrl}
-          alt={`${props.title} poster`}
-          className="h-48 w-32 m-auto lg:max-h-60 lg:float-left mb-10 lg:mr-10"
-        />
-        <h2>{props.title}</h2>
-        <p className="line-clamp-2 lg:line-clamp-5">{props.overview}</p>
-        <Link to="/movie">Read more</Link>
-      </div>
+    <div className="lg:grid grid-cols-6">
+      <h2 className="line-clamp-2 lg:line-clamp-1 col-span-6">{props.title}</h2>
+
+      <img
+        src={imgUrl}
+        alt={`${props.title} poster`}
+        className="max-h-48 max-w-32 lg:float-left m-auto my-3 lg:mx-2 col-span-2 "
+      />
+
       <ActionButtons id={props.id} isWatched={props.isWatched} />
+
+      <div className="col-span-3">
+        <p className="line-clamp-2 lg:line-clamp-4 visible">{props.overview}</p>
+        <Link to="movie-detail-page">Read more</Link>
+      </div>
     </div>
   )
 }

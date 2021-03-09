@@ -34,7 +34,7 @@ function ActionButtonsUI(props) {
 
   return (
     <div
-      className="flex-grow-0 cursor-pointer m-auto"
+      className="cursor-pointer w-5 m-auto"
       onClick={() => props.markAsWatched(props.id)}
     >
       {props.isWatched ? addedIcon : addIcon}

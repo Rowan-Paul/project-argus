@@ -27,7 +27,7 @@ function DashboardUI(props) {
       <h2>Search for a movie</h2>
       <SearchBox />
 
-      <div className="grid lg:grid-cols-2 gap-10 mt-5">{moviesArray}</div>
+      <div className="grid lg:grid-cols-4 gap-5 mt-5">{moviesArray}</div>
     </div>
   )
 }
