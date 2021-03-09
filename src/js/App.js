@@ -20,6 +20,7 @@ import { About } from './aboutPage/About'
 import { Footer } from './components/Footer'
 import { Dashboard } from './dashBoard/DashBoard'
 import { NoticeModal } from './components/NoticeModal'
+import { AdminPage } from './account/AdminPage'
 
 function AppUI(props) {
   useEffect(() => {
@@ -81,6 +82,11 @@ function AppUI(props) {
                 props.loggedIn ? <AccountPage /> : <Redirect to="/signin" />
               }
             </Route>
+            <Route exact path="/account/admin">
+              {() =>
+                props.isAdmin ? <AdminPage /> : <Redirect to="/account" />
+              }
+            </Route>
 
             {/* MISCELLANEOUS */}
             <Route component={NotFound} />
@@ -94,6 +100,7 @@ function AppUI(props) {
 
 const mapStateToProps = (state) => ({
   loggedIn: state.account.loggedIn,
+  isAdmin: state.account.user.isAdmin,
   token: state.account.token,
   notice: state.main.notice,
 })

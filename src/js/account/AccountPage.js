@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { fetchDelete } from '../redux/account/actions'
 import { DeleteAccountField } from './components/DeleteAccountField'
 
@@ -7,7 +8,8 @@ function AccountPageUI(props) {
     <div className="p-10 pt-20 lg:p-20">
       <h1>Account</h1>
       <p>
-        Hi there {props.firstName}, on this page you can manage your account.
+        Hi there {props.firstName}, on this page you can manage your account.{' '}
+        <Link to="/account/admin">Go to the admin page.</Link>
       </p>
       <div>
         <p>We've got the following information from you:</p>
@@ -37,6 +39,7 @@ const mapStateToProps = (state) => ({
   firstName: state.account.user.firstName,
   lastName: state.account.user.lastName,
   email: state.account.user.email,
+  isAdmin: state.account.user.isAdmin,
 })
 
 const mapDispatchToProps = (dispatch) => ({

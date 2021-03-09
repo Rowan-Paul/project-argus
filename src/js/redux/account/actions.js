@@ -174,3 +174,42 @@ export const fetchDelete = (email, password) => (dispatch) => {
       )
     })
 }
+
+// add user as admin
+export const fetchAddAdmin = (newAdmin) => (dispatch, getState) => {
+  const url = `${api}/account/admin`
+  const bearer = 'Bearer ' + getState().account.token
+  const data = {
+    newAdmin: newAdmin,
+  }
+
+  fetch(url, {
+    method: 'POST',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      authorization: bearer,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (response.status === 201) {
+        dispatch(
+          setNotice({ message: 'Gave permissions to user', type: 'success' })
+        )
+      } else {
+        throw response.statusText
+      }
+    })
+    .catch((statusText) => {
+      console.log('Failed to give permission to user:', statusText)
+
+      dispatch(
+        setNotice({
+          message: 'Failed to give permissions to user',
+          type: 'error',
+        })
+      )
+    })
+}
