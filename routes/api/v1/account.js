@@ -113,7 +113,7 @@ router.post('/signin', (req, res) => {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          isAdmin: users.isAdmin,
+          isAdmin: user.isAdmin,
         }
 
         return res.status(201).send({
