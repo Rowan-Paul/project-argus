@@ -33,7 +33,10 @@ const reducer = (state = INITIAL_STATE, action) => {
       return { ...state }
 
     case types.EDITED_MOVIE:
-      return { ...state }
+      return { ...state, activeMovies: [] }
+
+    case types.REMOVED_MOVIE:
+      return { ...state, activeMovies: [] }
 
     default:
       return state

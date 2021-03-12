@@ -161,3 +161,28 @@ export const editMovie = (id, movie) => (dispatch, getState) => {
       dispatch(setNotice({ message: 'Failed to edit movie', type: 'error' }))
     })
 }
+
+export const removeMovie = (id) => (dispatch, getState) => {
+  const url = `${api}/movies/${id}`
+  const bearer = 'Bearer ' + getState().account.token
+
+  fetch(url, {
+    method: 'DELETE',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: { authorization: bearer },
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({ type: types.REMOVED_MOVIE })
+        dispatch(setNotice({ message: 'Removed movie', type: 'success' }))
+      } else {
+        throw response.statusText
+      }
+    })
+    .catch((statusText) => {
+      console.log('Failed to remove movie', statusText)
+
+      dispatch(setNotice({ message: 'Failed to remove movie', type: 'error' }))
+    })
+}

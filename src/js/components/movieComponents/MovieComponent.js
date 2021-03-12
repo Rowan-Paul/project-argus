@@ -43,6 +43,7 @@ function MovieComponentUI(props) {
         isWatched={props.isWatched}
         types={props.types}
         editMovieClicked={() => props.editMovieClicked()}
+        setModalPosition={() => props.removedMovie()}
       />
 
       <div className="col-span-3">

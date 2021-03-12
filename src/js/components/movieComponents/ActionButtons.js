@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { markAsWatched } from '../../redux/movies/actions'
+import { markAsWatched, removeMovie } from '../../redux/movies/actions'
 import { HashLink } from 'react-router-hash-link'
 
 function ActionButtonsUI(props) {
@@ -89,7 +89,10 @@ function ActionButtonsUI(props) {
     icons.push(
       <div
         className="cursor-pointer mb-10"
-        onClick={() => props.markAsWatched(props.id)}
+        onClick={() => {
+          props.removeMovie(props.id)
+          props.setModalPosition()
+        }}
         key="remove"
       >
         {removeIcon}
@@ -102,6 +105,7 @@ function ActionButtonsUI(props) {
 
 const mapDispatchToProps = (dispatch) => ({
   markAsWatched: (movie) => dispatch(markAsWatched(movie)),
+  removeMovie: (movie) => dispatch(removeMovie(movie)),
 })
 
 export const ActionButtons = connect(null, mapDispatchToProps)(ActionButtonsUI)

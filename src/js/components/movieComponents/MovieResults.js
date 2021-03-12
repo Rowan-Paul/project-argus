@@ -33,6 +33,7 @@ function MovieResultsUI(props) {
           poster={movie.poster}
           types={props.types}
           editMovieClicked={() => props.editMovieClicked(movie._id)}
+          removedMovie={() => props.removedMovie()}
         />
       )
     })

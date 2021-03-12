@@ -52,6 +52,7 @@ function EditMovieModalUI(props) {
             setActiveMovie(id)
             setEditMoviePosition('inherit')
           }}
+          removedMovie={() => props.setPosition('hidden')}
         />
         <span className={`${editMoviePosition}`}>
           <EditMovieForm

@@ -8,6 +8,8 @@ function AdminPageUI(props) {
   const [addMoviePosition, setAddMoviePosition] = useState('hidden')
   const [editMoviePosition, setEditMoviePosition] = useState('hidden')
 
+  // Let the user close the modal by clicking
+  // outside of the modal or pressing escape
   useEffect(() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -19,7 +21,6 @@ function AdminPageUI(props) {
     document.addEventListener(
       'click',
       function (event) {
-        // If user either clicks X button OR clicks outside the modal window, then close modal by calling closeModal()
         if (
           !event.target.closest('#modal') &&
           !event.target.closest('#button')
