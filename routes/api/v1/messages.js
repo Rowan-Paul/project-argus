@@ -32,7 +32,13 @@ router.post('/', (req, res) => {
 })
 
 // Get messages, sorted by newest
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
   Message.find({}, '-__v', (err, messages) => {
     if (err || messages.length < 1) {
       return res.status(404).send('Failed to find messages')
