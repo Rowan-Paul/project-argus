@@ -1,10 +1,10 @@
 import { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { LargeInput } from '../../components/inputFields/LargeInput'
-import { SubmitButton } from '../../components/inputFields/SubmitButton'
-import { TextArea } from '../../components/inputFields/TextArea'
-import { setNotice } from '../../redux/main/actions'
-import { editMovie } from '../../redux/movies/actions'
+import { LargeInput } from '../../../components/inputFields/LargeInput'
+import { SubmitButton } from '../../../components/inputFields/SubmitButton'
+import { TextArea } from '../../../components/inputFields/TextArea'
+import { setNotice } from '../../../redux/main/actions'
+import { editMovie } from '../../../redux/movies/actions'
 
 function EditMovieFormUI(props) {
   const [title, setTitle] = useState('')

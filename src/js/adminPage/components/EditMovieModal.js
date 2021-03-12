@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SearchBox } from '../../components/movieComponents/SearchBox'
 import { MovieResults } from '../../components/movieComponents/MovieResults'
-import { EditMovieForm } from './EditMovieForm'
+import { EditMovieForm } from './forms/EditMovieForm'
 
 function EditMovieModalUI(props) {
   const [position, setPosition] = useState('')

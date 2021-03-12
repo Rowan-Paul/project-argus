@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { AddMovieForm } from './forms/AddMovieForm'
+import { connect } from 'react-redux'
+import { Message } from './Message'
 
-function AddMovieModalUI(props) {
+function MessagesModalUI(props) {
   const [position, setPosition] = useState('')
 
   useEffect(() => {
@@ -23,6 +24,21 @@ function AddMovieModalUI(props) {
     </svg>
   )
 
+  let messages = []
+
+  props.messages.forEach((message) => {
+    messages.push(
+      <Message
+        key={message.name + message.date}
+        name={message.name}
+        date={message.date}
+        message={message.message}
+        email={message.email}
+        id={message._id}
+      />
+    )
+  })
+
   return (
     <div
       id="modal"
@@ -36,12 +52,21 @@ function AddMovieModalUI(props) {
       </span>
 
       <div className="block p-5">
-        <h1>Add movie</h1>
-        <p>Manually add a movie to the application</p>
-        <AddMovieForm onModalSubmit={() => props.setPosition('hidden')} />
+        <h1>Messages</h1>
+        <p>Read and answer messages by users of the site</p>
+        {messages}
       </div>
     </div>
   )
 }
 
-export const AddMovieModal = AddMovieModalUI
+const mapStateToProps = (state) => ({
+  messages: state.messages.messages,
+})
+
+const mapDispatchToProps = (dispatch) => ({})
+
+export const MessagesModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MessagesModalUI)

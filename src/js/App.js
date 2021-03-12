@@ -16,7 +16,7 @@ import { NotFound } from './components/NotFound'
 
 import { fetchSignOut, fetchVerify } from './redux/account/actions'
 import { AccountPage } from './account/AccountPage'
-import { About } from './aboutPage/About'
+import { AboutPage } from './aboutPage/AboutPage'
 import { Footer } from './components/Footer'
 import { Dashboard } from './dashBoard/DashBoard'
 import { NoticeModal } from './components/NoticeModal'
@@ -64,7 +64,7 @@ function AppUI(props) {
               </Route>
 
               {/* ABOUT */}
-              <Route exact path="/about" component={About} />
+              <Route exact path="/about" component={AboutPage} />
 
               {/* ACCOUNT - IF LOGGED OUT */}
               <Route exact path="/signin">
@@ -112,7 +112,7 @@ function AppUI(props) {
               </Route>
 
               {/* ABOUT */}
-              <Route exact path="/about" component={About} />
+              <Route exact path="/about" component={AboutPage} />
 
               {/* ACCOUNT - IF LOGGED OUT */}
               <Route exact path="/signin">

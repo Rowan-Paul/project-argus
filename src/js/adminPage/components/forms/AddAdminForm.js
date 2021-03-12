@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
-import { SmallInput } from '../../components/inputFields/SmallInput'
-import { SubmitButton } from '../../components/inputFields/SubmitButton'
-import { fetchAddAdmin } from '../../redux/account/actions'
-import { setNotice } from '../../redux/main/actions'
+import { SmallInput } from '../../../components/inputFields/SmallInput'
+import { SubmitButton } from '../../../components/inputFields/SubmitButton'
+import { fetchAddAdmin } from '../../../redux/account/actions'
+import { setNotice } from '../../../redux/main/actions'
 
 function AddAdminFormUI(props) {
   const [newAdmin, setNewAdmin] = useState('')
@@ -46,14 +46,9 @@ function AddAdminFormUI(props) {
   )
 }
 
-const mapStateToProps = (state) => ({})
-
 const mapDispatchToProps = (dispatch) => ({
   addAdmin: (newAdmin) => dispatch(fetchAddAdmin(newAdmin)),
   setNotice: (notice) => dispatch(setNotice(notice)),
 })
 
-export const AddAdminForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddAdminFormUI)
+export const AddAdminForm = connect(null, mapDispatchToProps)(AddAdminFormUI)
