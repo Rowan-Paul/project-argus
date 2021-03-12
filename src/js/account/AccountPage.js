@@ -8,8 +8,12 @@ function AccountPageUI(props) {
     <div className="p-10 pt-20 lg:p-20">
       <h1>Account</h1>
       <p>
-        Hi there {props.firstName}, on this page you can manage your account.{' '}
-        <Link to="/account/admin">Go to the admin page.</Link>
+        Hi there {props.firstName}, on this page you can manage your account.
+        {props.isAdmin ? (
+          <Link to="/account/admin">Go to the admin page.</Link>
+        ) : (
+          ''
+        )}
       </p>
       <div>
         <p>We've got the following information from you:</p>
