@@ -39,7 +39,7 @@ function EditMovieModalUI(props) {
         {crossIcon}
       </span>
 
-      <div className="block p-5">
+      <div className="block p-5 max-w-full">
         <h1>Edit or Remove Movie</h1>
         <p>Search for a movie by title or id to edit or remove it.</p>
 

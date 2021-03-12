@@ -11,10 +11,12 @@ function EditMovieFormUI(props) {
   const [year, setYear] = useState('')
   const [overview, setOverview] = useState('')
   const [poster, setPoster] = useState('')
+  const [oldMovie, setOldMovie] = useState('')
 
   useEffect(() => {
     props.activeMovies.forEach((movie) => {
       if (movie._id === props.id) {
+        setOldMovie(movie)
         setTitle(movie.title)
         setYear(movie.year)
         setOverview(movie.overview)
@@ -49,31 +51,31 @@ function EditMovieFormUI(props) {
     <Fragment>
       <h3 id="editMovieFormTitle">Edit {title}</h3>
       <form id="editMovieForm">
-        <div className="mt-5">
+        <div className="mt-5 break-words">
           <LargeInput
-            name="Title"
+            name={`Current title: ${oldMovie.title}`}
             type="text"
-            placeholder={title}
+            placeholder="Title is required"
             required={true}
             onChange={(e) => setTitle(e)}
           />
           <LargeInput
-            name="Year"
+            name={`Current year: ${oldMovie.year}`}
             type="Number"
-            placeholder={year}
+            placeholder="Title is required"
             required={true}
             onChange={(e) => setYear(e)}
           />
           <TextArea
-            name="Overview"
+            name={`Current overview: ${overview}`}
             type="text"
-            placeholder={overview}
+            placeholder="Keep empty to remove"
             onChange={(e) => setOverview(e)}
           />
           <LargeInput
-            name="Poster"
+            name={`Current poster: ${oldMovie.poster}`}
             type="text"
-            placeholder={poster}
+            placeholder="Keep empty to remove"
             onChange={(e) => setPoster(e)}
           />
 
