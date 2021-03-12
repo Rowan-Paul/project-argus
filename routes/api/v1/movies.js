@@ -16,7 +16,7 @@ router.get('/popular', (req, res) => {
       return res.status(404).send('Failed to find movie')
     }
 
-    return res.send(movies)
+    return res.status(200).send(movies)
   })
 })
 
@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
     if (err) {
       return res.status(500).send('Failed to create movie')
     }
-    return res.sendStatus(201)
+    return res.status(201).send('Movie created')
   })
 })
 
@@ -173,7 +173,7 @@ router.get('/:movie', (req, res) => {
         return res.status(404).send('Failed to find movie')
       }
 
-      return res.send(movies)
+      return res.status(200).send(movies)
     }
   )
 })
@@ -209,7 +209,7 @@ router.post('/:movie/watched', async (req, res) => {
     if (err) {
       return res.status(500).send('Failed to mark as watched')
     }
-    return res.sendStatus(201)
+    return res.status(201).send('Marked as watched')
   })
 })
 
@@ -231,7 +231,7 @@ router.get('/:movie/watched', async (req, res) => {
       return res.status(500).send('Something went wrong')
     }
 
-    return res.send({ _id: movie, timesWatched: results.length })
+    return res.status(200).send({ _id: movie, timesWatched: results.length })
   })
 })
 
