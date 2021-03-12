@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { clearActiveMovies } from '../../redux/movies/actions'
 import { AddMovieModal } from './AddMovieModal'
 import { EditMovieModal } from './EditMovieModal'
 
-function ManageMoviesUI() {
+function ManageMoviesUI(props) {
   const [addMoviePosition, setAddMoviePosition] = useState('hidden')
   const [editMoviePosition, setEditMoviePosition] = useState('hidden')
 
@@ -13,6 +15,7 @@ function ManageMoviesUI() {
       if (e.key === 'Escape') {
         setAddMoviePosition('hidden')
         setEditMoviePosition('hidden')
+        props.clearActiveMovies()
       }
     })
 
@@ -20,11 +23,13 @@ function ManageMoviesUI() {
       'click',
       function (event) {
         if (
-          !event.target.closest('#modal') &&
-          !event.target.closest('#button')
+          (!event.target.closest('#modal') &&
+            !event.target.closest('#button')) ||
+          event.target.closest('#crossIcon')
         ) {
           setAddMoviePosition('hidden')
           setEditMoviePosition('hidden')
+          props.clearActiveMovies()
         }
       },
       false
@@ -65,4 +70,8 @@ function ManageMoviesUI() {
   )
 }
 
-export const ManageMovies = ManageMoviesUI
+const mapDispatchToProps = (dispatch) => ({
+  clearActiveMovies: () => dispatch(clearActiveMovies()),
+})
+
+export const ManageMovies = connect(null, mapDispatchToProps)(ManageMoviesUI)

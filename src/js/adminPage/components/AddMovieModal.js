@@ -30,7 +30,7 @@ function AddMovieModalUI(props) {
     >
       <span
         className="block text-center ml-5 float-right cursor-pointer sticky top-0 right-0"
-        onClick={() => props.setPosition('hidden')}
+        id="crossIcon"
       >
         {crossIcon}
       </span>

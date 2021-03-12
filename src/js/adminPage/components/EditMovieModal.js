@@ -10,6 +10,9 @@ function EditMovieModalUI(props) {
 
   useEffect(() => {
     setPosition(props.position)
+    if (props.position === 'hidden') {
+      setEditMoviePosition('hidden')
+    }
   }, [setPosition, props.position])
 
   const crossIcon = (
@@ -34,7 +37,7 @@ function EditMovieModalUI(props) {
     >
       <span
         className="block text-center ml-5 float-right cursor-pointer sticky top-0 right-0"
-        onClick={() => props.setPosition('hidden')}
+        id="crossIcon"
       >
         {crossIcon}
       </span>
@@ -57,7 +60,10 @@ function EditMovieModalUI(props) {
         <span className={`${editMoviePosition}`}>
           <EditMovieForm
             id={activeMovie}
-            onModalSubmit={() => props.setPosition('hidden')}
+            onModalSubmit={() => {
+              props.setPosition('hidden')
+              setEditMoviePosition('hidden')
+            }}
           />
         </span>
       </div>

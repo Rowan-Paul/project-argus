@@ -12,6 +12,7 @@ function SearchBoxUI(props) {
     e.preventDefault()
 
     if (document.getElementById('searchForm').checkValidity()) {
+      document.getElementById('searchForm').reset()
       props.searchMovie(query)
     } else {
       console.log('Search field is required')
@@ -33,7 +34,7 @@ function SearchBoxUI(props) {
           onChange={(e) => setQuery(e)}
         />
 
-        <span className="lgml-5">
+        <span className="lg:ml-5">
           <SubmitButton name={'Search'} onClick={(e) => searchedClicked(e)} />
         </span>
       </div>

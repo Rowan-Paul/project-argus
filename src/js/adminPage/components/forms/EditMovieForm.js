@@ -4,7 +4,7 @@ import { LargeInput } from '../../../components/inputFields/LargeInput'
 import { SubmitButton } from '../../../components/inputFields/SubmitButton'
 import { TextArea } from '../../../components/inputFields/TextArea'
 import { setNotice } from '../../../redux/main/actions'
-import { editMovie } from '../../../redux/movies/actions'
+import { clearActiveMovies, editMovie } from '../../../redux/movies/actions'
 
 function EditMovieFormUI(props) {
   const [title, setTitle] = useState('')
@@ -30,6 +30,7 @@ function EditMovieFormUI(props) {
 
     if (document.getElementById('editMovieForm').checkValidity()) {
       document.getElementById('editMovieForm').reset()
+      props.clearActiveMovies()
       props.editMovie(props.id, {
         title: title,
         year: year,
@@ -49,7 +50,7 @@ function EditMovieFormUI(props) {
 
   return (
     <Fragment>
-      <h3 id="editMovieFormTitle">Edit {title}</h3>
+      <h3 id="editMovieFormTitle">Edit {oldMovie.title}</h3>
       <form id="editMovieForm">
         <div className="mt-5 break-words">
           <LargeInput
@@ -96,6 +97,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   editMovie: (id, movie) => dispatch(editMovie(id, movie)),
   setNotice: (notice) => dispatch(setNotice(notice)),
+  clearActiveMovies: () => dispatch(clearActiveMovies()),
 })
 
 export const EditMovieForm = connect(

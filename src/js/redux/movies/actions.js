@@ -186,3 +186,8 @@ export const removeMovie = (id) => (dispatch, getState) => {
       dispatch(setNotice({ message: 'Failed to remove movie', type: 'error' }))
     })
 }
+
+// clear active movies
+export const clearActiveMovies = () => {
+  return { type: types.CLEARED_ACTIVE_MOVIES }
+}
