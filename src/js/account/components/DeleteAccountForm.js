@@ -37,7 +37,8 @@ function DeleteAccountFormUI(props) {
         <LargeInput
           name="Email"
           type="email"
-          placeholder="johndoe@example.com"
+          placeholder="janedoe@example.com"
+          required={true}
           onChange={(e) => setEmail(e)}
         />
 
@@ -45,6 +46,7 @@ function DeleteAccountFormUI(props) {
           name="Password"
           type="password"
           placeholder=""
+          required={true}
           onChange={(e) => setPassword(e)}
         />
 

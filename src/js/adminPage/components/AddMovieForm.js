@@ -25,10 +25,10 @@ function AddMovieFormUI(props) {
       })
       props.onModalSubmit()
     } else {
-      console.log('Fill in all fields')
+      console.log('TItle and year are required')
 
       props.setNotice({
-        message: 'FIll in all fields',
+        message: 'TItle and year are required',
         type: 'error',
       })
     }
@@ -41,12 +41,14 @@ function AddMovieFormUI(props) {
           name="Title"
           type="text"
           placeholder="Enter full movie title"
+          required={true}
           onChange={(e) => setTitle(e)}
         />
         <LargeInput
           name="Year"
           type="Number"
           placeholder="The year the movie was released"
+          required={true}
           onChange={(e) => setYear(e)}
         />
         <TextArea

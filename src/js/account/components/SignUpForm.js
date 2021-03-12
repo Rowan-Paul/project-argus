@@ -23,9 +23,12 @@ function SignUpFormUI(props) {
         type: 'success',
       })
     } else {
-      console.log('Please fill in all fields')
+      console.log('Email and password are required')
 
-      props.setNotice({ message: 'Please fill in all fields', type: 'error' })
+      props.setNotice({
+        message: 'Email and password are required',
+        type: 'error',
+      })
     }
   }
 
@@ -54,6 +57,7 @@ function SignUpFormUI(props) {
           name="Email"
           type="email"
           placeholder="johndoe@example.com"
+          required={true}
           onChange={(e) => setEmail(e)}
         />
 
@@ -61,6 +65,7 @@ function SignUpFormUI(props) {
           name="Password"
           type="password"
           placeholder=""
+          required={true}
           onChange={(e) => setPassword(e)}
         />
 

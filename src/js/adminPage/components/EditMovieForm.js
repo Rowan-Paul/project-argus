@@ -54,12 +54,14 @@ function EditMovieFormUI(props) {
             name="Title"
             type="text"
             placeholder={title}
+            required={true}
             onChange={(e) => setTitle(e)}
           />
           <LargeInput
             name="Year"
             type="Number"
             placeholder={year}
+            required={true}
             onChange={(e) => setYear(e)}
           />
           <TextArea

@@ -11,7 +11,7 @@ function TextAreaUI(props) {
         cols="50"
         className="text-black border py-2 px-3 border-gray-500 dark:border-white"
         placeholder={props.placeholder}
-        required
+        required={props.required}
         onChange={(e) => {
           props.onChange(e.target.value)
         }}

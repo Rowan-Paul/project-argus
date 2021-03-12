@@ -10,7 +10,7 @@ function LargeInputUI(props) {
         name={props.name}
         id={props.name}
         placeholder={props.placeholder}
-        required
+        required={props.required}
         onChange={(e) => {
           props.onChange(e.target.value)
         }}

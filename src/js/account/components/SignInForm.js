@@ -39,6 +39,7 @@ function SignInFormUI(props) {
           name="Email"
           type="email"
           placeholder="johndoe@example.com"
+          required={true}
           onChange={(e) => setEmail(e)}
         />
 
@@ -46,6 +47,7 @@ function SignInFormUI(props) {
           name="Password"
           type="password"
           placeholder=""
+          required={true}
           onChange={(e) => setPassword(e)}
         />
 

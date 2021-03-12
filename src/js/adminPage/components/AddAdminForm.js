@@ -31,6 +31,7 @@ function AddAdminFormUI(props) {
           name=""
           type="text"
           placeholder="Enter username or user id"
+          required={true}
           onChange={(e) => setNewAdmin(e)}
         />
 
