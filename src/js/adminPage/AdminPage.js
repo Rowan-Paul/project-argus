@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
-import { AddAdmin } from './components/AddAdmin'
-import { UserMessages } from './components/UserMessages'
-import { ManageMovies } from './components/ManageMovies'
-import { Donations } from '../aboutPage/components/Donations'
+import { AddAdmin } from './components/addAdmin/AddAdmin'
+import { UserMessages } from './components/userMessages/UserMessages'
+import { ManageMovies } from './components/manageMovies/ManageMovies'
+import { Donations } from './components/donations/Donations'
 
 function AdminPageUI(props) {
   return (

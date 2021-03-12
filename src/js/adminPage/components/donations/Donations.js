@@ -6,4 +6,5 @@ function DonationsUI() {
     </div>
   )
 }
+
 export const Donations = DonationsUI

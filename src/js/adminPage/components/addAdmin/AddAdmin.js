@@ -1,4 +1,4 @@
-import { AddAdminForm } from './forms/AddAdminForm'
+import { AddAdminForm } from './AddAdminForm'
 
 function AddAdminUI() {
   return (

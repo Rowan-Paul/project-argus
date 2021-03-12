@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { deleteMessage, fetchMessages } from '../../redux/messages/actions'
+import { deleteMessage, fetchMessages } from '../../../redux/messages/actions'
 
 function MessageUI(props) {
   const date = new Date(props.date).toLocaleString()

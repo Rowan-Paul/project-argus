@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { clearActiveMovies } from '../../redux/movies/actions'
+import { clearActiveMovies } from '../../../redux/movies/actions'
 import { AddMovieModal } from './AddMovieModal'
 import { EditMovieModal } from './EditMovieModal'
 

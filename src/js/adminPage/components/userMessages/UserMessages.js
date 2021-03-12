@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { fetchMessages } from '../../redux/messages/actions'
+import { fetchMessages } from '../../../redux/messages/actions'
 import { MessagesModal } from './MessagesModal'
 
 function UserMessagesUI(props) {

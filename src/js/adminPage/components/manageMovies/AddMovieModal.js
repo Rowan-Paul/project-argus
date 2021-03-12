@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AddMovieForm } from './forms/AddMovieForm'
+import { AddMovieForm } from './AddMovieForm'
 
 function AddMovieModalUI(props) {
   const [position, setPosition] = useState('')
