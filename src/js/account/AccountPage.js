@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { fetchDelete } from '../redux/account/actions'
-import { DeleteAccountField } from './components/DeleteAccountField'
+import { DeleteAccountForm } from './components/DeleteAccountForm'
 
 function AccountPageUI(props) {
   return (
@@ -30,7 +30,7 @@ function AccountPageUI(props) {
           week.
         </p>
       </div>
-      <DeleteAccountField />
+      <DeleteAccountForm />
     </div>
   )
 }

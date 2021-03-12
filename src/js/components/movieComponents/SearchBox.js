@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
-import { SmallInput } from '../../components/inputFields/SmallInput'
-import { SubmitButton } from '../../components/inputFields/SubmitButton'
+import { SmallInput } from '../inputFields/SmallInput'
+import { SubmitButton } from '../inputFields/SubmitButton'
 import { setNotice } from '../../redux/main/actions'
 import { searchMovie } from '../../redux/movies/actions'
 

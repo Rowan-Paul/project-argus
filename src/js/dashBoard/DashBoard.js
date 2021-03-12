@@ -1,25 +1,7 @@
-import { connect } from 'react-redux'
-import { MovieComponent } from './components/MovieComponent'
-import { SearchBox } from './components/SearchBox'
+import { SearchBox } from '../components/movieComponents/SearchBox'
+import { MovieResults } from '../components/movieComponents/MovieResults'
 
-function DashboardUI(props) {
-  let moviesArray = []
-
-  if (props.activeMovies) {
-    props.activeMovies.forEach((movie) => {
-      moviesArray.push(
-        <MovieComponent
-          key={movie.title}
-          title={movie.title}
-          overview={movie.overview}
-          id={movie._id}
-          isWatched={movie.isWatched}
-          poster={movie.poster}
-        />
-      )
-    })
-  }
-
+function DashboardUI() {
   return (
     <div className="p-10 pt-20 lg:p-20">
       <h1>Dashboard</h1>
@@ -27,13 +9,9 @@ function DashboardUI(props) {
       <h2>Search for a movie</h2>
       <SearchBox />
 
-      <div className="grid lg:grid-cols-4 gap-5 mt-5">{moviesArray}</div>
+      <MovieResults columnAmount={4} types="history" />
     </div>
   )
 }
 
-const mapStateToProps = (state) => ({
-  activeMovies: state.movies.activeMovies,
-})
-
-export const Dashboard = connect(mapStateToProps, null)(DashboardUI)
+export const Dashboard = DashboardUI

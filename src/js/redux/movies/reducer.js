@@ -32,6 +32,9 @@ const reducer = (state = INITIAL_STATE, action) => {
     case types.ADDED_MOVIE:
       return { ...state }
 
+    case types.EDITED_MOVIE:
+      return { ...state }
+
     default:
       return state
   }

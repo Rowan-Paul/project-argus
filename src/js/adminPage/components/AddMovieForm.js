@@ -5,7 +5,7 @@ import { SubmitButton } from '../../components/inputFields/SubmitButton'
 import { setNotice } from '../../redux/main/actions'
 import { addMovie } from '../../redux/movies/actions'
 
-function AddMovieFieldUI(props) {
+function AddMovieFormUI(props) {
   const [title, setTitle] = useState('')
   const [year, setYear] = useState('')
   const [overview, setOverview] = useState('')
@@ -22,6 +22,7 @@ function AddMovieFieldUI(props) {
         overview: overview,
         poster: poster,
       })
+      props.onModalSubmit()
     } else {
       console.log('Fill in all fields')
 
@@ -73,7 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
   setNotice: (notice) => dispatch(setNotice(notice)),
 })
 
-export const AddMovieField = connect(
+export const AddMovieForm = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddMovieFieldUI)
+)(AddMovieFormUI)

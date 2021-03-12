@@ -20,7 +20,7 @@ import { About } from './aboutPage/About'
 import { Footer } from './components/Footer'
 import { Dashboard } from './dashBoard/DashBoard'
 import { NoticeModal } from './components/NoticeModal'
-import { AdminPage } from './account/AdminPage'
+import { AdminPage } from './adminPage/AdminPage'
 
 function AppUI(props) {
   useEffect(() => {

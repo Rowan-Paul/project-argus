@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
-import { AddMovieField } from './AddMovieField'
+import { AddMovieForm } from './AddMovieForm'
 
 function AddMovieModalUI(props) {
   const [position, setPosition] = useState('')
 
   useEffect(() => {
     setPosition(props.position)
-  })
+  }, [setPosition, props.position])
 
   const crossIcon = (
     <svg
@@ -25,10 +25,11 @@ function AddMovieModalUI(props) {
 
   return (
     <div
+      id="modal"
       className={`${position} bg-white dark:bg-black dark:text-white inset-0 border-black dark:border-white border-2 mx-5 lg:mx-72 my-20 p-5 overflow-auto`}
     >
       <span
-        className="block text-center ml-5 float-right cursor-pointer"
+        className="block text-center ml-5 float-right cursor-pointer sticky top-0 right-0"
         onClick={() => props.setPosition('hidden')}
       >
         {crossIcon}
@@ -37,7 +38,7 @@ function AddMovieModalUI(props) {
       <div className="block p-5">
         <h1>Add movie</h1>
         <p>Manually add a movie to the application</p>
-        <AddMovieField />
+        <AddMovieForm onModalSubmit={() => props.setPosition('hidden')} />
       </div>
     </div>
   )

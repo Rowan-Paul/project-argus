@@ -1,21 +1,22 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
-import { fetchDelete } from '../../redux/account/actions'
-import { setNotice } from '../../redux/main/actions'
+import { Link } from 'react-router-dom'
+import { fetchSignIn } from '../../redux/account/actions'
 import { LargeInput } from '../../components/inputFields/LargeInput'
 import { SubmitButton } from '../../components/inputFields/SubmitButton'
+import { setNotice } from '../../redux/main/actions'
 
-function DeleteAccountFieldUI(props) {
+function SignInFormUI(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const deleteAccountClicked = (e) => {
+  const signInClicked = (e) => {
     e.preventDefault()
-    if (document.getElementById('deleteAccountForm').checkValidity()) {
-      props.fetchDelete(email, password)
+    if (document.getElementById('signInForm').checkValidity()) {
+      props.fetchSignIn(email, password)
 
       props.setNotice({
-        message: 'Deleted account',
+        message: 'Logged in',
         type: 'success',
       })
     } else {
@@ -29,10 +30,10 @@ function DeleteAccountFieldUI(props) {
   }
 
   return (
-    <div className="lg:w-1/3 w-full">
+    <div className="w-full">
       <form
         className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
-        id="deleteAccountForm"
+        id="signInForm"
       >
         <LargeInput
           name="Email"
@@ -48,21 +49,19 @@ function DeleteAccountFieldUI(props) {
           onChange={(e) => setPassword(e)}
         />
 
-        <SubmitButton
-          name={'Delete account'}
-          onClick={(e) => deleteAccountClicked(e)}
-        />
+        <SubmitButton name={'Sign In'} onClick={(e) => signInClicked(e)} />
       </form>
+
+      <Link className="block w-full text-center text-sm" to="/signup">
+        Don't have an account?
+      </Link>
     </div>
   )
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDelete: (email, password) => dispatch(fetchDelete(email, password)),
+  fetchSignIn: (email, password) => dispatch(fetchSignIn(email, password)),
   setNotice: (error) => dispatch(setNotice(error)),
 })
 
-export const DeleteAccountField = connect(
-  null,
-  mapDispatchToProps
-)(DeleteAccountFieldUI)
+export const SignInForm = connect(null, mapDispatchToProps)(SignInFormUI)

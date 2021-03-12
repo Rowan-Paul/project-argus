@@ -135,3 +135,29 @@ export const addMovie = (movie) => (dispatch, getState) => {
       dispatch(setNotice({ message: 'Failed to add movie', type: 'error' }))
     })
 }
+
+export const editMovie = (id, movie) => (dispatch, getState) => {
+  const url = `${api}/movies/${id}`
+  const bearer = 'Bearer ' + getState().account.token
+
+  fetch(url, {
+    method: 'PUT',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: { authorization: bearer, 'Content-Type': 'application/json' },
+    body: JSON.stringify(movie),
+  })
+    .then((response) => {
+      if (response.status === 201) {
+        dispatch({ type: types.EDITED_MOVIE })
+        dispatch(setNotice({ message: 'Edited movie', type: 'success' }))
+      } else {
+        throw response.statusText
+      }
+    })
+    .catch((statusText) => {
+      console.log('Failed to edit movie', statusText)
+
+      dispatch(setNotice({ message: 'Failed to edit movie', type: 'error' }))
+    })
+}

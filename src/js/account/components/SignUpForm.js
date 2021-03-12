@@ -7,7 +7,7 @@ import { SmallInput } from '../../components/inputFields/SmallInput'
 import { SubmitButton } from '../../components/inputFields/SubmitButton'
 import { setNotice } from '../../redux/main/actions'
 
-function SignUpFieldUI(props) {
+function SignUpFormUI(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -83,4 +83,4 @@ const mapDispatchToProps = (dispatch) => ({
   setNotice: (error) => dispatch(setNotice(error)),
 })
 
-export const SignUpField = connect(null, mapDispatchToProps)(SignUpFieldUI)
+export const SignUpForm = connect(null, mapDispatchToProps)(SignUpFormUI)

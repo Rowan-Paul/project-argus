@@ -38,7 +38,12 @@ function MovieComponentUI(props) {
         className="max-h-48 max-w-32 lg:float-left m-auto my-3 lg:mx-2 col-span-2 "
       />
 
-      <ActionButtons id={props.id} isWatched={props.isWatched} />
+      <ActionButtons
+        id={props.id}
+        isWatched={props.isWatched}
+        types={props.types}
+        editMovieClicked={() => props.editMovieClicked()}
+      />
 
       <div className="col-span-3">
         <p className="line-clamp-2 lg:line-clamp-4 visible">{props.overview}</p>
