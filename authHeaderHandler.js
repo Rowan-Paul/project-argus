@@ -33,19 +33,13 @@ function verifyAuthHeader(authHeader) {
         isDeleted: false,
       },
       (err, sessions) => {
-        if (err) {
+        if (err || sessions.length < 1) {
           return { authenticated: false }
         }
 
-        if (sessions.length != 1) {
-          return { authenticated: false }
-        } else {
-          return { authenticated: true, userId: sessions[0].userId }
-        }
+        return { authenticated: true, userId: sessions[0].userId }
       }
-    ).then((response) => {
-      return { authenticated: true, userId: response[0].userId }
-    })
+    )
 
     return result
   }
