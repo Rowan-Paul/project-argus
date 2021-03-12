@@ -21,12 +21,26 @@ router.get('/popular', (req, res) => {
 })
 
 // Create a movie
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { body } = req
   const { title } = body
   const { year } = body
   const { overview } = body
   const { poster } = body
+
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
 
   if (!title || !year) {
     return res.status(400).send('Title and year are required')
@@ -48,6 +62,57 @@ router.post('/', (req, res) => {
     }
     return res.sendStatus(201)
   })
+})
+
+// Edit a movie
+router.put('/:movie', async (req, res) => {
+  const { body } = req
+  const { title } = body
+  const { year } = body
+  let { overview } = body
+  let { poster } = body
+
+  const { params } = req
+  const { movie } = params
+
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
+  if (!title || !year) {
+    return res.status(400).send('Title and year are required')
+  }
+
+  if (!overview) {
+    overview = null
+  }
+  if (!poster) {
+    poster = null
+  }
+
+  Movie.findOneAndUpdate(
+    {
+      _id: movie,
+    },
+    { $set: { title: title, year: year, overview: overview, poster: poster } },
+    (err) => {
+      if (err) {
+        return res.sendStatus(500)
+      }
+
+      return res.status(201).send('Updated movie')
+    }
+  )
 })
 
 // Get information for a movie
