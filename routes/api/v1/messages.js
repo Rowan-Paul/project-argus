@@ -48,4 +48,37 @@ router.get('/', (req, res) => {
   })
 })
 
+// Remove a message
+router.delete('/:message', async (req, res) => {
+  const { params } = req
+  const { message } = params
+
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
+  Message.findOneAndDelete(
+    {
+      _id: message,
+    },
+    (err) => {
+      if (err) {
+        return res.sendStatus(500)
+      }
+
+      return res.status(200).send('Removed message')
+    }
+  )
+})
+
 module.exports = router
