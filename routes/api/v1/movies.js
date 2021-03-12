@@ -115,6 +115,39 @@ router.put('/:movie', async (req, res) => {
   )
 })
 
+// Remove a movie
+router.delete('/:movie', async (req, res) => {
+  const { params } = req
+  const { movie } = params
+
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
+  Movie.findOneAndDelete(
+    {
+      _id: movie,
+    },
+    (err) => {
+      if (err) {
+        return res.sendStatus(500)
+      }
+
+      return res.status(200).send('Removed movie')
+    }
+  )
+})
+
 // Get information for a movie
 router.get('/:movie', (req, res) => {
   const { params } = req
