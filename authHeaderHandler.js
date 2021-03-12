@@ -9,7 +9,7 @@ const encryptor = require('simple-encryptor')(
 const User = require('./models/User')
 const UserSession = require('./models/UserSession')
 
-function verifyAuthHeader(authHeader) {
+async function verifyAuthHeader(authHeader) {
   if (authHeader === undefined) {
     return { authenticated: false }
   } else {
@@ -34,14 +34,20 @@ function verifyAuthHeader(authHeader) {
       },
       (err, sessions) => {
         if (err || sessions.length < 1) {
-          return { authenticated: false }
+          throw new Error('Failed to find session')
         }
 
         return { authenticated: true, userId: sessions[0].userId }
       }
     )
+      .then((sessions) => {
+        return { authenticated: true, userId: sessions[0].userId }
+      })
+      .catch((err) => {
+        return { authenticated: false }
+      })
 
-    return result
+    return await result
   }
 }
 
