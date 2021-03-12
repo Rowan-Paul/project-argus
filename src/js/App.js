@@ -121,20 +121,6 @@ function AppUI(props) {
               <Route exact path="/signup">
                 {() => (props.loggedIn ? <Redirect to="/" /> : <SignUpPage />)}
               </Route>
-
-              {/* ACCOUNT - IF LOGGED IN */}
-              <Route exact path="/signout">
-                <Redirect to="/signin" />
-              </Route>
-              <Route exact path="/account">
-                <Redirect to="/signin" />
-              </Route>
-              <Route exact path="/account/admin">
-                <Redirect to="/signin" />
-              </Route>
-
-              {/* MISCELLANEOUS */}
-              <Route component={NotFound} />
             </Switch>
           </div>{' '}
           <Footer className="" />

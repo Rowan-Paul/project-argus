@@ -41,7 +41,7 @@ function NoticeModalUI(props) {
       className={`${color} ${position} border m-2 lg:m-10 p-4 overflow-hidden bottom-0 cursor-pointer`}
       onClick={() => props.setNotice({})}
     >
-      <span to="/" className="block text-center float-left">
+      <span className="block text-center float-left">
         {props.notice.message}
       </span>
       <span className="block text-center ml-5 float-right">

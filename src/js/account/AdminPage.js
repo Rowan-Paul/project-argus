@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import { connect } from 'react-redux'
 import { AddAdminField } from './components/AddAdminField'
+import { AddMovieModal } from './components/AddMovieModal'
 
 function AdminPageUI(props) {
+  const [position, setPosition] = useState('hidden')
+
   return (
     <div className="p-10 pt-20 lg:p-20">
       <h1>Admin</h1>
@@ -27,6 +31,18 @@ function AdminPageUI(props) {
         <div>
           <h2>Manage movies</h2>
           <p>You can add, remove or edit movies by searching for them here.</p>
+
+          <span
+            className="bg-black text-white dark:bg-white dark:text-black cursor-pointer p-2.5 inline-block"
+            onClick={() => setPosition('fixed')}
+          >
+            Add Movie
+          </span>
+
+          <AddMovieModal
+            position={position}
+            setPosition={() => setPosition('hidden')}
+          />
         </div>
 
         <div>

@@ -29,6 +29,9 @@ const reducer = (state = INITIAL_STATE, action) => {
     case types.FETCHED_MOVIES:
       return { ...state, activeMovies: action.payload }
 
+    case types.ADDED_MOVIE:
+      return { ...state }
+
     default:
       return state
   }

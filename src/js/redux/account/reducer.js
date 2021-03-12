@@ -15,6 +15,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         token: action.payload.token,
         loggedIn: true,
+        verified: true,
         user: action.payload.user,
       }
 
@@ -24,6 +25,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         token: '',
         loggedIn: false,
+        verified: true,
         user: {},
       }
 
@@ -43,6 +45,9 @@ const reducer = (state = INITIAL_STATE, action) => {
         loggedIn: false,
         user: {},
       }
+
+    case types.ADDED_ADMIN:
+      return { ...state }
 
     default:
       return state

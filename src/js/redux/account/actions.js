@@ -195,6 +195,7 @@ export const fetchAddAdmin = (newAdmin) => (dispatch, getState) => {
   })
     .then((response) => {
       if (response.status === 201) {
+        dispatch({ type: types.ADDED_ADMIN })
         dispatch(
           setNotice({ message: 'Gave permissions to user', type: 'success' })
         )
