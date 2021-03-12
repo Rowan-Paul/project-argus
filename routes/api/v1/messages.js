@@ -9,7 +9,6 @@ const authHeaderHandler = require('../../../authHeaderHandler')
 
 // Create a message
 router.post('/', (req, res) => {
-  console.log('hello')
   const { body } = req
   const { name } = body
   const { email } = body
@@ -29,6 +28,23 @@ router.post('/', (req, res) => {
       return res.status(500).send('Failed to create message')
     }
     return res.status(201).send('Message created')
+  })
+})
+
+// Get messages, sorted by newest
+router.get('/', (req, res) => {
+  Message.find({}, '-__v', (err, messages) => {
+    if (err || messages.length < 1) {
+      return res.status(404).send('Failed to find messages')
+    }
+
+    const response = messages.sort(function (a, b) {
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return new Date(b.date) - new Date(a.date)
+    })
+
+    return res.status(200).send(response)
   })
 })
 
