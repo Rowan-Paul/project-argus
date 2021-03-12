@@ -288,6 +288,10 @@ router.post('/admin', async (req, res) => {
     return res.sendStatus(401)
   }
 
+  if (newAdmin.length !== 12 && !newAdmin.includes('@')) {
+    return res.sendStatus(400)
+  }
+
   // check if newAdmin is object id, if not replace it by a
   // 'fake' objectid so it doesn't error mongo
   var ObjectId = require('mongoose').Types.ObjectId
