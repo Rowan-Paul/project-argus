@@ -16,8 +16,6 @@ function SuccesPageUI(props) {
     } else if (parsed.redirect_status === 'success') {
       setFailed(false)
       props.setNotice({ message: 'Payment succeeded', type: 'success' })
-    } else {
-      props.history.push('/about/donate')
     }
   }, [props])
 

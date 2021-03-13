@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { connect } from 'react-redux'
 import { setNotice } from '../redux/main/actions'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 function CardCheckOutPageUI(props) {
   const [succeeded, setSucceeded] = useState(false)
@@ -158,4 +158,4 @@ const mapDispatchToProps = (dispatch) => ({
 export const CardCheckOutPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CardCheckOutPageUI)
+)(withRouter(CardCheckOutPageUI))

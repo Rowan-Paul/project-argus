@@ -30,7 +30,7 @@ function IDealCheckOutPageUI(props) {
     setAmount(props.amount * 100)
     setCurrency(props.currency)
 
-    if ((amount > 0 && currency === 'usd') || currency === 'eur') {
+    if (amount > 0 && (currency === 'usd' || currency === 'eur')) {
       // Create PaymentIntent as soon as the page loads
       window
         .fetch(`${api}/checkout/ideal`, {
@@ -50,7 +50,7 @@ function IDealCheckOutPageUI(props) {
           setClientSecret(data.clientSecret)
         })
     }
-  }, [api, currency, amount, props.amount, props.currency])
+  }, [amount, api, currency, props.amount, props.currency])
 
   const IDEAL_ELEMENT_OPTIONS = {
     // Custom styling can be passed to options when creating an Element
@@ -138,7 +138,7 @@ function IDealCheckOutPageUI(props) {
 const mapStateToProps = (state) => ({
   amount: state.main.payment.amount,
   currency: state.main.payment.currency,
-  naeme: state.main.payment.currency,
+  name: state.main.payment.name,
 })
 
 const mapDispatchToProps = (dispatch) => ({
