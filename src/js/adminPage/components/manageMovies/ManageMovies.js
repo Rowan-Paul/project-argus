@@ -34,7 +34,7 @@ function ManageMoviesUI(props) {
       },
       false
     )
-  }, [])
+  }, [props])
 
   return (
     <div className="mb-10 lg:mb-auto">
