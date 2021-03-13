@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { SmallInput } from '../components/inputFields/SmallInput'
 import { SubmitButton } from '../components/inputFields/SubmitButton'
 import { setCurrency, setAmount, setNotice } from '../redux/main/actions'
@@ -28,6 +29,7 @@ function DonationsPageUI(props) {
 
   return (
     <div className="p-10 pt-20 lg:p-20">
+      <Link to="/about">Back to about</Link>
       <h1>Donations</h1>
       <p>
         Fill in the amount you wanna donate and select a payment method below.

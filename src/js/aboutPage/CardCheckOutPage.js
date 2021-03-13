@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { connect } from 'react-redux'
 import { setNotice } from '../redux/main/actions'
+import { Link } from 'react-router-dom'
 
 function CardCheckOutPageUI(props) {
   const [succeeded, setSucceeded] = useState(false)
@@ -102,6 +103,7 @@ function CardCheckOutPageUI(props) {
 
   return (
     <div className="p-10 pt-20 lg:p-20">
+      <Link to="/about">Back to about</Link>
       <h1>Checkout</h1>
       <p>
         You want to donate {props.amount} {props.currency}

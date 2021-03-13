@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { SmallInput } from '../components/inputFields/SmallInput'
 import { SubmitButton } from '../components/inputFields/SubmitButton'
 import { TextArea } from '../components/inputFields/TextArea'
@@ -35,6 +36,7 @@ function ContactPageUI(props) {
 
   return (
     <div className="p-10 pt-20 lg:p-20">
+      <Link to="/about">Back to about</Link>
       <h1>Contact form</h1>
       <div className="lg:w-1/2">
         <form

@@ -7,8 +7,9 @@ function ContactUI() {
       <p>
         Do you need a certain feature? Or have you found a bug? If that's the
         case or you just wanna say hi, you can contact me by{' '}
-        <Link to="/about/contact">going to this page</Link> filling in the form.
-        I will email you back as soon as possible, so keep an eye on your email!
+        <Link to="/about/contact">going to this page</Link> and filling in the
+        form. I will email you back as soon as possible, so keep an eye on your
+        email!
       </p>
     </div>
   )
