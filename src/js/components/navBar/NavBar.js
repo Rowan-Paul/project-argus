@@ -17,18 +17,22 @@ function NavBarUI(props) {
             project-argus
           </Link>
         </li>
+
         {<NightModeIcon />}
         {props.loggedIn ? <SignOutIcon /> : ''}
+
         <li className="float-right">
           <Link
-            to={props.loggedIn ? '/account/' : '/signin'}
+            to={props.loggedIn ? '/account' : '/signin'}
             className="block text-center p-4 no-underline"
             onClick={() => props.clearActiveMovies()}
           >
             {props.loggedIn ? props.firstName : 'Sign In'}
           </Link>
         </li>
-        <li className="float-right hidden lg:block">
+
+        {/* TODO: make a new thing for mobile */}
+        <li className="float-right">
           <Link
             to="/about"
             className="block text-center p-4 no-underline"

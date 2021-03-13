@@ -9,6 +9,8 @@ const INITIAL_STATE = {
     message: null,
     type: null,
   },
+  amount: null,
+  currency: null,
 }
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -18,6 +20,12 @@ const reducer = (state = INITIAL_STATE, action) => {
 
     case types.NOTICE:
       return { ...state, notice: action.payload }
+
+    case types.AMOUNT_SET:
+      return { ...state, amount: action.payload }
+
+    case types.CURRENCY_SET:
+      return { ...state, currency: action.payload }
 
     default:
       return state

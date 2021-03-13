@@ -66,3 +66,11 @@ export const setBackdrop = (movies) => (dispatch) => {
 export const setNotice = (notice) => {
   return { type: types.NOTICE, payload: notice }
 }
+
+export const setAmount = (amount) => {
+  return { type: types.AMOUNT_SET, payload: amount }
+}
+
+export const setCurrency = (currency) => {
+  return { type: types.CURRENCY_SET, payload: currency }
+}

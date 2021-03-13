@@ -29,7 +29,7 @@ function MessagesModalUI(props) {
   props.messages.forEach((message) => {
     messages.push(
       <Message
-        key={message.name + message.date}
+        key={message.id}
         name={message.name}
         date={message.date}
         message={message.message}

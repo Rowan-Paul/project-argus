@@ -1,8 +1,6 @@
-import { Fragment } from 'react'
-
 function AboutUI() {
   return (
-    <Fragment>
+    <div className="mb-10">
       <h1>About</h1>
       <p>
         project argus tracks everything for you; movies, tv shows, music,
@@ -22,7 +20,7 @@ function AboutUI() {
         . You can also request features or report bugs there by creating an
         issue.
       </p>
-    </Fragment>
+    </div>
   )
 }
 

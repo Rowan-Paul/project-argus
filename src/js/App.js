@@ -6,6 +6,8 @@ import {
   BrowserRouter as Router,
   Redirect,
 } from 'react-router-dom'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 
 import { SignInPage } from './account/SignInPage'
 import { SignUpPage } from './account/SignUpPage'
@@ -21,8 +23,15 @@ import { Footer } from './components/Footer'
 import { Dashboard } from './dashBoard/DashBoard'
 import { NoticeModal } from './components/NoticeModal'
 import { AdminPage } from './adminPage/AdminPage'
+import { CardCheckOutPage } from './aboutPage/CardCheckOutPage'
+import { DonationsPage } from './aboutPage/DonationsPage'
+import { ContactPage } from './aboutPage/ContactPage'
+
+require('dotenv').config()
 
 function AppUI(props) {
+  const promise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY)
+
   useEffect(() => {
     if (!props.loggedIn && props.token) {
       props.fetchVerify()
@@ -52,80 +61,106 @@ function AppUI(props) {
 
   if (props.verified) {
     return (
-      <Router>
-        <div className="flex flex-col min-h-screen justify-between">
-          <div>
-            <NavBar />
-            <NoticeModal />
-            <Switch>
-              {/* LANDINGSPAGE */}
-              <Route exact path="/">
-                {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
-              </Route>
+      <Elements stripe={promise}>
+        <Router>
+          <div className="flex flex-col min-h-screen justify-between">
+            <div>
+              <NavBar />
+              <NoticeModal />
+              <Switch>
+                {/* LANDINGSPAGE */}
+                <Route exact path="/">
+                  {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
+                </Route>
 
-              {/* ABOUT */}
-              <Route exact path="/about" component={AboutPage} />
+                {/* ABOUT */}
+                <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/about/donate" component={DonationsPage} />
+                <Route
+                  exact
+                  path="/about/donate/checkout/card"
+                  component={CardCheckOutPage}
+                />
+                <Route exact path="/about/contact" component={ContactPage} />
 
-              {/* ACCOUNT - IF LOGGED OUT */}
-              <Route exact path="/signin">
-                {() => (props.loggedIn ? <Redirect to="/" /> : <SignInPage />)}
-              </Route>
-              <Route exact path="/signup">
-                {() => (props.loggedIn ? <Redirect to="/" /> : <SignUpPage />)}
-              </Route>
+                {/* ACCOUNT - IF LOGGED OUT */}
+                <Route exact path="/signin">
+                  {() =>
+                    props.loggedIn ? <Redirect to="/" /> : <SignInPage />
+                  }
+                </Route>
+                <Route exact path="/signup">
+                  {() =>
+                    props.loggedIn ? <Redirect to="/" /> : <SignUpPage />
+                  }
+                </Route>
 
-              {/* ACCOUNT - IF LOGGED IN */}
-              <Route exact path="/signout">
-                {() => (props.loggedIn ? signOut() : <Redirect to="/" />)}
-              </Route>
-              <Route exact path="/account">
-                {() =>
-                  props.loggedIn ? <AccountPage /> : <Redirect to="/signin" />
-                }
-              </Route>
-              <Route exact path="/account/admin">
-                {() =>
-                  props.isAdmin ? <AdminPage /> : <Redirect to="/account" />
-                }
-              </Route>
+                {/* ACCOUNT - IF LOGGED IN */}
+                <Route exact path="/signout">
+                  {() => (props.loggedIn ? signOut() : <Redirect to="/" />)}
+                </Route>
+                <Route exact path="/account">
+                  {() =>
+                    props.loggedIn ? <AccountPage /> : <Redirect to="/signin" />
+                  }
+                </Route>
+                <Route exact path="/account/admin">
+                  {() =>
+                    props.isAdmin ? <AdminPage /> : <Redirect to="/account" />
+                  }
+                </Route>
 
-              {/* MISCELLANEOUS */}
-              <Route component={NotFound} />
-            </Switch>
+                {/* MISCELLANEOUS */}
+                <Route component={NotFound} />
+              </Switch>
+            </div>
+            <Footer className="" />
           </div>
-          <Footer className="" />
-        </div>
-      </Router>
+        </Router>
+      </Elements>
     )
   } else {
     return (
-      <Router>
-        <div className="flex flex-col min-h-screen justify-between">
-          <div>
-            <NavBar />
-            <NoticeModal />
+      <Elements stripe={promise}>
+        <Router>
+          <div className="flex flex-col min-h-screen justify-between">
+            <div>
+              <NavBar />
+              <NoticeModal />
 
-            <Switch>
-              {/* LANDINGSPAGE */}
-              <Route exact path="/">
-                {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
-              </Route>
+              <Switch>
+                {/* LANDINGSPAGE */}
+                <Route exact path="/">
+                  {() => (props.loggedIn ? <Dashboard /> : <HomePage />)}
+                </Route>
 
-              {/* ABOUT */}
-              <Route exact path="/about" component={AboutPage} />
+                {/* ABOUT */}
+                <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/about/donate" component={DonationsPage} />
+                <Route
+                  exact
+                  path="/about/donate/checkout/card"
+                  component={CardCheckOutPage}
+                />
+                <Route exact path="/about/contact" component={ContactPage} />
 
-              {/* ACCOUNT - IF LOGGED OUT */}
-              <Route exact path="/signin">
-                {() => (props.loggedIn ? <Redirect to="/" /> : <SignInPage />)}
-              </Route>
-              <Route exact path="/signup">
-                {() => (props.loggedIn ? <Redirect to="/" /> : <SignUpPage />)}
-              </Route>
-            </Switch>
+                {/* ACCOUNT - IF LOGGED OUT */}
+                <Route exact path="/signin">
+                  {() =>
+                    props.loggedIn ? <Redirect to="/" /> : <SignInPage />
+                  }
+                </Route>
+                <Route exact path="/signup">
+                  {() =>
+                    props.loggedIn ? <Redirect to="/" /> : <SignUpPage />
+                  }
+                </Route>
+              </Switch>
+            </div>{' '}
+            <Footer className="" />
           </div>{' '}
-          <Footer className="" />
-        </div>{' '}
-      </Router>
+        </Router>
+      </Elements>
     )
   }
 }
