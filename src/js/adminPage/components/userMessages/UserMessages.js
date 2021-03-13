@@ -8,6 +8,26 @@ function UserMessagesUI(props) {
 
   useEffect(() => {
     props.fetchMessages()
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        setPosition('hidden')
+      }
+    })
+
+    document.addEventListener(
+      'click',
+      function (event) {
+        if (
+          (!event.target.closest('#modal') &&
+            !event.target.closest('#button')) ||
+          event.target.closest('#crossIcon')
+        ) {
+          setPosition('hidden')
+        }
+      },
+      false
+    )
   }, [props])
 
   if (props.messages.length > 0) {
@@ -24,6 +44,7 @@ function UserMessagesUI(props) {
         </span>
         <MessagesModal
           position={position}
+          id="modal"
           setPosition={() => setPosition('hidden')}
         />
       </div>

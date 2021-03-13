@@ -61,12 +61,12 @@ function AppUI(props) {
 
   if (props.verified) {
     return (
-      <Elements stripe={promise}>
-        <Router>
-          <div className="flex flex-col min-h-screen justify-between">
-            <div>
-              <NavBar />
-              <NoticeModal />
+      <Router>
+        <div className="flex flex-col min-h-screen justify-between">
+          <div>
+            <NavBar />
+            <NoticeModal />
+            <Elements stripe={promise}>
               <Switch>
                 {/* LANDINGSPAGE */}
                 <Route exact path="/">
@@ -113,21 +113,21 @@ function AppUI(props) {
                 {/* MISCELLANEOUS */}
                 <Route component={NotFound} />
               </Switch>
-            </div>
-            <Footer className="" />
+            </Elements>
           </div>
-        </Router>
-      </Elements>
+          <Footer className="" />
+        </div>
+      </Router>
     )
   } else {
     return (
-      <Elements stripe={promise}>
-        <Router>
-          <div className="flex flex-col min-h-screen justify-between">
-            <div>
-              <NavBar />
-              <NoticeModal />
+      <Router>
+        <div className="flex flex-col min-h-screen justify-between">
+          <div>
+            <NavBar />
+            <NoticeModal />
 
+            <Elements stripe={promise}>
               <Switch>
                 {/* LANDINGSPAGE */}
                 <Route exact path="/">
@@ -156,11 +156,11 @@ function AppUI(props) {
                   }
                 </Route>
               </Switch>
-            </div>{' '}
-            <Footer className="" />
-          </div>{' '}
-        </Router>
-      </Elements>
+            </Elements>
+          </div>
+          <Footer className="" />
+        </div>
+      </Router>
     )
   }
 }
