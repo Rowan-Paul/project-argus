@@ -49,7 +49,7 @@ function DonationsPageUI(props) {
 
   return (
     <div className="p-10 pt-20 lg:p-20">
-      <Link to="/about/donations">Change payment details</Link>
+      <Link to="/about">Back to about</Link>
       <h1>Donations</h1>
       <p>
         Fill in the amount you wanna donate and select a payment method below.
