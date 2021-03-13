@@ -26,6 +26,8 @@ import { AdminPage } from './adminPage/AdminPage'
 import { CardCheckOutPage } from './aboutPage/CardCheckOutPage'
 import { DonationsPage } from './aboutPage/DonationsPage'
 import { ContactPage } from './aboutPage/ContactPage'
+import { IDealCheckOutPage } from './aboutPage/IDealCheckOutPage'
+import { SuccesPage } from './aboutPage/SuccessPage'
 
 require('dotenv').config()
 
@@ -75,13 +77,29 @@ function AppUI(props) {
 
                 {/* ABOUT */}
                 <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/about/contact" component={ContactPage} />
                 <Route exact path="/about/donate" component={DonationsPage} />
+
+                {/* PAYMENT PROCESSING */}
+                <Route exact path="/about/donate/checkout/card">
+                  {props.payment.name ? (
+                    <CardCheckOutPage />
+                  ) : (
+                    <Redirect to="/about/donate" />
+                  )}
+                </Route>
+                <Route exact path="/about/donate/checkout/ideal">
+                  {props.payment.name ? (
+                    <IDealCheckOutPage />
+                  ) : (
+                    <Redirect to="/about/donate" />
+                  )}
+                </Route>
                 <Route
                   exact
-                  path="/about/donate/checkout/card"
-                  component={CardCheckOutPage}
+                  path="/about/donate/checkout"
+                  component={SuccesPage}
                 />
-                <Route exact path="/about/contact" component={ContactPage} />
 
                 {/* ACCOUNT - IF LOGGED OUT */}
                 <Route exact path="/signin">
@@ -136,13 +154,29 @@ function AppUI(props) {
 
                 {/* ABOUT */}
                 <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/about/contact" component={ContactPage} />
                 <Route exact path="/about/donate" component={DonationsPage} />
+
+                {/* PAYMENT PROCESSING */}
+                <Route exact path="/about/donate/checkout/card">
+                  {props.payment.name ? (
+                    <CardCheckOutPage />
+                  ) : (
+                    <Redirect to="/about/donate" />
+                  )}
+                </Route>
+                <Route exact path="/about/donate/checkout/ideal">
+                  {props.payment.name ? (
+                    <IDealCheckOutPage />
+                  ) : (
+                    <Redirect to="/about/donate" />
+                  )}
+                </Route>
                 <Route
                   exact
-                  path="/about/donate/checkout/card"
-                  component={CardCheckOutPage}
+                  path="/about/donate/checkout"
+                  component={SuccesPage}
                 />
-                <Route exact path="/about/contact" component={ContactPage} />
 
                 {/* ACCOUNT - IF LOGGED OUT */}
                 <Route exact path="/signin">
@@ -171,6 +205,7 @@ const mapStateToProps = (state) => ({
   token: state.account.token,
   notice: state.main.notice,
   verified: state.account.verified,
+  payment: state.main.payment,
 })
 
 const mapDispatchToProps = (dispatch) => ({

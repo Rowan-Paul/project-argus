@@ -74,3 +74,7 @@ export const setAmount = (amount) => {
 export const setCurrency = (currency) => {
   return { type: types.CURRENCY_SET, payload: currency }
 }
+
+export const setName = (name) => {
+  return { type: types.NAME_SET, payload: name }
+}

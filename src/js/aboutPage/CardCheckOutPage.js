@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { connect } from 'react-redux'
 import { setNotice } from '../redux/main/actions'
@@ -83,6 +83,9 @@ function CardCheckOutPageUI(props) {
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
+        billing_details: {
+          name: props.name,
+        },
       },
     })
 
@@ -98,12 +101,15 @@ function CardCheckOutPageUI(props) {
       setError(null)
       setProcessing(false)
       setSucceeded(true)
+      props.history.push(
+        '/about/donate/checkout?type=card&redirect_status=success'
+      )
     }
   }
 
   return (
     <div className="p-10 pt-20 lg:p-20">
-      <Link to="/about">Back to about</Link>
+      <Link to="/about/donate">Change payment details</Link>
       <h1>Checkout</h1>
       <p>
         You want to donate {props.amount} {props.currency}
@@ -120,6 +126,7 @@ function CardCheckOutPageUI(props) {
           onChange={handleChange}
           className="rounded-t-lg p-3 border-1 border-black max-h-11 w-full bg-white box-border"
         />
+
         <button
           disabled={processing || disabled || succeeded}
           id="submit"
@@ -133,19 +140,15 @@ function CardCheckOutPageUI(props) {
             )}
           </span>
         </button>
-
-        {/* Show a success message upon completion */}
-        <p className={succeeded ? 'result-message' : 'result-message hidden'}>
-          Thank you for your donation!
-        </p>
       </form>
     </div>
   )
 }
 
 const mapStateToProps = (state) => ({
-  amount: state.main.amount,
-  currency: state.main.currency,
+  amount: state.main.payment.amount,
+  currency: state.main.payment.currency,
+  name: state.main.payment.name,
 })
 
 const mapDispatchToProps = (dispatch) => ({
