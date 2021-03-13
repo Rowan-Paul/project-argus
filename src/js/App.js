@@ -133,7 +133,7 @@ function AppUI(props) {
               </Switch>
             </Elements>
           </div>
-          <Footer className="" />
+          <Footer />
         </div>
       </Router>
     )
@@ -192,7 +192,7 @@ function AppUI(props) {
               </Switch>
             </Elements>
           </div>
-          <Footer className="" />
+          <Footer />
         </div>
       </Router>
     )
