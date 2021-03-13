@@ -1,4 +1,3 @@
-import '../../css/cardCheckOutPage.css'
 import React, { useState, useEffect } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { connect } from 'react-redux'
