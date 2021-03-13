@@ -73,6 +73,7 @@ function CardCheckOutPageUI(props) {
       event.error ? { message: event.error.message, type: 'error' } : ''
     )
     setError(event.error ? event.error.message : '')
+    setProcessing(false)
   }
 
   const handleSubmit = async (ev) => {
