@@ -34,14 +34,16 @@ app.get('/', (req, res) => {
 
 const stripe = require('stripe')(process.env.STRIPE_API_KEY)
 
-app.post('/api/v1/checkout/card', async (req, res) => {
+app.post('/api/v1/checkout/:method', async (req, res) => {
   const { amount } = req.body
   const { currency } = req.body
+  const { method } = req.params
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount,
     currency: currency,
+    payment_method_types: [method],
   })
 
   res.send({
