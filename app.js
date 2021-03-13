@@ -20,6 +20,8 @@ const messageRouter = require('./routes/api/v1/messages')
 // MIDDLEWARE
 app.use(bodyParser.json())
 app.use(cors())
+app.use(express.static('.'))
+app.use(express.json())
 
 // ROUTES MIDDLEWARE
 app.use('/api/v1/account', accountRouter)
@@ -28,6 +30,23 @@ app.use('/api/v1/messages', messageRouter)
 
 app.get('/', (req, res) => {
   res.redirect('https://projectarg.us/')
+})
+
+const stripe = require('stripe')(process.env.STRIPE_API_KEY)
+
+app.post('/api/v1/checkout/card', async (req, res) => {
+  const { amount } = req.body
+  const { currency } = req.body
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount,
+    currency: currency,
+  })
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  })
 })
 
 // CREATE SERVER
