@@ -31,8 +31,7 @@ function NavBarUI(props) {
           </Link>
         </li>
 
-        {/* TODO: make a new thing for mobile */}
-        <li className="float-right">
+        <li className="float-right hidden lg:block">
           <Link
             to="/about"
             className="block text-center p-4 no-underline"
