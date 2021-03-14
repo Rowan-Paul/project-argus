@@ -70,14 +70,9 @@ function AddMovieFormUI(props) {
   )
 }
 
-const mapStateToProps = (state) => ({})
-
 const mapDispatchToProps = (dispatch) => ({
   addMovie: (movie) => dispatch(addMovie(movie)),
   setNotice: (notice) => dispatch(setNotice(notice)),
 })
 
-export const AddMovieForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddMovieFormUI)
+export const AddMovieForm = connect(null, mapDispatchToProps)(AddMovieFormUI)

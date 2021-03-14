@@ -14,6 +14,7 @@ const INITIAL_STATE = {
     currency: null,
     name: null,
   },
+  donations: [],
 }
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -53,6 +54,9 @@ const reducer = (state = INITIAL_STATE, action) => {
           name: action.payload,
         },
       }
+
+    case types.FETCHED_DONATIONS:
+      return { ...state, donations: action.payload }
 
     default:
       return state

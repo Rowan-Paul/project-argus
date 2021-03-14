@@ -8,7 +8,10 @@ function UserMessagesUI(props) {
 
   useEffect(() => {
     props.fetchMessages()
+    // eslint-disable-next-line
+  }, [])
 
+  useEffect(() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         setPosition('hidden')
@@ -50,6 +53,7 @@ function UserMessagesUI(props) {
       </div>
     )
   }
+
   return (
     <div className="mb-5">
       <h2>User messages</h2>
