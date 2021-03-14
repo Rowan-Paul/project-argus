@@ -10,12 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/Rowan-Paul/orion.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Rowan Paul Flynn",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Rowan-Paul/orion/issues"
+    "url": "https://github.com/Rowan-Paul/project-argus/issues"
   },
-  "homepage": "https://github.com/Rowan-Paul/orion#readme",
+  "homepage": "https://projectarg.us",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
