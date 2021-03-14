@@ -55,7 +55,8 @@ function DonationsPageUI(props) {
       <Link to="/about">Back to about</Link>
       <h1>Donations</h1>
       <p>
-        Fill in the amount you wanna donate and select a payment method below.
+        Fill in the amount you wanna donate and select a payment method below.{' '}
+        <span className="font-bold">Donations can only be in integers.</span>
       </p>
       <div className="md:w-1/2">
         <form
@@ -94,13 +95,23 @@ function DonationsPageUI(props) {
             </select>
           </div>
 
-          <SmallInput
-            name="Amount"
-            type="number"
-            required={true}
-            last="true"
-            onChange={(e) => setAmount(e)}
-          />
+          <div className="flex flex-col mb-4 md:w-1/2">
+            <label className={`mb-2 font-bold md:ml-2`} forhtml="Amount">
+              Amount
+            </label>
+            <input
+              className={`text-black border py-2 px-3 md:ml-2 border-gray-500 dark:border-white`}
+              type="number"
+              name="Amount"
+              id="Amount"
+              required
+              min="1"
+              step="1"
+              onChange={(e) => {
+                setAmount(e.target.value)
+              }}
+            />
+          </div>
 
           <div className="flex flex-col mb-4 w-full">
             <label htmlFor="paymentMethod" className=" mb-2 block font-bold">
