@@ -1,96 +1,90 @@
-"use-strict";
+'use-strict'
 
-require("dotenv").config();
-require("./scheduler");
+require('dotenv').config()
+require('./scheduler')
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express')
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 
-const app = express();
-const cors = require("cors");
-const port = process.env.PORT || "3000";
-const dbName = "orion";
+const app = express()
+const cors = require('cors')
+const port = process.env.PORT || '3000'
+const dbName = 'orion'
 
-const UserSession = require("./models/UserSession");
-const encryptor = require("simple-encryptor")(
-  process.env.KEY || "secretpasswordofmysupersecretkey"
-);
-
-// IMPORT MODELS
-require("./models/User");
+const authHeaderHandler = require('./authHeaderHandler')
 
 // IMPORT ROUTES
-const accountRouter = require("./routes/api/account");
+const accountRouter = require('./routes/api/v1/account')
+const movieRouter = require('./routes/api/v1/movies')
+const messageRouter = require('./routes/api/v1/messages')
 
 // MIDDLEWARE
-app.use(bodyParser.json());
-
-var whitelist = [
-  "http://localhost:3001",
-  "https://projectarg.us",
-  "https://status.projectarg.us",
-];
-app.use(
-  "/api",
-  cors({
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  })
-);
-
-// Authorize middleware
-app.use("/api/v1/movies", function (req, res, next) {
-  if (req.headers.authorization === undefined) {
-    res.sendStatus(401);
-  } else {
-    const authHeader = req.headers.authorization;
-
-    var tokenDec = encryptor.decrypt(authHeader.split(" ")[1]);
-
-    if (
-      tokenDec === null ||
-      !("random" in tokenDec) ||
-      !("id" in tokenDec) ||
-      !("timestamp" in tokenDec)
-    ) {
-      res.sendStatus(401);
-    }
-
-    // Verify the token is one of a kind and it's not deleted.
-    UserSession.find(
-      {
-        _id: tokenDec.id,
-        random: tokenDec.random,
-        timestamp: tokenDec.timestamp,
-        isDeleted: false,
-      },
-      (err, sessions) => {
-        if (err) {
-          res.sendStatus(401);
-        }
-
-        if (sessions.length != 1) {
-          res.sendStatus(401);
-        } else {
-          next();
-        }
-      }
-    );
-  }
-});
+app.use(bodyParser.json())
+app.use(cors())
+app.use(express.static('.'))
+app.use(express.json())
 
 // ROUTES MIDDLEWARE
-app.use("/api/v1/account", accountRouter);
+app.use('/api/v1/account', accountRouter)
+app.use('/api/v1/movies', movieRouter)
+app.use('/api/v1/messages', messageRouter)
 
-app.get("/", (req, res) => {
-  res.redirect("https://projectarg.us/");
-});
+app.get('/', (req, res) => {
+  res.redirect('https://projectarg.us/')
+})
+
+const stripe = require('stripe')(process.env.STRIPE_API_KEY)
+
+app.post('/api/v1/checkout/:method', async (req, res) => {
+  const { amount } = req.body
+  const { currency } = req.body
+  const { method } = req.params
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount,
+    currency: currency,
+    payment_method_types: [method],
+  })
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  })
+})
+
+app.get('/api/v1/donations', async (req, res) => {
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
+  const charges = await stripe.charges.list({
+    limit: 10,
+  })
+
+  let response = []
+  charges.data.forEach((data) => {
+    response.push({
+      amount: data.amount,
+      name: data.billing_details.name,
+      date: data.created,
+      id: data.id,
+      currency: data.currency,
+    })
+  })
+
+  res.status(200).send(response)
+})
 
 // CREATE SERVER
 const server = app.listen(port, () => {
@@ -102,7 +96,7 @@ const server = app.listen(port, () => {
       useFindAndModify: false,
     },
     () => {
-      console.log(`Orion server listening on port ${port}!`);
+      console.log(`Orion server listening on port ${port}!`)
     }
-  );
-});
+  )
+})
