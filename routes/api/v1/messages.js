@@ -39,6 +39,14 @@ router.get('/', async (req, res) => {
 
   const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
 
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
   Message.find({}, '-__v', (err, messages) => {
     if (err || messages.length < 1) {
       return res.status(404).send('Failed to find messages')

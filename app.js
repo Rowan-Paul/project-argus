@@ -12,6 +12,8 @@ const cors = require('cors')
 const port = process.env.PORT || '3000'
 const dbName = 'orion'
 
+const authHeaderHandler = require('./authHeaderHandler')
+
 // IMPORT ROUTES
 const accountRouter = require('./routes/api/v1/account')
 const movieRouter = require('./routes/api/v1/movies')
@@ -49,6 +51,39 @@ app.post('/api/v1/checkout/:method', async (req, res) => {
   res.send({
     clientSecret: paymentIntent.client_secret,
   })
+})
+
+app.get('/api/v1/donations', async (req, res) => {
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  const checkAdmin = await authHeaderHandler.checkAdmin(authHeader.userId)
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  if (!checkAdmin.isAdmin) {
+    return res.sendStatus(401)
+  }
+
+  const charges = await stripe.charges.list({
+    limit: 10,
+  })
+
+  let response = []
+  charges.data.forEach((data) => {
+    response.push({
+      amount: data.amount,
+      name: data.billing_details.name,
+      date: data.created,
+      id: data.id,
+      currency: data.currency,
+    })
+  })
+
+  res.status(200).send(response)
 })
 
 // CREATE SERVER
