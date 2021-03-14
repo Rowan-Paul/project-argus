@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { updateBackdrop } from '../../../redux/main/actions'
 import { clearActiveMovies } from '../../../redux/movies/actions'
 import { AddMovieModal } from './AddMovieModal'
 import { EditMovieModal } from './EditMovieModal'
@@ -43,7 +44,7 @@ function ManageMoviesUI(props) {
 
       <span
         id="button"
-        className="bg-black text-white dark:bg-white dark:text-black cursor-pointer p-2.5 inline-block mr-5"
+        className="bg-black text-white dark:bg-white dark:text-black cursor-pointer p-2.5 inline-block mr-5 mb-5"
         onClick={() => setAddMoviePosition('fixed')}
       >
         Manually Add
@@ -51,10 +52,18 @@ function ManageMoviesUI(props) {
 
       <span
         id="button"
-        className="bg-black text-white dark:bg-white dark:text-black cursor-pointer p-2.5 inline-block"
+        className="bg-black text-white dark:bg-white dark:text-black cursor-pointer p-2.5 inline-block mr-5 mb-5"
         onClick={() => setEditMoviePosition('fixed')}
       >
         Edit or Remove
+      </span>
+
+      <span
+        id="button"
+        className="bg-black text-white dark:bg-white dark:text-black cursor-pointer p-2.5 inline-block"
+        onClick={() => props.updateBackdrop()}
+      >
+        Update backdrop
       </span>
 
       <AddMovieModal
@@ -72,6 +81,7 @@ function ManageMoviesUI(props) {
 
 const mapDispatchToProps = (dispatch) => ({
   clearActiveMovies: () => dispatch(clearActiveMovies()),
+  updateBackdrop: () => dispatch(updateBackdrop()),
 })
 
 export const ManageMovies = connect(null, mapDispatchToProps)(ManageMoviesUI)

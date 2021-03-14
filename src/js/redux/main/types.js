@@ -1,2 +1,3 @@
 export const BACKDROP_SET = 'BACKDROP_SET'
 export const NOTICE = 'NOTICE'
+export const UPDATED_BACKDROP = 'UPDATED_BACKDROP'

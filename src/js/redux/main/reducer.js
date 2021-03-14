@@ -19,6 +19,9 @@ const reducer = (state = INITIAL_STATE, action) => {
     case types.NOTICE:
       return { ...state, notice: action.payload }
 
+    case types.UPDATED_BACKDROP:
+      return { ...state }
+
     default:
       return state
   }

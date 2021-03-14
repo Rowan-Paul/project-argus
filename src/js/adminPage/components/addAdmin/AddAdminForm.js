@@ -26,7 +26,7 @@ function AddAdminFormUI(props) {
 
   return (
     <form id="addAdminForm">
-      <div className="flex mt-5">
+      <div className="flex mt-5 flex-wrap">
         <SmallInput
           name=""
           type="text"
@@ -35,7 +35,7 @@ function AddAdminFormUI(props) {
           onChange={(e) => setNewAdmin(e)}
         />
 
-        <span className="ml-5">
+        <span className="lg:ml-5">
           <SubmitButton
             name={'Add Admin'}
             onClick={(e) => addAdminClicked(e)}

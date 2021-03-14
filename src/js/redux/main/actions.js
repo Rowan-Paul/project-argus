@@ -62,6 +62,34 @@ export const setBackdrop = (movies) => (dispatch) => {
   })
 }
 
+export const updateBackdrop = () => (dispatch, getState) => {
+  const url = `${api}/movies/popular`
+  const bearer = 'Bearer ' + getState().account.token
+
+  fetch(url, {
+    method: 'PUT',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: { authorization: bearer },
+  })
+    .then((response) => {
+      if (response.status === 201) {
+        dispatch({ type: types.UPDATED_BACKDROP })
+        dispatch(setNotice({ message: 'Updated backdrops', type: 'success' }))
+        dispatch(fetchBackdrop())
+      } else {
+        throw response.statusText
+      }
+    })
+    .catch((statusText) => {
+      console.log('Failed to update backdrops', statusText)
+
+      dispatch(
+        setNotice({ message: 'Failed to update backdrops', type: 'error' })
+      )
+    })
+}
+
 // set notice
 export const setNotice = (notice) => {
   return { type: types.NOTICE, payload: notice }
