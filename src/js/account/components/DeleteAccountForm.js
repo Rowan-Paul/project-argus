@@ -33,13 +33,13 @@ function DeleteAccountFormUI(props) {
       <form
         className="mb-4 md:flex md:flex-wrap md:justify-between"
         id="deleteAccountForm"
+        autocomplete="false"
       >
         <LargeInput
           name="Email"
           type="email"
           placeholder="janedoe@example.com"
           required={true}
-          autocomplete="off"
           onChange={(e) => setEmail(e)}
         />
 
@@ -48,7 +48,6 @@ function DeleteAccountFormUI(props) {
           type="password"
           placeholder=""
           required={true}
-          autoComplete="off"
           onChange={(e) => setPassword(e)}
         />
 

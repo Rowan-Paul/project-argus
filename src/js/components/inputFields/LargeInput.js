@@ -11,7 +11,6 @@ function LargeInputUI(props) {
         id={props.name}
         placeholder={props.placeholder}
         required={props.required}
-        autocomplete={props.autocomplete}
         onChange={(e) => {
           props.onChange(e.target.value)
         }}
