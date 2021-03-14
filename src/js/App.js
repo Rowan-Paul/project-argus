@@ -32,7 +32,7 @@ import { SuccesPage } from './aboutPage/SuccessPage'
 require('dotenv').config()
 
 function AppUI(props) {
-  const [stripePromise, setStripePromise] = useState(() =>
+  const [stripePromise] = useState(() =>
     loadStripe(process.env.REACT_APP_STRIPE_API_KEY)
   )
 
