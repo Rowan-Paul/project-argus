@@ -136,9 +136,9 @@ function IDealCheckOutPageUI(props) {
 }
 
 const mapStateToProps = (state) => ({
-  amount: state.main.payment.amount,
-  currency: state.main.payment.currency,
-  name: state.main.payment.name,
+  amount: state.donations.payment.amount,
+  currency: state.donations.payment.currency,
+  name: state.donations.payment.name,
 })
 
 const mapDispatchToProps = (dispatch) => ({

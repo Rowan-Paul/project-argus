@@ -205,7 +205,7 @@ const mapStateToProps = (state) => ({
   token: state.account.token,
   notice: state.main.notice,
   verified: state.account.verified,
-  payment: state.main.payment,
+  payment: state.donations.payment,
 })
 
 const mapDispatchToProps = (dispatch) => ({

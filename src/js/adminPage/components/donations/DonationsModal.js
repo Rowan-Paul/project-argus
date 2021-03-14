@@ -61,7 +61,7 @@ function DonationsModalUI(props) {
 }
 
 const mapStateToProps = (state) => ({
-  donations: state.main.donations,
+  donations: state.donations.donations,
 })
 
 export const DonationsModal = connect(mapStateToProps, null)(DonationsModalUI)

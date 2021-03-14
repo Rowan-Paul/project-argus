@@ -3,12 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { SmallInput } from '../components/inputFields/SmallInput'
 import { SubmitButton } from '../components/inputFields/SubmitButton'
-import {
-  setCurrency,
-  setAmount,
-  setNotice,
-  setName,
-} from '../redux/main/actions'
+import { setCurrency, setAmount, setName } from '../redux/donations/actions'
+import { setNotice } from '../redux/main/actions'
 
 function DonationsPageUI(props) {
   const [amount, setAmount] = useState('')

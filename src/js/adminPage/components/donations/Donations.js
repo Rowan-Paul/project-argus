@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { fetchDonations } from '../../../redux/main/actions'
+import { fetchDonations } from '../../../redux/donations/actions'
 import { DonationsModal } from './DonationsModal'
 
 function DonationsUI(props) {
@@ -66,7 +66,7 @@ function DonationsUI(props) {
 }
 
 const mapStateToProps = (state) => ({
-  donations: state.main.donations,
+  donations: state.donations.donations,
 })
 
 const mapDispatchToProps = (dispatch) => ({
