@@ -1,7 +1,18 @@
 {
   "name": "andromeda",
   "version": "0.2.0",
+  "description": "Frontend for project argus",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rowan-Paul/andromeda.git"
+  },
+  "author": "Rowan Paul Flynn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rowan-Paul/project-argus/issues"
+  },
+  "homepage": "https://projectarg.us",
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "@stripe/react-stripe-js": "^1.4.0",
