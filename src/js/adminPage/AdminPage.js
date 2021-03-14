@@ -6,12 +6,12 @@ import { Donations } from './components/donations/Donations'
 
 function AdminPageUI(props) {
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <h1>Admin</h1>
       <p>
         Hi there {props.firstName}, on this page you can administrate the site.
       </p>
-      <div className="lg:grid grid-cols-2 gap-10 lg:p-10">
+      <div className="md:grid grid-cols-2 gap-10 md:p-10">
         <AddAdmin />
         <UserMessages />
         <ManageMovies />

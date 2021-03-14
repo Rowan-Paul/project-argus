@@ -51,16 +51,16 @@ function DonationsPageUI(props) {
   }
 
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <Link to="/about">Back to about</Link>
       <h1>Donations</h1>
       <p>
         Fill in the amount you wanna donate and select a payment method below.
       </p>
-      <div className="lg:w-1/2">
+      <div className="md:w-1/2">
         <form
           id="donateForm"
-          className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
+          className="mb-4 md:flex md:flex-wrap md:justify-between"
         >
           <SmallInput
             name="Name"
@@ -78,7 +78,7 @@ function DonationsPageUI(props) {
             last="true"
           />
 
-          <div className="flex flex-col mb-4 lg:w-1/2">
+          <div className="flex flex-col mb-4 md:w-1/2">
             <label htmlFor="currency" className="block mb-2 font-bold">
               Choose a currency
             </label>

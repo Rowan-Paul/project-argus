@@ -5,7 +5,7 @@ import { DeleteAccountForm } from './components/DeleteAccountForm'
 
 function AccountPageUI(props) {
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <h1>Account</h1>
       <p>
         Hi there {props.firstName}, on this page you can manage your account.{' '}

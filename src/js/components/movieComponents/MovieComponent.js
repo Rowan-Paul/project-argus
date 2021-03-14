@@ -29,13 +29,13 @@ function MovieComponentUI(props) {
   }
 
   return (
-    <div className="lg:grid grid-cols-6">
-      <h2 className="line-clamp-2 lg:line-clamp-1 col-span-6">{props.title}</h2>
+    <div className="md:grid grid-cols-6">
+      <h2 className="line-clamp-2 md:line-clamp-1 col-span-6">{props.title}</h2>
 
       <img
         src={imgUrl}
         alt={`${props.title} poster`}
-        className="max-h-48 max-w-32 lg:float-left m-auto my-3 lg:mx-2 col-span-2 "
+        className="max-h-48 max-w-32 md:float-left m-auto my-3 md:mx-2 col-span-2 "
       />
 
       <ActionButtons
@@ -47,7 +47,7 @@ function MovieComponentUI(props) {
       />
 
       <div className="col-span-3">
-        <p className="line-clamp-2 lg:line-clamp-4 visible">{props.overview}</p>
+        <p className="line-clamp-2 md:line-clamp-4 visible">{props.overview}</p>
         <Link to="movie-detail-page">Read more</Link>
       </div>
     </div>

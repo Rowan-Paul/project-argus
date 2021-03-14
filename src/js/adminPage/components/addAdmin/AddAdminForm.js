@@ -35,7 +35,7 @@ function AddAdminFormUI(props) {
           onChange={(e) => setNewAdmin(e)}
         />
 
-        <span className="lg:ml-5">
+        <span className="md:ml-5">
           <SubmitButton
             name={'Add Admin'}
             onClick={(e) => addAdminClicked(e)}

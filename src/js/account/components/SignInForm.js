@@ -32,7 +32,7 @@ function SignInFormUI(props) {
   return (
     <div className="w-full">
       <form
-        className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
+        className="mb-4 md:flex md:flex-wrap md:justify-between"
         id="signInForm"
       >
         <LargeInput

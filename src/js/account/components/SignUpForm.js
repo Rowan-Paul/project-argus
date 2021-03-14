@@ -36,7 +36,7 @@ function SignUpFormUI(props) {
     <div className="w-full">
       <form
         id="signUpForm"
-        className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
+        className="mb-4 md:flex md:flex-wrap md:justify-between"
       >
         <SmallInput
           name="First name"

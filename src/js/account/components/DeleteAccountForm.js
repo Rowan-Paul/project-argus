@@ -29,9 +29,9 @@ function DeleteAccountFormUI(props) {
   }
 
   return (
-    <div className="lg:w-1/3 w-full">
+    <div className="md:w-1/3 w-full">
       <form
-        className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
+        className="mb-4 md:flex md:flex-wrap md:justify-between"
         id="deleteAccountForm"
       >
         <LargeInput

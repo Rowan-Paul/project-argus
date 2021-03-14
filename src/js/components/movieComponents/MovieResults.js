@@ -9,11 +9,11 @@ function MovieResultsUI(props) {
   useEffect(() => {
     switch (props.columnAmount) {
       case 4:
-        setColumnAmount('lg:grid-cols-4')
+        setColumnAmount('md:grid-cols-4')
         break
 
       case 2:
-        setColumnAmount('lg:grid-cols-2')
+        setColumnAmount('md:grid-cols-2')
         break
 
       default:

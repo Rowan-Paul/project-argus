@@ -26,7 +26,7 @@ function SearchBoxUI(props) {
 
   return (
     <form id="searchForm">
-      <div className="lg:flex mt-5">
+      <div className="md:flex mt-5">
         <SmallInput
           name=""
           type="text"
@@ -34,7 +34,7 @@ function SearchBoxUI(props) {
           onChange={(e) => setQuery(e)}
         />
 
-        <span className="lg:ml-5">
+        <span className="md:ml-5">
           <SubmitButton name={'Search'} onClick={(e) => searchedClicked(e)} />
         </span>
       </div>

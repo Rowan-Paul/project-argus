@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 function IntroTextUI() {
   return (
-    <div className="flex flex-col justify-center lg:w-2/3 mx-10">
+    <div className="flex flex-col justify-center md:w-2/3 mx-10">
       <span>Track everything</span>
       <h1 className="text-5xl">project argus</h1>
       <p>

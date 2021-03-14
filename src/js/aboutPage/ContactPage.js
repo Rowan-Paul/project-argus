@@ -35,13 +35,13 @@ function ContactPageUI(props) {
   }
 
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <Link to="/about">Back to about</Link>
       <h1>Contact form</h1>
-      <div className="lg:w-1/2">
+      <div className="md:w-1/2">
         <form
           id="contactForm"
-          className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
+          className="mb-4 md:flex md:flex-wrap md:justify-between"
         >
           <SmallInput
             name="Name"

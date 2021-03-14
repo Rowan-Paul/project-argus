@@ -1,6 +1,6 @@
 function LargeInputUI(props) {
   return (
-    <div className="flex flex-col mb-4 lg:w-full">
+    <div className="flex flex-col mb-4 md:w-full">
       <label className="mb-2 font-bold" forhtml={props.name}>
         {props.name}
       </label>

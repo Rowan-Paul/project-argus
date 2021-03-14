@@ -110,7 +110,7 @@ function CardCheckOutPageUI(props) {
   }
 
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <Link to="/about/donate">Change payment details</Link>
       <h1>Checkout</h1>
       <p>
@@ -120,7 +120,7 @@ function CardCheckOutPageUI(props) {
       <form
         id="payment-form"
         onSubmit={handleSubmit}
-        className="w-full lg:w-1/3 dark:bg-white rounded mb-5 p-1 lg:p-10"
+        className="w-full md:w-1/3 dark:bg-white rounded mb-5 p-1 md:p-10"
       >
         <CardElement
           id="card-element"

@@ -20,7 +20,7 @@ function SuccesPageUI(props) {
   }, [props])
 
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <h1>
         {failed ? 'Your payment failed to complete' : 'Thank you for donating!'}
       </h1>

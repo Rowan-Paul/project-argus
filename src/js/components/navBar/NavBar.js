@@ -31,7 +31,7 @@ function NavBarUI(props) {
           </Link>
         </li>
 
-        <li className="float-right hidden lg:block">
+        <li className="float-right hidden md:block">
           <Link
             to="/about"
             className="block text-center p-4 no-underline"

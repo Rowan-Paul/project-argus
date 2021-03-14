@@ -5,7 +5,7 @@ import { Donations } from './components/Donations'
 
 function AboutPageUI() {
   return (
-    <div className="p-10 pt-20 lg:p-20">
+    <div className="p-10 pt-20 md:p-20">
       <About />
       <Contact />
       <Donations />

@@ -54,7 +54,7 @@ function DonationsModalUI(props) {
       <div className="p-5">
         <h1>Donations</h1>
         <p>See the last 10 donations by users of the site</p>
-        <div className="grid grid-cols-4 gap-5">{donations}</div>
+        <div className="grid md:grid-cols-4 gap-5">{donations}</div>
       </div>
     </div>
   )

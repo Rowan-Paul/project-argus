@@ -19,7 +19,7 @@ function MessageUI(props) {
   )
 
   return (
-    <div className="lg:grid grid-cols-6 border-black dark:border-white border-b-2 lg:p-5 mb-5">
+    <div className="md:grid grid-cols-6 border-black dark:border-white border-b-2 md:p-5 mb-5">
       <div className="col-span-5">
         <h3>{props.name}</h3>
         <span
@@ -37,7 +37,7 @@ function MessageUI(props) {
 
       <a
         href={`mailto:${props.email}`}
-        className="bg-black text-white dark:bg-white dark:text-black p-5 no-underline mb-5 inline-block lg:m-auto"
+        className="bg-black text-white dark:bg-white dark:text-black p-5 no-underline mb-5 inline-block md:m-auto"
       >
         Answer
       </a>

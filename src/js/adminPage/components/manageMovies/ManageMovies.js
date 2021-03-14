@@ -38,7 +38,7 @@ function ManageMoviesUI(props) {
   }, [props])
 
   return (
-    <div className="mb-10 lg:mb-auto">
+    <div className="mb-10 md:mb-auto">
       <h2>Manage movies</h2>
       <p>
         You can add, remove or edit movies by searching for them here. You can
