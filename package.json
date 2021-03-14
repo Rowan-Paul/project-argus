@@ -1,6 +1,6 @@
 {
-  "name": "project-argus",
-  "version": "0.1.0",
+  "name": "andromeda",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.1.1",
