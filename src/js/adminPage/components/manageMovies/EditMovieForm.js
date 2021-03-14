@@ -38,6 +38,10 @@ function EditMovieFormUI(props) {
         poster: poster,
       })
       props.onModalSubmit()
+      setTitle('')
+      setYear('')
+      setOverview('')
+      setPoster('')
     } else {
       console.log('Fill in all fields')
 
@@ -63,7 +67,7 @@ function EditMovieFormUI(props) {
           <LargeInput
             name={`Current year: ${oldMovie.year}`}
             type="Number"
-            placeholder="Title is required"
+            placeholder="Year is required"
             required={true}
             onChange={(e) => setYear(e)}
           />

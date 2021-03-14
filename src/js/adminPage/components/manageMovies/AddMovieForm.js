@@ -24,6 +24,10 @@ function AddMovieFormUI(props) {
         poster: poster,
       })
       props.onModalSubmit()
+      setTitle('')
+      setYear('')
+      setOverview('')
+      setPoster('')
     } else {
       console.log('TItle and year are required')
 
