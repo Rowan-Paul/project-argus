@@ -3,7 +3,12 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { SmallInput } from '../components/inputFields/SmallInput'
 import { SubmitButton } from '../components/inputFields/SubmitButton'
-import { setCurrency, setAmount, setName } from '../redux/donations/actions'
+import {
+  setCurrency,
+  setAmount,
+  setName,
+  setEmail,
+} from '../redux/donations/actions'
 import { setNotice } from '../redux/main/actions'
 
 function DonationsPageUI(props) {
@@ -11,6 +16,7 @@ function DonationsPageUI(props) {
   const [currency, setCurrency] = useState('eur')
   const [paymentMethod, setPaymentMethod] = useState('card')
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
 
   const donateClicked = (e) => {
     e.preventDefault()
@@ -20,6 +26,7 @@ function DonationsPageUI(props) {
       props.setAmount(amount)
       props.setCurrency(currency)
       props.setName(name)
+      props.setEmail(email)
 
       switch (paymentMethod) {
         case 'card':
@@ -51,7 +58,10 @@ function DonationsPageUI(props) {
         Fill in the amount you wanna donate and select a payment method below.
       </p>
       <div className="lg:w-1/2">
-        <form id="donateForm" className="mb-4">
+        <form
+          id="donateForm"
+          className="mb-4 lg:flex lg:flex-wrap lg:justify-between"
+        >
           <SmallInput
             name="Name"
             type="text"
@@ -60,43 +70,57 @@ function DonationsPageUI(props) {
             onChange={(e) => setName(e)}
           />
           <SmallInput
+            name="Email"
+            type="email"
+            placeholder="mail@example.com"
+            required={true}
+            onChange={(e) => setEmail(e)}
+            last="true"
+          />
+
+          <div className="flex flex-col mb-4 lg:w-1/2">
+            <label htmlFor="currency" className="block mb-2 font-bold">
+              Choose a currency
+            </label>
+            <select
+              name="currency"
+              id="currency"
+              onChange={(e) => setCurrency(e.target.value)}
+              required
+              className="mb-5 text-black border py-2 px-3 border-gray-500 dark:border-white"
+            >
+              <option value="eur">€</option>
+              <option value="usd">US$</option>
+            </select>
+          </div>
+
+          <SmallInput
             name="Amount"
             type="number"
             required={true}
+            last="true"
             onChange={(e) => setAmount(e)}
           />
 
-          <label htmlFor="currency" className="mb-2 block font-bold">
-            Choose a currency
-          </label>
-          <select
-            name="currency"
-            id="currency"
-            onChange={(e) => setCurrency(e.target.value)}
-            required
-            className="block mb-5 text-black border py-2 px-3 border-gray-500 dark:border-white"
-          >
-            <option value="eur">€</option>
-            <option value="usd">US$</option>
-          </select>
-
-          <label htmlFor="paymentMethod" className="mb-2 block font-bold">
-            Payment method
-          </label>
-          <select
-            name="paymentMethod"
-            id="paymentMethod"
-            onChange={(e) => setPaymentMethod(e.target.value)}
-            required
-            className="block mb-5 text-black border py-2 px-3 border-gray-500 dark:border-white"
-          >
-            <option value="card">Credit Card</option>
-            {currency.includes('eur') ? (
-              <option value="ideal">iDEAL</option>
-            ) : (
-              ''
-            )}
-          </select>
+          <div className="flex flex-col mb-4 w-full">
+            <label htmlFor="paymentMethod" className=" mb-2 block font-bold">
+              Payment method
+            </label>
+            <select
+              name="paymentMethod"
+              id="paymentMethod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              required
+              className="block mb-5 text-black border py-2 px-3 border-gray-500 dark:border-white"
+            >
+              <option value="card">Credit Card</option>
+              {currency.includes('eur') ? (
+                <option value="ideal">iDEAL</option>
+              ) : (
+                ''
+              )}
+            </select>
+          </div>
 
           <SubmitButton name={'Donate'} onClick={(e) => donateClicked(e)} />
         </form>
@@ -112,6 +136,7 @@ const mapDispatchToProps = (dispatch) => ({
   setAmount: (amount) => dispatch(setAmount(amount)),
   setCurrency: (currency) => dispatch(setCurrency(currency)),
   setName: (name) => dispatch(setName(name)),
+  setEmail: (email) => dispatch(setEmail(email)),
 })
 
 export const DonationsPage = connect(

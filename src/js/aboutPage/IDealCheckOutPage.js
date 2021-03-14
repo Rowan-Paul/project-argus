@@ -94,8 +94,10 @@ function IDealCheckOutPageUI(props) {
         ideal: elements.getElement(IdealBankElement),
         billing_details: {
           name: props.name,
+          email: props.email,
         },
       },
+      receipt_email: props.email,
       return_url: `${client}/about/donate/checkout`,
     })
 
@@ -139,6 +141,7 @@ const mapStateToProps = (state) => ({
   amount: state.donations.payment.amount,
   currency: state.donations.payment.currency,
   name: state.donations.payment.name,
+  email: state.donations.payment.email,
 })
 
 const mapDispatchToProps = (dispatch) => ({

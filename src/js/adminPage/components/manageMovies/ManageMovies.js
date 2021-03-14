@@ -40,7 +40,11 @@ function ManageMoviesUI(props) {
   return (
     <div className="mb-10 lg:mb-auto">
       <h2>Manage movies</h2>
-      <p>You can add, remove or edit movies by searching for them here.</p>
+      <p>
+        You can add, remove or edit movies by searching for them here. You can
+        also refresh the backdrops, though this is also done automatically every
+        24 hours.
+      </p>
 
       <span
         id="button"

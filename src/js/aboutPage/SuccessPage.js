@@ -22,9 +22,7 @@ function SuccesPageUI(props) {
   return (
     <div className="p-10 pt-20 lg:p-20">
       <h1>
-        {failed
-          ? 'Your payment failed to complete however'
-          : 'Thank you for donating!'}
+        {failed ? 'Your payment failed to complete' : 'Thank you for donating!'}
       </h1>
       <Link to="/">Go to the homepage</Link>
     </div>

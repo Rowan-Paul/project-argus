@@ -79,14 +79,15 @@ function CardCheckOutPageUI(props) {
   const handleSubmit = async (ev) => {
     ev.preventDefault()
     setProcessing(true)
-
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
           name: props.name,
+          email: props.email,
         },
       },
+      receipt_email: props.email,
     })
 
     if (payload.error) {
@@ -101,6 +102,7 @@ function CardCheckOutPageUI(props) {
       setError(null)
       setProcessing(false)
       setSucceeded(true)
+
       props.history.push(
         '/about/donate/checkout?type=card&redirect_status=success'
       )
@@ -141,6 +143,8 @@ function CardCheckOutPageUI(props) {
           </span>
         </button>
       </form>
+      {/* Show a success message upon completion */}
+      <p className={succeeded ? '' : 'hidden'}>Thank you for donating</p>
     </div>
   )
 }
@@ -149,6 +153,7 @@ const mapStateToProps = (state) => ({
   amount: state.donations.payment.amount,
   currency: state.donations.payment.currency,
   name: state.donations.payment.name,
+  email: state.donations.payment.email,
 })
 
 const mapDispatchToProps = (dispatch) => ({

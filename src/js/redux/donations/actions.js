@@ -18,6 +18,10 @@ export const setName = (name) => {
   return { type: types.NAME_SET, payload: name }
 }
 
+export const setEmail = (email) => {
+  return { type: types.EMAIL_SET, payload: email }
+}
+
 // fetch donations
 export const fetchDonations = () => (dispatch, getState) => {
   const url = `${api}/donations`

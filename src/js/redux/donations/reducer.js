@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     amount: null,
     currency: null,
     name: null,
+    email: null,
   },
   donations: [],
 }
@@ -28,6 +29,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           amount: state.payment.amount,
           currency: action.payload,
           name: state.payment.name,
+          email: state.payment.email,
         },
       }
 
@@ -38,6 +40,18 @@ const reducer = (state = INITIAL_STATE, action) => {
           amount: state.payment.amount,
           currency: state.payment.currency,
           name: action.payload,
+          email: state.payment.email,
+        },
+      }
+
+    case types.EMAIL_SET:
+      return {
+        ...state,
+        payment: {
+          amount: state.payment.amount,
+          currency: state.payment.currency,
+          name: state.payment.name,
+          email: action.payload,
         },
       }
 

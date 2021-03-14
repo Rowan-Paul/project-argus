@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import {
   Switch,
@@ -32,7 +32,9 @@ import { SuccesPage } from './aboutPage/SuccessPage'
 require('dotenv').config()
 
 function AppUI(props) {
-  const promise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY)
+  const [stripePromise, setStripePromise] = useState(() =>
+    loadStripe(process.env.REACT_APP_STRIPE_API_KEY)
+  )
 
   useEffect(() => {
     if (!props.loggedIn && props.token) {
@@ -68,7 +70,7 @@ function AppUI(props) {
           <div>
             <NavBar />
             <NoticeModal />
-            <Elements stripe={promise}>
+            <Elements stripe={stripePromise}>
               <Switch>
                 {/* LANDINGSPAGE */}
                 <Route exact path="/">
@@ -145,7 +147,7 @@ function AppUI(props) {
             <NavBar />
             <NoticeModal />
 
-            <Elements stripe={promise}>
+            <Elements stripe={stripePromise}>
               <Switch>
                 {/* LANDINGSPAGE */}
                 <Route exact path="/">
