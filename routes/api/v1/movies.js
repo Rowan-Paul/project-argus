@@ -21,6 +21,69 @@ router.get('/popular', (req, res) => {
   })
 })
 
+router.put('/popular', async (req, res) => {
+  const authHeader = await authHeaderHandler.verifyAuthHeader(
+    req.headers.authorization
+  )
+
+  if (!authHeader.authenticated) {
+    return res.sendStatus(401)
+  }
+
+  Backdrop.deleteMany({}, (err) => {
+    if (err) {
+      console.log(err)
+    }
+  })
+    .then(() => {
+      fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
+      )
+        .then((response) => response.json())
+        .then((movies) => {
+          movies.results.forEach((result) => {
+            const backdrop = new Backdrop()
+
+            backdrop.title = result.title
+            backdrop.backdropPath = result.backdrop_path
+            backdrop.type = 'movie'
+
+            backdrop.save((err, doc) => {
+              if (err) {
+                res.status(500).send('Failed to update movies')
+                console.log(err)
+              }
+            })
+          })
+        })
+    })
+    .then(() => {
+      fetch(
+        `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=1`
+      )
+        .then((response) => response.json())
+        .then((movies) => {
+          movies.results.forEach((result) => {
+            const backdrop = new Backdrop()
+
+            backdrop.title = result.name
+            backdrop.backdropPath = result.backdrop_path
+            backdrop.type = 'tv'
+
+            backdrop.save((err, doc) => {
+              if (err) {
+                console.log(err)
+                res.status(500).send('Failed to update tv shows')
+              }
+            })
+          })
+        })
+        .then(() => {
+          return res.status(201).send('Updated popular movies')
+        })
+    })
+})
+
 // Create a movie
 router.post('/', async (req, res) => {
   const { body } = req
@@ -234,61 +297,6 @@ router.get('/:movie/watched', async (req, res) => {
 
     return res.status(200).send({ _id: movie, timesWatched: results.length })
   })
-})
-
-router.put('/popular', (req, res) => {
-  Backdrop.deleteMany({}, (err) => {
-    if (err) {
-      console.log(err)
-    }
-  })
-    .then(() => {
-      fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
-      )
-        .then((response) => response.json())
-        .then((movies) => {
-          movies.results.forEach((result) => {
-            const backdrop = new Backdrop()
-
-            backdrop.title = result.title
-            backdrop.backdropPath = result.backdrop_path
-            backdrop.type = 'movie'
-
-            backdrop.save((err, doc) => {
-              if (err) {
-                res.status(500).send('Failed to update movies')
-                console.log(err)
-              }
-            })
-          })
-        })
-    })
-    .then(() => {
-      fetch(
-        `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=1`
-      )
-        .then((response) => response.json())
-        .then((movies) => {
-          movies.results.forEach((result) => {
-            const backdrop = new Backdrop()
-
-            backdrop.title = result.name
-            backdrop.backdropPath = result.backdrop_path
-            backdrop.type = 'tv'
-
-            backdrop.save((err, doc) => {
-              if (err) {
-                console.log(err)
-                res.status(500).send('Failed to update tv shows')
-              }
-            })
-          })
-        })
-        .then(() => {
-          return res.status(201).send('Updated popular movies and tv shows')
-        })
-    })
 })
 
 module.exports = router
