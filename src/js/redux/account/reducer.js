@@ -1,175 +1,57 @@
-import * as types from "./types";
+import * as types from './types'
 
 const INITIAL_STATE = {
+  token: localStorage.token ? localStorage.token : '',
   loggedIn: false,
-  redirect: false,
-  token: localStorage.token ? localStorage.token : "",
+  verified: false,
   user: {},
-  error: "",
-  email: "",
-  password: "",
-  pages: [
-    {
-      name: "Home",
-      address: "/",
-    },
-    {
-      name: "About",
-      address: "/about",
-    },
-    {
-      name: "Sign In",
-      address: "/signin",
-    },
-  ],
-};
+}
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.SIGNED_IN:
-      localStorage.token = action.payload.token;
+      localStorage.token = action.payload.token
       return {
         ...state,
+        token: action.payload.token,
         loggedIn: true,
+        verified: true,
         user: action.payload.user,
-        email: "",
-        password: "",
-        error: "",
-        pages: [
-          {
-            name: "Home",
-            address: "/",
-          },
-          {
-            name: "About",
-            address: "/about",
-          },
-          {
-            name: "Account",
-            address: "/account",
-          },
-          {
-            name: "Sign out",
-            address: "/signout",
-          },
-        ],
-      };
+      }
 
     case types.SIGNED_OUT:
-      localStorage.removeItem("token");
+      localStorage.removeItem('token')
       return {
         ...state,
+        token: '',
         loggedIn: false,
-        redirect: true,
-        token: "",
+        verified: true,
         user: {},
-        error: "",
-        pages: [
-          {
-            name: "Home",
-            address: "/",
-          },
-          {
-            name: "About",
-            address: "/about",
-          },
-          {
-            name: "Sign In",
-            address: "/signin",
-          },
-        ],
-      };
+      }
 
     case types.VERIFIED:
       return {
         ...state,
         loggedIn: true,
+        verified: true,
         user: action.payload,
-        error: "",
-        pages: [
-          {
-            name: "Home",
-            address: "/",
-          },
-          {
-            name: "About",
-            address: "/about",
-          },
-          {
-            name: "Account",
-            address: "/account",
-          },
-          {
-            name: "Sign Out",
-            address: "/signout",
-          },
-        ],
-      };
-
-    case types.UNVERIFIED:
-      localStorage.removeItem("token");
-      return {
-        ...state,
-        loggedIn: false,
-        token: "",
-        user: {},
-        error: action.payload,
-        pages: [
-          {
-            name: "Home",
-            address: "/",
-          },
-          {
-            name: "About",
-            address: "/about",
-          },
-          {
-            name: "Sign In",
-            address: "/signin",
-          },
-        ],
-      };
+      }
 
     case types.DELETED:
-      localStorage.removeItem("token");
+      localStorage.removeItem('token')
       return {
         ...state,
+        token: '',
         loggedIn: false,
-        redirect: true,
-        token: "",
         user: {},
-        error: "",
-        pages: [
-          {
-            name: "Home",
-            address: "/",
-          },
-          {
-            name: "About",
-            address: "/about",
-          },
-          {
-            name: "Sign In",
-            address: "/signin",
-          },
-        ],
-      };
+      }
 
-    case types.REDIRECTED:
-      return { ...state, redirect: false, error: "" };
-
-    case types.ERROR:
-      return { ...state, error: action.payload };
-
-    case types.UPDATE_EMAIL:
-      return { ...state, email: action.payload };
-
-    case types.UPDATE_PASSWORD:
-      return { ...state, password: action.payload };
+    case types.ADDED_ADMIN:
+      return { ...state }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default reducer;
+export const accountReducer = reducer

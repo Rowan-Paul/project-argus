@@ -1,0 +1,5 @@
+export const AMOUNT_SET = 'AMOUNT_SET'
+export const CURRENCY_SET = 'CURRENCY_SET'
+export const NAME_SET = 'NAME_SET'
+export const FETCHED_DONATIONS = 'FETCHED_DONATIONS'
+export const EMAIL_SET = 'EMAIL_SET'

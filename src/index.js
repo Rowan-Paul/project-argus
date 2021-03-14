@@ -1,14 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import { Provider } from "react-redux";
-import store from "./js/redux/store";
+import { Provider } from 'react-redux'
+import store from './js/redux/store'
 
-import "./index.css";
-import { App } from "./js/App";
-import reportWebVitals from "./reportWebVitals";
+import './css/index.css'
+import { App } from './js/App'
 
-require("dotenv").config();
+import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -16,10 +15,10 @@ ReactDOM.render(
       <App />
     </React.StrictMode>
   </Provider>,
-  document.getElementById("root")
-);
+  document.getElementById('root')
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()
