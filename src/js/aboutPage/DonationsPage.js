@@ -126,7 +126,7 @@ function DonationsPageUI(props) {
             >
               <option value="card">Credit Card</option>
               {currency.includes('eur') ? (
-                // <option value="ideal">iDEAL</option>
+                <option value="ideal">iDEAL</option>
               ) : (
                 ''
               )}
