@@ -16,15 +16,7 @@ function IDealCheckOutPageUI(props) {
   const stripe = useStripe()
   const elements = useElements()
 
-  let api = 'http://localhost:3000/api/v1'
-  if (process.env.NODE_ENV === 'production') {
-    api = 'https://api.projectarg.us/api/v1'
-  }
-
-  let client = 'http://localhost:3001'
-  if (process.env.NODE_ENV === 'production') {
-    client = 'https://projectarg.us'
-  }
+  let api = '/api/v1'
 
   useEffect(() => {
     setAmount(props.amount * 100)
@@ -98,7 +90,7 @@ function IDealCheckOutPageUI(props) {
         },
       },
       receipt_email: props.email,
-      return_url: `${client}/about/donate/checkout`,
+      return_url: `/about/donate/checkout`,
     })
 
     if (error) {

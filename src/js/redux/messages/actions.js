@@ -2,10 +2,7 @@ import * as types from './types'
 
 import { setNotice } from '../main/actions'
 
-let api = 'http://localhost:3000/api/v1'
-if (process.env.NODE_ENV === 'production') {
-  api = 'https://api.projectarg.us/api/v1'
-}
+let api = '/api/v1'
 
 // add user as admin
 export const sendMessage = (message) => (dispatch) => {
