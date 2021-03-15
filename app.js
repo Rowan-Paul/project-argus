@@ -6,6 +6,7 @@ require('./scheduler')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const path = require('path')
 
 const app = express()
 const cors = require('cors')
@@ -24,15 +25,12 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(express.static('.'))
 app.use(express.json())
+app.use(express.static(path.join(__dirname, '../andromeda/build')))
 
 // ROUTES MIDDLEWARE
 app.use('/api/v1/account', accountRouter)
 app.use('/api/v1/movies', movieRouter)
 app.use('/api/v1/messages', messageRouter)
-
-app.get('/', (req, res) => {
-  res.redirect('https://projectarg.us/')
-})
 
 const stripe = require('stripe')(process.env.STRIPE_API_KEY)
 
@@ -84,6 +82,10 @@ app.get('/api/v1/donations', async (req, res) => {
   })
 
   res.status(200).send(response)
+})
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../andromeda/build', 'index.html'))
 })
 
 // CREATE SERVER
