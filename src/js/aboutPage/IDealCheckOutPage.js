@@ -17,6 +17,10 @@ function IDealCheckOutPageUI(props) {
   const elements = useElements()
 
   let api = '/api/v1'
+  let client
+  if (process.env.NODE_ENV === 'production') {
+    client = 'https://projectarg.us'
+  }
 
   useEffect(() => {
     setAmount(props.amount * 100)
@@ -90,7 +94,7 @@ function IDealCheckOutPageUI(props) {
         },
       },
       receipt_email: props.email,
-      return_url: `/about/donate/checkout`,
+      return_url: `${client}/about/donate/checkout`,
     })
 
     if (error) {
