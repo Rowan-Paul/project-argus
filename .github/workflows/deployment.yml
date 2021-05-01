@@ -21,9 +21,6 @@ jobs:
             cd /var/www/andromeda
             git fetch --all
             git reset --hard origin/main
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
             npm i
             npm run build
-            cd /var/www
-            pm2 restart ecosystem.config.js
+            pm2 restart projectargus
