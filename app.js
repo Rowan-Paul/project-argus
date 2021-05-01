@@ -10,7 +10,7 @@ const path = require('path')
 
 const app = express()
 const cors = require('cors')
-const port = process.env.PORT || '3000'
+const port = process.env.PORT || '8000'
 const dbName = 'orion'
 
 const authHeaderHandler = require('./authHeaderHandler')
