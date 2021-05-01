@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/andromeda
+            cd ~/var/www/andromeda
             git fetch --all
             git reset --hard origin/main
             npm i
