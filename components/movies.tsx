@@ -1,5 +1,7 @@
 import useSWR from 'swr'
 import Image from 'next/image'
+import Link from 'next/link'
+
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Movies() {
@@ -21,6 +23,7 @@ export default function Movies() {
             <Movie
               key={movie.title}
               title={movie.title}
+              year={movie.release_date}
               image={movie.poster_path}
             />
           ))}
@@ -29,18 +32,24 @@ export default function Movies() {
   )
 }
 
-export function Movie({ title, image }) {
+export function Movie({ title, year, image }) {
   return (
-    <div className="md:p-2 lg:p-5">
-      <div className="flex justify-center align-middle">
-        <Image
-          src={`https://image.tmdb.org/t/p/w185/${image}`} //185x278
-          alt={`${title} movie poster}`}
-          width={165}
-          height={247}
-        />
-      </div>
-      <p className="line-clamp-1">{title}</p>
-    </div>
+    <Link
+      href={`movies/${title.replace(/\s+/g, '-').toLowerCase()}-${
+        year.split('-')[0]
+      }`}
+    >
+      <a className="md:p-2 lg:p-5 no-underline">
+        <div className="flex justify-center align-middle">
+          <Image
+            src={`https://image.tmdb.org/t/p/w185/${image}`} //185x278
+            alt={`${title} movie poster}`}
+            width={165}
+            height={247}
+          />
+        </div>
+        <p className="line-clamp-1">{title}</p>
+      </a>
+    </Link>
   )
 }
