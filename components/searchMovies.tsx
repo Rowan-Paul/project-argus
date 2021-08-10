@@ -70,8 +70,8 @@ export function HorizontalMovie({ movie }) {
   }
 
   return (
-    <div className="grid md:grid-cols-6 p-5 gap-4">
-      <div>
+    <div className="grid md:grid-cols-6 pt-5 md:p-5 gap-4">
+      <div className="col-span-6 md:col-span-1">
         <Image
           src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} //185x278
           alt={`${movie.title} movie poster`}
