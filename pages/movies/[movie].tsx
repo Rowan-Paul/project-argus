@@ -8,44 +8,47 @@ import { MovieLayout } from '../../components/layout'
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Movie() {
-  const [shouldFetch, setShouldFetch] = useState(false)
-  const [url, setUrl] = useState(``)
   const [movie, setMovie] = useState({})
-  const [tmdbData, setTmdbData] = useState({})
+  const [initialLoadError, setError] = useState(false)
+  const [tmdb, setTmdb] = useState({})
   const [backdropPath, setBackdropPath] = useState(
     'http://via.placeholder.com/1280x720?text=No%20backdrop%20available'
   )
+  const [shouldFetch, setShouldFetch] = useState(false)
+  const [url, setUrl] = useState('')
   const router = useRouter()
   const { data, error } = useSWR(shouldFetch ? url : null, fetcher)
 
   useEffect(() => {
     if (!router.isReady) return
 
-    setUrl(`/api/movies/${router.query.movie.toString()}`)
-    setShouldFetch(true)
+    fetch(`/api/movies/${router.query.movie.toString()}`)
+      .then((res) => res.json())
+      .then((res) => {
+        res.title = titleCase(res.title)
+        setMovie(res)
+
+        if (res.tmdb_id) {
+          setUrl(
+            `https://api.themoviedb.org/3/movie/${res.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+          )
+          setShouldFetch(true)
+        }
+      })
+      .catch((err) => setError(true))
   }, [router.isReady])
 
-  if (error) {
+  if (initialLoadError) {
     router.push(`/movies/new?movie=${router.query.movie}`)
     return <div>Failed to load</div>
   }
   if (!data) return <div>Loading...</div>
 
-  if (data.title && !movie.title) {
-    data.title = titleCase(data.title)
-    setMovie(data)
-
-    if (data.tmdb_id) {
-      setUrl(
-        `https://api.themoviedb.org/3/movie/${data.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
-      )
-    }
-  }
-
-  if (data.backdrop_path && !tmdbData.backdrop_path) {
-    setTmdbData(data)
+  if (data.backdrop_path && !tmdb.backdrop_path) {
+    setTmdb(data)
     setBackdropPath('https://www.themoviedb.org/t/p/w1280' + data.backdrop_path)
   }
+  console.log(tmdb)
 
   return (
     <>
@@ -74,7 +77,7 @@ export default function Movie() {
         </div>
 
         <div className="p-10">
-          <p className="italic">{tmdbData.tagline}</p>
+          <p className="italic">{tmdb.tagline}</p>
           <p>{movie.overview}</p>
         </div>
       </div>
