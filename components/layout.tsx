@@ -22,3 +22,13 @@ export function MinimalLayout({ children }) {
     </>
   )
 }
+
+export function MovieLayout({ children }) {
+  return (
+    <div>
+      <Navbar />
+      <main className="px-10">{children}</main>
+      <Footer />
+    </div>
+  )
+}
