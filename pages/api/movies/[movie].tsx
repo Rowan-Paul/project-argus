@@ -1,4 +1,5 @@
 import { removeLastWord } from '../../../lib/utils'
+import prisma from '../../../lib/prisma'
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -34,9 +35,10 @@ export default async function handler(req, res) {
         where: { title: movie.title, year: parseInt(movie.year) },
       })
 
-      return res.json(result).end()
-    } catch {
-      return res.status(404).end()
+      if (result == null) throw new Error('No movie found')
+      res.json(result).end()
+    } catch (error) {
+      res.status(404).end()
     }
   }
 }

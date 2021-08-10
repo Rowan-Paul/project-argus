@@ -1,20 +1,13 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import Layout from '../../components/layout'
 import { removeLastWord } from '../../lib/utils'
 import { SearchResults } from '../../components/movies'
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
-
 export default function NewMovie() {
-  const [shouldFetch, setShouldFetch] = useState(false)
-  const [tmdbData, setTmdbData] = useState({})
   const [movie, setMovie] = useState({})
-  const [url, setUrl] = useState(``)
   const router = useRouter()
-  const { data, error } = useSWR(shouldFetch ? url : null, fetcher)
 
   useEffect(() => {
     if (!router.isReady) return

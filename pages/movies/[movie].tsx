@@ -26,7 +26,10 @@ export default function Movie() {
     setShouldFetch(true)
   }, [router.isReady])
 
-  if (error) return <div>Failed to load</div>
+  if (error) {
+    router.push(`/movies/new?movie=${router.query.movie}`)
+    return <div>Failed to load</div>
+  }
   if (!data) return <div>Loading...</div>
 
   if (data.title && !movie.title) {
