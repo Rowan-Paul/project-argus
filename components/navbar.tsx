@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
@@ -5,17 +6,31 @@ export default function Navbar() {
   const [session, loading] = useSession()
   const router = useRouter()
 
-  if (session && router.pathname !== '/auth') {
+  if (session) {
     return (
-      <p onClick={() => signOut()} className="cursor-pointer">
-        Sign out
-      </p>
+      <div className="list-none mx-2">
+        <li className="float-left">
+          <Link href="/">
+            <a>project-argus</a>
+          </Link>
+        </li>
+        <li className="float-right cursor-pointer" onClick={() => signOut()}>
+          Sign out
+        </li>
+      </div>
     )
   } else {
     return (
-      <p onClick={() => signIn()} className="cursor-pointer">
-        Login
-      </p>
+      <div className="list-none mx-2">
+        <li className="float-left">
+          <Link href="/">
+            <a>project-argus</a>
+          </Link>
+        </li>
+        <li className="float-right cursor-pointer" onClick={() => signIn()}>
+          Sign in
+        </li>
+      </div>
     )
   }
 }

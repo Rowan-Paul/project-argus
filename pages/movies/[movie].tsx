@@ -14,7 +14,7 @@ export default function Movie() {
   const [movie, setMovie] = useState({})
   const [tmdbData, setTmdbData] = useState({})
   const [backdropPath, setBackdropPath] = useState(
-    'http://via.placeholder.com/1280x720'
+    'http://via.placeholder.com/1280x720?text=No%20backdrop%20available'
   )
   const router = useRouter()
   const { data, error } = useSWR(shouldFetch ? url : null, fetcher)
@@ -54,21 +54,21 @@ export default function Movie() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="mb-5">
+      <div className="ml-10 md:ml-0 mb-5">
         <h1 className="inline-block mr-3">{movie.title}</h1>
         <span>{movie.year}</span>
       </div>
 
       <div className="grid md:grid-cols-3">
-        <div className="col-span-1 md:col-span-2 relative">
-          <Image
-            src={`https://www.themoviedb.org/t/p/w780${backdropPath}`} //780x439 1280x720
-            alt={`${movie.title} movie poster`}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            quality={100}
-          />
+        <div
+          style={{
+            background: `url(${backdropPath}) no-repeat center center`,
+            backgroundSize: 'cover',
+            minHeight: '300px',
+          }}
+          className="min-h-439 md:col-span-2"
+        >
+          &nbsp;
         </div>
 
         <div className="p-10">
