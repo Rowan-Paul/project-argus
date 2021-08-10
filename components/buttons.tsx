@@ -22,3 +22,11 @@ export function OnClickButton({ text, onClick }) {
     </div>
   )
 }
+
+export function LoadButton() {
+  return (
+    <div className="bg-blue-400 p-4 text-white font-bold rounded mt-5 mx-2 inline-block">
+      Loading...
+    </div>
+  )
+}
