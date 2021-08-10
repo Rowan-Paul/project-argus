@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
 import { MinimalLayout } from '../components/layout'
-import { DiscoverMovies } from '../components/movies'
+import DiscoverMovies from '../components/discoverMovies'
 
 export default function Dashboard() {
   const [session, loading] = useSession()

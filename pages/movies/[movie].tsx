@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
 import { MovieLayout } from '../../components/layout'
+import MovieDetails from '../../components/movieDetails'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -48,7 +49,6 @@ export default function Movie() {
     setTmdb(data)
     setBackdropPath('https://www.themoviedb.org/t/p/w1280' + data.backdrop_path)
   }
-  console.log(tmdb)
 
   return (
     <>
@@ -76,11 +76,13 @@ export default function Movie() {
           &nbsp;
         </div>
 
-        <div className="p-10">
+        <div className="p-5 md:p-10">
           <p className="italic">{tmdb.tagline}</p>
           <p>{movie.overview}</p>
         </div>
       </div>
+
+      <MovieDetails tmdb={tmdb} />
     </>
   )
 }
