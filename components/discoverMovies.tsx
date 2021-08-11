@@ -2,7 +2,14 @@ import useSWR from 'swr'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init)
+  return res.json()
+}
 
 export default function DiscoverMovies() {
   const { data, error } = useSWR(
@@ -19,7 +26,7 @@ export default function DiscoverMovies() {
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2 my-2 md:mx-5 justify-center">
         {Object.values(data.results)
           .slice(0, 6)
-          .map((movie) => (
+          .map((movie: any) => (
             <Movie
               key={movie.title}
               title={movie.title}

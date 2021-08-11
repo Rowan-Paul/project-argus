@@ -14,7 +14,7 @@ export default function NewMovie() {
 
     setMovie({
       title: removeLastWord(router.query.movie, '-'),
-      year: router.query.movie.split('-').pop(),
+      year: router.query.movie.toString().split('-').pop(),
     })
   }, [router.isReady])
 

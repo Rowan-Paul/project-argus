@@ -4,7 +4,14 @@ import Image from 'next/image'
 import { LoadButton, OnClickButton } from './buttons'
 import router from 'next/router'
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init)
+  return res.json()
+}
 
 export default function SearchResults({ title, year }) {
   const { data, error } = useSWR(
@@ -21,7 +28,7 @@ export default function SearchResults({ title, year }) {
       <div className="">
         {Object.values(data.results)
           .slice(0, 6)
-          .map((movie) => (
+          .map((movie: any) => (
             <HorizontalMovie key={movie.title} movie={movie} />
           ))}
       </div>

@@ -7,7 +7,14 @@ import { MovieLayout } from '../../components/layout'
 import MovieDetails from '../../components/movieDetails'
 import Backdrop from '../../components/backdrop'
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init)
+  return res.json()
+}
 
 export default function Movie() {
   const [movie, setMovie] = useState({})
