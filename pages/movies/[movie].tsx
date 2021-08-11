@@ -31,6 +31,7 @@ export default function Movie() {
         setMovie(res)
 
         if (res.tmdb_id) {
+          console.log('url set')
           setUrl(
             `https://api.themoviedb.org/3/movie/${res.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
           )
@@ -44,9 +45,9 @@ export default function Movie() {
     router.push(`/movies/new?movie=${router.query.movie}`)
     return <div>Failed to load</div>
   }
-  if (!data) return <div>Loading...</div>
+  if (!data && movie.tmdb_id) return <div>Loading...</div>
 
-  if (data.backdrop_path && !tmdb.backdrop_path) {
+  if (data?.backdrop_path && !tmdb?.backdrop_path) {
     setTmdb(data)
     setBackdropPath('https://www.themoviedb.org/t/p/w1280' + data.backdrop_path)
   }

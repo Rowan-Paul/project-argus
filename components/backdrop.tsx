@@ -1,7 +1,7 @@
+import useSWR from 'swr'
+import { useSession } from 'next-auth/client'
 import AddToHistoryButton from './historyButton'
 import HistoryCounter from './historyCounter'
-import { useSession } from 'next-auth/client'
-import useSWR from 'swr'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
