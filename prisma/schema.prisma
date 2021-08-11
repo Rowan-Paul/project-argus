@@ -46,6 +46,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @default(now()) @map("updated_at")
+  history       history[] @relation("historyTousers")
 
   @@map("users")
 }
@@ -62,11 +63,21 @@ model VerificationRequest {
 }
 
 model movies {
-  id       Int    @unique @default(autoincrement())
-  title    String @db.VarChar
-  year     Int    @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
-  overview String @db.VarChar
-  tmdb_id  Int?
+  id       Int       @unique @default(autoincrement())
+  title    String    @db.VarChar
+  year     Int       @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
+  overview String    @db.VarChar
+  tmdb_id  Int?      @unique
+  history  history[]
 
   @@unique([title, year], name: "movies_title.year_unique")
+}
+
+model history {
+  id       Int      @unique @default(autoincrement())
+  datetime DateTime @default(now()) @db.Timestamp(6)
+  user_id  Int
+  movie_id Int?
+  movies   movies?  @relation(fields: [movie_id], references: [id])
+  users    User     @relation("historyTousers", fields: [user_id], references: [id])
 }

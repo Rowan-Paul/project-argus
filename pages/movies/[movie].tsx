@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
 import { MovieLayout } from '../../components/layout'
 import MovieDetails from '../../components/movieDetails'
+import Backdrop from '../../components/backdrop'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -65,16 +66,7 @@ export default function Movie() {
       </div>
 
       <div className="grid md:grid-cols-3">
-        <div
-          style={{
-            background: `url(${backdropPath}) no-repeat center center`,
-            backgroundSize: 'cover',
-            minHeight: '300px',
-          }}
-          className="min-h-439 md:col-span-2"
-        >
-          &nbsp;
-        </div>
+        <Backdrop path={backdropPath} id={movie.id} type="movies" />
 
         <div className="p-5 md:p-10">
           <p className="italic">{tmdb.tagline}</p>
