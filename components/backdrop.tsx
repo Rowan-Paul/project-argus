@@ -22,11 +22,7 @@ export default function Backdrop({ path, id, type }) {
       className="min-h-439 md:col-span-2"
     >
       <AddToHistoryButton type="movies" id={id} data={data} error={error} />
-      {data ? (
-        <HistoryCounter type="movies" id={id} data={data} error={error} />
-      ) : (
-        ''
-      )}
+      {data ? <HistoryCounter data={data} error={error} /> : ''}
     </div>
   )
 }

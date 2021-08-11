@@ -1,4 +1,4 @@
-export default function HistoryCounter({ type, id, data, error }) {
+export default function HistoryCounter({ data, error }) {
   if (!data) {
     return (
       <div className="block">

@@ -50,7 +50,7 @@ export default function MovieDetails({ tmdb }) {
 function Detail({ title, text }) {
   return (
     <div>
-      <span className="font-bold">{title}</span>
+      <span className="font-bold">{title} </span>
       <span className="text-sm">{text}</span>
     </div>
   )
