@@ -1,9 +1,11 @@
 import Modal from 'react-modal'
+import { mutate } from 'swr'
 import { useState } from 'react'
 import MaterialIcon from '../lib/materialIcons'
 
-export default function HistoryList({ history }) {
+export default function HistoryList({ history, url }) {
   const [modalIsOpen, setIsOpen] = useState(false)
+  const [error, setError] = useState(false)
 
   const customStyles = {
     content: {
@@ -24,6 +26,22 @@ export default function HistoryList({ history }) {
 
   const handleClick = () => {
     setIsOpen(!modalIsOpen)
+  }
+
+  const remove = (id) => {
+    fetch(`/api/history/${id}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          mutate(url)
+        } else {
+          throw new Error('Failed')
+        }
+      })
+      .catch((err) => {
+        setError(true)
+      })
   }
 
   return (
@@ -58,42 +76,27 @@ export default function HistoryList({ history }) {
           <tbody>
             {history
               ? Object?.values(history).map((item: any, i) => (
-                  <HistoryItem item={item} i={i} key={item.id} />
+                  <tr key={item.id}>
+                    <td>#{i + 1}</td>
+                    <td>{new Date(item.datetime).toDateString()}</td>
+                    <td>{new Date(item.datetime).toLocaleTimeString()}</td>
+
+                    <td
+                      className="cursor-pointer"
+                      onClick={() => remove(item.id)}
+                    >
+                      {error ? (
+                        'Something went wrong...'
+                      ) : (
+                        <MaterialIcon request="Delete" />
+                      )}
+                    </td>
+                  </tr>
                 ))
               : 'No history'}
           </tbody>
         </table>
       </Modal>
     </span>
-  )
-}
-
-function HistoryItem({ item, i }) {
-  const [error, setError] = useState(false)
-
-  const remove = () => {
-    fetch(`/api/history/${item.id}`, {
-      method: 'DELETE',
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          throw new Error('Failed')
-        }
-      })
-      .catch((err) => {
-        setError(true)
-      })
-  }
-
-  return (
-    <tr>
-      <td>#{i + 1}</td>
-      <td>{new Date(item.datetime).toDateString()}</td>
-      <td>{new Date(item.datetime).toLocaleTimeString()}</td>
-
-      <td className="cursor-pointer" onClick={remove}>
-        {error ? 'Something went wrong...' : <MaterialIcon request="Delete" />}
-      </td>
-    </tr>
   )
 }

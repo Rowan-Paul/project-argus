@@ -1,14 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { signIn, useSession } from 'next-auth/client'
-import { mutate } from 'swr'
+import useSWR, { mutate } from 'swr'
 import HistoryList from './historyList'
 import MaterialIcon from '../lib/materialIcons'
+import { arraysEqual } from '../lib/utils'
 
-export default function History({ type, id, data, error }) {
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init)
+  return res.json()
+}
+
+export default function History({ type, id }) {
   const [session, loadingSession] = useSession()
   const [loading, setLoading] = useState(false)
   const [addToHistoryError, setError] = useState(false)
   const [added, setAdded] = useState(false)
+  const [history, setHistory] = useState([])
+  const { data, error } = useSWR(
+    `/api/history/${session?.id}/${type}/${id}`,
+    fetcher
+  )
+
+  useEffect(() => {
+    if (!arraysEqual(data, history) || data === undefined) {
+      setHistory(data)
+    }
+  }, [data])
 
   const addToHistory = () => {
     if (!session) {
@@ -55,14 +76,22 @@ export default function History({ type, id, data, error }) {
     )
   }
 
-  if (added || data?.length > 0) {
+  if (added || history?.length > 0) {
+    if (error && history?.length > 0) {
+      setAdded(false)
+      setHistory([])
+    }
+
     return (
       <div className="text-white bg-black bg-opacity-75 text-xs p-3 m-2 inline-block divide-x-2 divide-solid">
-        <MaterialIcon request="Check" /> Watched {data?.length} times
+        <MaterialIcon request="Check" /> Watched {history?.length} times
         <span className="ml-2 pl-2 cursor-pointer" onClick={addToHistory}>
           <MaterialIcon request="AddPlaylist" />
         </span>
-        <HistoryList history={data} />
+        <HistoryList
+          history={history}
+          url={`/api/history/${session?.id}/${type}/${id}`}
+        />
       </div>
     )
   }
