@@ -1,7 +1,6 @@
 import useSWR from 'swr'
 import { useSession } from 'next-auth/client'
-import AddToHistoryButton from './historyButton'
-import HistoryCounter from './historyCounter'
+import History from './history'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -21,8 +20,7 @@ export default function Backdrop({ path, id, type }) {
       }}
       className="min-h-439 md:col-span-2"
     >
-      <AddToHistoryButton type="movies" id={id} data={data} error={error} />
-      {data ? <HistoryCounter data={data} error={error} /> : ''}
+      <History type="movies" id={id} data={data} error={error} />
     </div>
   )
 }

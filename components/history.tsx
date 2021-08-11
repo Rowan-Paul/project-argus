@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { signIn, useSession } from 'next-auth/client'
 import { mutate } from 'swr'
+import HistoryList from './historyList'
+import { AddIcon, AddPlaylistIcon, CheckIcon } from '../lib/materialIcons'
 
-export default function AddToHistoryButton({ type, id, data, error }) {
+export default function History({ type, id, data, error }) {
   const [session, loadingSession] = useSession()
   const [loading, setLoading] = useState(false)
   const [addToHistoryError, setError] = useState(false)
   const [added, setAdded] = useState(false)
 
-  const handleClick = () => {
+  const addToHistory = () => {
     if (!session) {
       signIn()
     } else {
@@ -41,7 +43,7 @@ export default function AddToHistoryButton({ type, id, data, error }) {
 
   if (loading) {
     return (
-      <div className="text-white bg-black bg-opacity-75 text-xs p-4 m-2 inline-block">
+      <div className="text-white bg-black bg-opacity-50 text-xs p-3 m-2 inline-block">
         Loading...
       </div>
     )
@@ -55,24 +57,24 @@ export default function AddToHistoryButton({ type, id, data, error }) {
 
   if (added || data?.length > 0) {
     return (
-      <p className="text-white bg-black bg-opacity-75 text-xs p-4 m-2 inline-block divide-x-2  divide-solid">
-        <span>✔Watched</span>
-        <span
-          className="ml-2 pl-2 cursor-pointer"
-          onClick={() => handleClick()}
-        >
-          ➕
+      <div className="text-white bg-black bg-opacity-75 text-xs p-3 m-2 inline-block divide-x-2 divide-solid">
+        <span>
+          <CheckIcon center={true} /> Watched {data?.length} times
         </span>
-      </p>
+        <span className="ml-2 pl-2 cursor-pointer" onClick={addToHistory}>
+          <AddPlaylistIcon center={true} />
+        </span>
+        <HistoryList history={data} />
+      </div>
     )
   }
 
   return (
     <div
-      className="text-white bg-black bg-opacity-75 text-xs p-4 m-2 cursor-pointer inline-block"
-      onClick={() => handleClick()}
+      className="text-white bg-black bg-opacity-50 text-xs p-3 m-2 cursor-pointer inline-block"
+      onClick={addToHistory}
     >
-      ➕Add to history
+      <AddPlaylistIcon center={true} /> Add to history
     </div>
   )
 }

@@ -19,6 +19,18 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(500).end()
     }
+  } else if (req.method === 'DELETE') {
+    try {
+      await prisma.history.delete({
+        where: {
+          id: req.query.user[0],
+        },
+      })
+
+      res.status(200).end()
+    } catch (error) {
+      res.status(500).end()
+    }
   } else if (req.method === 'GET') {
     try {
       let data = {

@@ -31,7 +31,6 @@ export default function Movie() {
         setMovie(res)
 
         if (res.tmdb_id) {
-          console.log('url set')
           setUrl(
             `https://api.themoviedb.org/3/movie/${res.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
           )
