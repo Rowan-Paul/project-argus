@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { signIn, useSession } from 'next-auth/client'
 import { mutate } from 'swr'
 import HistoryList from './historyList'
-import { AddIcon, AddPlaylistIcon, CheckIcon } from '../lib/materialIcons'
+import MaterialIcon from '../lib/materialIcons'
 
 export default function History({ type, id, data, error }) {
   const [session, loadingSession] = useSession()
@@ -58,11 +58,9 @@ export default function History({ type, id, data, error }) {
   if (added || data?.length > 0) {
     return (
       <div className="text-white bg-black bg-opacity-75 text-xs p-3 m-2 inline-block divide-x-2 divide-solid">
-        <span>
-          <CheckIcon center={true} /> Watched {data?.length} times
-        </span>
+        <MaterialIcon request="Check" /> Watched {data?.length} times
         <span className="ml-2 pl-2 cursor-pointer" onClick={addToHistory}>
-          <AddPlaylistIcon center={true} />
+          <MaterialIcon request="AddPlaylist" />
         </span>
         <HistoryList history={data} />
       </div>
@@ -74,7 +72,7 @@ export default function History({ type, id, data, error }) {
       className="text-white bg-black bg-opacity-50 text-xs p-3 m-2 cursor-pointer inline-block"
       onClick={addToHistory}
     >
-      <AddPlaylistIcon center={true} /> Add to history
+      <MaterialIcon request="AddPlaylist" /> Add to history
     </div>
   )
 }

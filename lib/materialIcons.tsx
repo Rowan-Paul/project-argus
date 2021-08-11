@@ -1,5 +1,33 @@
-export function ListIcon({ center }) {
-  const icon = (
+export default function MaterialIcon({ request }) {
+  let icon
+
+  switch (request) {
+    case 'List':
+      icon = ListIcon()
+      break
+
+    case 'ViewList':
+      icon = ViewListIcon()
+      break
+
+    case 'Add':
+      icon = AddIcon()
+      break
+
+    case 'AddPlaylist':
+      icon = AddPlaylistIcon()
+      break
+
+    case 'Check':
+      icon = CheckIcon()
+      break
+  }
+
+  return <div className="inline-block text-center align-middle">{icon}</div>
+}
+
+export function ListIcon() {
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -14,16 +42,10 @@ export function ListIcon({ center }) {
       <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7zm-4 6h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
     </svg>
   )
-
-  if (center) {
-    return <div className="inline-flex justify-center align-middle">{icon}</div>
-  }
-
-  return icon
 }
 
-export function ViewListIcon({ center }) {
-  const icon = (
+export function ViewListIcon() {
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       enableBackground="new 0 0 24 24"
@@ -36,16 +58,10 @@ export function ViewListIcon({ center }) {
       <path d="M3,14h4v-4H3V14z M3,19h4v-4H3V19z M3,9h4V5H3V9z M8,14h13v-4H8V14z M8,19h13v-4H8V19z M8,5v4h13V5H8z" />
     </svg>
   )
-
-  if (center) {
-    return <div className="inline-flex justify-center align-middle">{icon}</div>
-  }
-
-  return icon
 }
 
-export function AddIcon({ center }) {
-  const icon = (
+export function AddIcon() {
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -57,16 +73,10 @@ export function AddIcon({ center }) {
       <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
     </svg>
   )
-
-  if (center) {
-    return <div className="inline-flex justify-center align-middle">{icon}</div>
-  }
-
-  return icon
 }
 
-export function AddPlaylistIcon({ center }) {
-  const icon = (
+export function AddPlaylistIcon() {
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       enableBackground="new 0 0 24 24"
@@ -83,16 +93,10 @@ export function AddPlaylistIcon({ center }) {
       </g>
     </svg>
   )
-
-  if (center) {
-    return <div className="inline-flex justify-center align-middle">{icon}</div>
-  }
-
-  return icon
 }
 
-export function CheckIcon({ center }) {
-  const icon = (
+export function CheckIcon() {
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
@@ -104,10 +108,4 @@ export function CheckIcon({ center }) {
       <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
     </svg>
   )
-
-  if (center) {
-    return <div className="inline-flex justify-center align-middle">{icon}</div>
-  }
-
-  return icon
 }

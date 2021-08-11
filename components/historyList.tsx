@@ -1,4 +1,4 @@
-import { ViewListIcon } from '../lib/materialIcons'
+import MaterialIcon from '../lib/materialIcons'
 
 export default function HistoryList({ history }) {
   const handleClick = () => {
@@ -7,7 +7,7 @@ export default function HistoryList({ history }) {
 
   return (
     <span onClick={handleClick} className="ml-2 pl-2 cursor-pointer">
-      <ViewListIcon center={true} />
+      <MaterialIcon request="ViewList" />
     </span>
   )
 }

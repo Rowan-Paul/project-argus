@@ -18,7 +18,7 @@ export default function Backdrop({ path, id, type }) {
         backgroundSize: 'cover',
         minHeight: '300px',
       }}
-      className="min-h-439 md:col-span-2"
+      className="min-h-439 md:col-span-2 md:rounded-xl lg:rounded-2xl"
     >
       <History type="movies" id={id} data={data} error={error} />
     </div>
