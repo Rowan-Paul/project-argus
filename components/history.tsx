@@ -1,6 +1,6 @@
+import useSWR, { mutate } from 'swr'
 import { useEffect, useState } from 'react'
 import { signIn, useSession } from 'next-auth/client'
-import useSWR, { mutate } from 'swr'
 import HistoryList from './historyList'
 import MaterialIcon from '../lib/materialIcons'
 import { arraysEqual } from '../lib/utils'
