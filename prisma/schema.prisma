@@ -75,7 +75,7 @@ model movies {
 
 model history {
   id       Int      @unique @default(autoincrement())
-  datetime DateTime @default(now()) @db.Timestamp(6)
+  datetime DateTime @default(now()) @db.Timestamptz(6)
   user_id  Int
   movie_id Int?
   movies   movies?  @relation(fields: [movie_id], references: [id])

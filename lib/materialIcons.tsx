@@ -29,6 +29,22 @@ export default function MaterialIcon({ request }) {
     case 'Delete':
       icon = DeleteIcon()
       break
+
+    case 'MoreVert':
+      icon = MoreVertIcon()
+      break
+
+    case 'Pending':
+      icon = PendingIcon()
+      break
+
+    case 'Error':
+      icon = ErrorIcon()
+      break
+
+    case 'MoreHoriz':
+      icon = MoreHorizIcon()
+      break
   }
 
   return <div className="inline-block text-center align-middle">{icon}</div>
@@ -154,6 +170,75 @@ export function DeleteIcon() {
     >
       <path d="M0 0h24v24H0V0z" fill="none" />
       <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z" />
+    </svg>
+  )
+}
+
+export function MoreVertIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 0 24 24"
+      width="24px"
+      fill="#ffffff"
+    >
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+    </svg>
+  )
+}
+
+export function PendingIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      enableBackground="new 0 0 24 24"
+      height="24px"
+      viewBox="0 0 24 24"
+      width="24px"
+      fill="#ffffff"
+    >
+      <g>
+        <rect fill="none" height="24" width="24" />
+      </g>
+      <g>
+        <g>
+          <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.42,0-8-3.58-8-8 c0-4.42,3.58-8,8-8s8,3.58,8,8C20,16.42,16.42,20,12,20z" />
+          <circle cx="7" cy="12" r="1.5" />
+          <circle cx="12" cy="12" r="1.5" />
+          <circle cx="17" cy="12" r="1.5" />
+        </g>
+      </g>
+    </svg>
+  )
+}
+
+export function ErrorIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 0 24 24"
+      width="24px"
+      fill="#FFFFFF"
+    >
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+    </svg>
+  )
+}
+
+export function MoreHorizIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 0 24 24"
+      width="24px"
+      fill="#FFFFFF"
+    >
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
     </svg>
   )
 }

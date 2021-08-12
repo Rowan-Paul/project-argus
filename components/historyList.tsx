@@ -45,8 +45,10 @@ export default function HistoryList({ history, url }) {
   }
 
   return (
-    <span onClick={handleClick} className="ml-2 pl-2 cursor-pointer">
-      <MaterialIcon request="ViewList" />
+    <span className="ml-2 pl-2 cursor-pointer">
+      <span onClick={handleClick}>
+        <MaterialIcon request="ViewList" />
+      </span>
 
       <Modal
         isOpen={modalIsOpen}

@@ -9,8 +9,9 @@ export default async function handler(req: any, res: any) {
 
       if (req.query.user[1] === 'movies') {
         data.movie_id = parseInt(req.query.user[2])
-      } else if (req.body.datetime) {
-        data.datetime = req.body.datetime
+      }
+      if (req.body.datetime) {
+        data.datetime = new Date(req.body.datetime[0])
       }
 
       await prisma.history.create({ data })
