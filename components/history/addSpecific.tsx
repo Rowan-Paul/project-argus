@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { mutate } from 'swr'
 import { signIn } from 'next-auth/client'
 import MaterialIcon from '../../lib/materialIcons'
-import { LargeButton } from '../buttons'
+import { LargeButton, OnClickButton } from '../buttons'
 
 export default function AddSpecific({ session, type, id }) {
   const [modalIsOpen, setIsOpen] = useState(false)
@@ -47,6 +47,34 @@ export default function AddSpecific({ session, type, id }) {
       body: JSON.stringify({
         user: session.id,
         datetime: date,
+      }),
+    })
+      .then((res) => {
+        setLoading(false)
+        if (res.status === 201) {
+          mutate(`/api/history/${session.id}/${type}/${id}`)
+        } else {
+          setError(true)
+        }
+      })
+      .catch((err) => {
+        setLoading(false)
+        setError(true)
+      })
+  }
+
+  const noTime = () => {
+    setIsOpen(!modalIsOpen)
+    setLoading(true)
+    fetch(`/api/history/${session.id}/${type}/${id}`, {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: session.id,
+        noDate: true,
       }),
     })
       .then((res) => {
@@ -114,9 +142,14 @@ export default function AddSpecific({ session, type, id }) {
             onReady={() => setDate(new Date())}
           />
 
-          <span className="block">
-            <LargeButton text="Save" onClick={handleSave} />
-          </span>
+          <div className="grid grid-cols-2">
+            <span className="rounded mt-5 mx-2 p-4 cursor-pointer block text-center">
+              <span onClick={noTime}>No time</span>
+            </span>
+            <span>
+              <LargeButton text="Save" onClick={handleSave} />
+            </span>
+          </div>
         </div>
       </Modal>
     </span>

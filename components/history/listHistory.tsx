@@ -80,8 +80,16 @@ export default function ListHistory({ history, url }) {
               ? Object?.values(history).map((item: any, i) => (
                   <tr key={item.id}>
                     <td>#{i + 1}</td>
-                    <td>{new Date(item.datetime).toDateString()}</td>
-                    <td>{new Date(item.datetime).toLocaleTimeString()}</td>
+                    <td>
+                      {item.datetime
+                        ? new Date(item.datetime).toDateString()
+                        : 'No date'}
+                    </td>
+                    <td>
+                      {item.datetime
+                        ? new Date(item.datetime).toLocaleTimeString()
+                        : 'No time'}
+                    </td>
 
                     <td
                       className="cursor-pointer"

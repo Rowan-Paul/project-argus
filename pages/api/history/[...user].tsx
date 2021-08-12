@@ -5,19 +5,24 @@ export default async function handler(req: any, res: any) {
     try {
       let data: any = {
         user_id: parseInt(req.query.user[0]),
+        datetime: new Date(),
       }
 
       if (req.query.user[1] === 'movies') {
         data.movie_id = parseInt(req.query.user[2])
       }
-      if (req.body.datetime) {
-        data.datetime = new Date(req.body.datetime[0])
+      if (req.body.datetime[0]) {
+        data.datetime = req.body.datetime[0]
+      }
+      if (req.body.noDate) {
+        delete data.datetime
       }
 
       await prisma.history.create({ data })
 
       res.status(201).end()
     } catch (error) {
+      console.log(error)
       res.status(500).end()
     }
   } else if (req.method === 'GET') {
