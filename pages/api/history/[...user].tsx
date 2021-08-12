@@ -32,6 +32,9 @@ export default async function handler(req: any, res: any) {
 
       const result = await prisma.history.findMany({
         where: data,
+        orderBy: {
+          datetime: 'asc',
+        },
       })
 
       if (result == null || result.length < 1) throw new Error('No movie found')

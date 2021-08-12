@@ -4,10 +4,10 @@ import Modal from 'react-modal'
 import Flatpickr from 'react-flatpickr'
 import { useState } from 'react'
 import { mutate } from 'swr'
-import MaterialIcon from '../lib/materialIcons'
-import { LargeButton } from './buttons'
+import MaterialIcon from '../../lib/materialIcons'
+import { LargeButton } from '../buttons'
 
-export default function HistoryAddSpecific({ session, type, id }) {
+export default function AddSpecific({ session, type, id }) {
   const [modalIsOpen, setIsOpen] = useState(false)
   const [date, setDate] = useState(new Date())
   const [loading, setLoading] = useState(false)

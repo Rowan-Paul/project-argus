@@ -1,4 +1,4 @@
-import History from './history'
+import History from './history/history'
 
 export default function Backdrop({ path, id, type }) {
   return (

@@ -1,10 +1,10 @@
 import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
-import { arraysEqual } from '../lib/utils'
-import HistoryAddNew from './historyAddNew'
-import BackgroundOverlay from './backgroundOverlay'
-import HistoryCompleted from './historyCompleted'
+import { arraysEqual } from '../../lib/utils'
+import OverviewNew from './overviewNew'
+import BackgroundOverlay from '../backgroundOverlay'
+import OverviewExisting from './overviewExisting'
 
 const fetcher = async (
   input: RequestInfo,
@@ -41,7 +41,7 @@ export default function History({ type, id }) {
     }
 
     return (
-      <HistoryCompleted
+      <OverviewExisting
         type={type}
         id={id}
         session={session}
@@ -50,5 +50,5 @@ export default function History({ type, id }) {
     )
   }
 
-  return <HistoryAddNew type={type} id={id} session={session} />
+  return <OverviewNew type={type} id={id} session={session} />
 }

@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { useState } from 'react'
 import Image from 'next/image'
-import { LoadButton, OnClickButton } from './buttons'
+import { LoadButton, OnClickButton } from '../buttons'
 import router from 'next/router'
 
 const fetcher = async (

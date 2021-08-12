@@ -1,9 +1,9 @@
 import Modal from 'react-modal'
 import { mutate } from 'swr'
 import { useState } from 'react'
-import MaterialIcon from '../lib/materialIcons'
+import MaterialIcon from '../../lib/materialIcons'
 
-export default function HistoryList({ history, url }) {
+export default function ListHistory({ history, url }) {
   const [modalIsOpen, setIsOpen] = useState(false)
   const [error, setError] = useState(false)
 
@@ -47,7 +47,7 @@ export default function HistoryList({ history, url }) {
   return (
     <span className="ml-2 pl-2 cursor-pointer">
       <span onClick={handleClick}>
-        <MaterialIcon request="ViewList" />
+        <MaterialIcon request="History" />
       </span>
 
       <Modal

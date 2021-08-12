@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/layout'
 import { removeLastWord } from '../../lib/utils'
-import SearchResults from '../../components/searchMovies'
+import SearchResults from '../../components/carousels/searchMovies'
 
 export default function NewMovie() {
   const [movie, setMovie] = useState({})

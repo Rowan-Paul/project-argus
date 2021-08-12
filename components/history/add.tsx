@@ -1,9 +1,9 @@
 import { signIn } from 'next-auth/client'
 import { useState } from 'react'
 import { mutate } from 'swr'
-import MaterialIcon from '../lib/materialIcons'
+import MaterialIcon from '../../lib/materialIcons'
 
-export default function HistoryAddAgain({ type, id, session }) {
+export default function Add({ type, id, session, text }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
@@ -52,6 +52,7 @@ export default function HistoryAddAgain({ type, id, session }) {
   return (
     <span className="pl-2 cursor-pointer" onClick={addToHistory}>
       <MaterialIcon request="AddPlaylist" />
+      {text ? ' Add to history' : ''}
     </span>
   )
 }
