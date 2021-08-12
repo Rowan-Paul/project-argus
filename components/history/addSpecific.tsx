@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 import Flatpickr from 'react-flatpickr'
 import { useState } from 'react'
 import { mutate } from 'swr'
+import { signIn } from 'next-auth/client'
 import MaterialIcon from '../../lib/materialIcons'
 import { LargeButton } from '../buttons'
 
@@ -27,7 +28,11 @@ export default function AddSpecific({ session, type, id }) {
   }
 
   function handleModal() {
-    setIsOpen(!modalIsOpen)
+    if (!session) {
+      signIn()
+    } else {
+      setIsOpen(!modalIsOpen)
+    }
   }
 
   const handleSave = () => {
