@@ -1,0 +1,66 @@
+{
+  "name": "andromeda",
+  "version": "0.2.0",
+  "description": "Frontend for project argus",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rowan-Paul/andromeda.git"
+  },
+  "author": "Rowan Paul Flynn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rowan-Paul/project-argus/issues"
+  },
+  "homepage": "https://projectarg.us",
+  "dependencies": {
+    "@craco/craco": "^6.1.1",
+    "@stripe/react-stripe-js": "^1.4.0",
+    "@stripe/stripe-js": "^1.13.1",
+    "@tailwindcss/line-clamp": "^0.2.0",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.2",
+    "dotenv": "^8.2.0",
+    "query-string": "^4.3.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-router-hash-link": "^2.4.0",
+    "react-scripts": "4.0.3",
+    "redux": "^4.1.0",
+    "redux-thunk": "^2.3.0",
+    "web-vitals": "^1.1.0"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.3",
+    "autoprefixer": "^9.8.6",
+    "postcss": "^7.0.35",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3"
+  }
+}
