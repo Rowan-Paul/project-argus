@@ -1,18 +1,13 @@
 # project-argus
 
-project argus tracks everything for you; movies, tv shows, music, podcasts, audiobooks and games. All in a modern, open source web application.
+A modern web application which allows the tracking of all your activities.
 
-## Different apps
+The old _andromeda_ and _orion_ repositories have been placed as seperate branches on this repository.
 
-There are several different parts of Project Argus that track different stuff:
+## Movies
 
-| Name                 | Description                            | Repository                                                   | Site                                                   |
-| -------------------- | -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
-| project-argus        | The main repository                    | [GitHub](https://github.com/Rowan-Paul/project-argus)        | NA                                                     |
-| project-argus-status | Status page for all applications       | [GitHub](https://github.com/Rowan-Paul/project-argus-status) | [status.projectarg.us](https://status.projectarg.us/)  |
-| andromeda            | Frontend application                   | [GitHub](https://github.com/Rowan-Paul/andromeda)            | [projectarg.us](https://projectarg.us/)                |
-| orion                | Backend server                         | [GitHub](https://github.com/Rowan-Paul/orion)                | [api.projectarg.us](https://api.projectarg.us/)        |
+Movies are taken from the movie database, but are partially saved in our own database. The movie title, year and overview are saved in the database and can thus always be accessed, even if tmdb is down (or the particular movie isn't on tmdb).
 
-## Documentation
+The discovery feed on the dashboard is directly from the tmdb and if you click a movie that isn't in the database yet you can add it by simply going to that link. The site searches through tmdb for the title and year of the movie and shows the results, from which you can add the right movie.
 
-The app is build using ReactJS and ExpressJS using a MongoDB database and deployed on an Ubuntu VPS. If you wish to know more, navigate to the [wiki](https://github.com/Rowan-Paul/project-argus/wiki) to read more about the app. If you wish to see a roadmap, check [projects](https://github.com/Rowan-Paul/project-argus/projects)
+You can add a movie to your history with a specific datetime, the current datetime or none at all (for when you're not sure when).
