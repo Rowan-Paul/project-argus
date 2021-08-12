@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
       if (req.query.user[1] === 'movies') {
         data.movie_id = parseInt(req.query.user[2])
       }
-      if (req.body.datetime[0]) {
+      if (req.body.datetime) {
         data.datetime = req.body.datetime[0]
       }
       if (req.body.noDate) {

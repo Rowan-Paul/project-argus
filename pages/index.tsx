@@ -34,7 +34,7 @@ export default function Home() {
     )
   }
 
-  return ''
+  return <p>Loading...</p>
 }
 
 Home.getLayout = (page) => <Layout>{page}</Layout>

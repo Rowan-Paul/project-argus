@@ -39,7 +39,7 @@ export default function Dashboard() {
     )
   }
 
-  return ''
+  return <p>Loading...</p>
 }
 
 Dashboard.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>

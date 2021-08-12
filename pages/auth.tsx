@@ -37,7 +37,7 @@ export default function SignIn({ providers }) {
     )
   }
 
-  return ''
+  return <p>Loading...</p>
 }
 
 export async function getServerSideProps(context) {
