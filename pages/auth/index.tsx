@@ -50,57 +50,58 @@ export default function Auth({ providers }) {
         </Head>
 
         <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-          <h1>Sign in</h1>
-
-          {Object.values(providers).map((provider) => {
-            if (provider.id === 'email') {
-              return (
-                <form
-                  onSubmit={registerUser}
-                  key="emailForm"
-                  className="text-left max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10"
-                >
-                  <p className="text-sm text-center">Or use E-mail</p>
-                  <div className="relative border-b-2 min-w-96 focus-within:border-blue-500">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder=" "
-                      required
-                      className="block w-full appearance-none focus:outline-none bg-transparent"
+          <div className="max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10">
+            <h1>Sign in</h1>
+            {Object.values(providers).map((provider) => {
+              if (provider.id === 'email') {
+                return (
+                  <form
+                    onSubmit={registerUser}
+                    key="emailForm"
+                    className="text-left "
+                  >
+                    <p className="text-sm text-center">Or use E-mail</p>
+                    <div className="relative border-b-2 min-w-96 focus-within:border-blue-500">
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder=" "
+                        required
+                        className="block w-full appearance-none focus:outline-none bg-transparent"
+                      />
+                      <label
+                        htmlFor="email"
+                        className="absolute top-0 -z-1 duration-300 origin-0"
+                      >
+                        E-mail
+                      </label>
+                    </div>
+                    {formLoading ? (
+                      <span className="p-3 text-white bg-green-400 mt-10 inline-block">
+                        <MaterialIcon request="Pending" /> Loading...
+                      </span>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="mt-3 p-3 text-white bg-green-400"
+                      >
+                        Sign In
+                      </button>
+                    )}
+                  </form>
+                )
+              } else {
+                return (
+                  <span key={provider.name}>
+                    <OnClickButton
+                      text={`${provider.name}`}
+                      onClick={() => signIn(provider.id)}
                     />
-                    <label
-                      htmlFor="email"
-                      className="absolute top-0 -z-1 duration-300 origin-0"
-                    >
-                      E-mail
-                    </label>
-                  </div>
-                  {formLoading ? (
-                    <span className="p-3 text-white bg-green-400 mt-10 inline-block">
-                      <MaterialIcon request="Pending" /> Loading...
-                    </span>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="p-3 text-white bg-green-400"
-                    >
-                      Sign In
-                    </button>
-                  )}
-                </form>
-              )
-            } else {
-              return (
-                <div key={provider.name}>
-                  <OnClickButton
-                    text={`${provider.name}`}
-                    onClick={() => signIn(provider.id)}
-                  />
-                </div>
-              )
-            }
-          })}
+                  </span>
+                )
+              }
+            })}
+          </div>
         </main>
       </>
     )

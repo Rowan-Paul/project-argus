@@ -16,6 +16,7 @@ export default NextAuth({
     Providers.Email({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
+      maxAge: 6 * 60 * 60,
     }),
   ],
   callbacks: {

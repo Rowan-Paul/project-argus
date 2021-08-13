@@ -17,7 +17,7 @@ export default function EmailSignUp() {
     data.append('file', image)
     data.append(
       'upload_preset',
-      process.env.NEXT_PUBLIC_CLOUDINARY_UNSIGNED_UPLOAD_PRESET
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
     )
     data.append('cloud_name', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME)
     fetch(
