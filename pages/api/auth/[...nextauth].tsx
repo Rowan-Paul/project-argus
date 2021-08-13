@@ -6,18 +6,23 @@ import prisma from '../../../lib/prisma'
 export default NextAuth({
   pages: {
     signIn: '/auth',
+    verifyRequest: '/auth/verify-request',
   },
   providers: [
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+    Providers.Email({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+    }),
   ],
-  adapter: Adapters.Prisma.Adapter({ prisma }),
   callbacks: {
     session: async (session, user) => {
       session.id = user.id
       return Promise.resolve(session)
     },
   },
+  adapter: Adapters.Prisma.Adapter({ prisma }),
 })

@@ -1,20 +1,33 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/client'
+import { useEffect, useState } from 'react'
+import { getSession, signIn, useSession } from 'next-auth/client'
 import { MinimalLayout } from '../components/layout'
 import DiscoverMovies from '../components/carousels/discoverMovies'
+import { useRouter } from 'next/router'
+import MaterialIcon from '../lib/materialIcons'
 
 export default function Dashboard() {
-  const [session, loading] = useSession()
+  const [session, setSession] = useState({})
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
-    if (!session && !loading) {
-      router.push('/auth?callbackUrl=/dashboard')
-    }
-  }, [session, loading])
+    fetch('/api/auth/session')
+      .then((res) => res.json())
+      .then((res) => {
+        setLoading(false)
+        setSession(res)
+
+        if (!res.user?.name) {
+          router.push('/auth/email')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        signIn()
+      })
+  }, [])
 
   if (!loading && session) {
     return (
@@ -25,13 +38,17 @@ export default function Dashboard() {
         </Head>
 
         <div className="flex align-middle">
-          <Image
-            src={session.user.image}
-            alt="Profile picture"
-            width={32}
-            height={32}
-          />
-          <h1>Welcome, {session.user.name}</h1>
+          {session.user?.image ? (
+            <Image
+              src={session.user?.image}
+              alt="Profile picture"
+              width={32}
+              height={32}
+            />
+          ) : (
+            <MaterialIcon request="Person" />
+          )}
+          <h1>Welcome, {session.user?.name}</h1>
         </div>
 
         <DiscoverMovies />

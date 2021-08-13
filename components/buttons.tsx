@@ -15,7 +15,7 @@ export default function Button({ text, link }) {
 export function OnClickButton({ text, onClick }) {
   return (
     <div
-      className="bg-blue-400 p-4 text-white font-bold rounded mt-5 mx-2 cursor-pointer inline-block"
+      className="bg-blue-400 py-4 px-3 text-white font-bold rounded mt-5 mx-2 cursor-pointer inline-block"
       onClick={onClick}
     >
       {text}
