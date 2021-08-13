@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { LoadButton, OnClickButton } from '../buttons'
 import router from 'next/router'
+import Loading from '../loading'
 
 const fetcher = async (
   input: RequestInfo,
@@ -20,7 +21,14 @@ export default function SearchResults({ title, year }) {
   )
 
   if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
+  if (!data) {
+    return (
+      <>
+        <h2 className="my-5">Results</h2>
+        <Loading small={false} />
+      </>
+    )
+  }
 
   return (
     <div className="my-5 text-left">

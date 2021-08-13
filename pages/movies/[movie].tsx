@@ -6,6 +6,7 @@ import { titleCase } from '../../lib/utils'
 import { MovieLayout } from '../../components/layout'
 import MovieDetails from '../../components/movieDetails'
 import Backdrop from '../../components/backdrop'
+import Loading from '../../components/loading'
 
 const fetcher = async (
   input: RequestInfo,
@@ -49,9 +50,34 @@ export default function Movie() {
 
   if (initialLoadError) {
     router.push(`/movies/new?movie=${router.query.movie}`)
-    return <div>Failed to load</div>
+    return (
+      <>
+        <Head>
+          <title>
+            {movie.title ? `${movie.title} ${movie.year} | ` : ''}Movies |
+            project argus
+          </title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <div>Failed to load</div>
+      </>
+    )
   }
-  if (!data && movie.tmdb_id) return <div>Loading...</div>
+  if (!data && movie.tmdb_id)
+    return (
+      <>
+        <Head>
+          <title>
+            {movie.title ? `${movie.title} ${movie.year} | ` : ''}Movies |
+            project argus
+          </title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <Loading small={false} />
+      </>
+    )
 
   if (data?.backdrop_path && !tmdb?.backdrop_path) {
     setTmdb(data)
@@ -62,7 +88,8 @@ export default function Movie() {
     <>
       <Head>
         <title>
-          {movie.title} {movie.year} | Movies | project argus
+          {movie.title ? `${movie.title} ${movie.year} | ` : ''}Movies | project
+          argus
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>

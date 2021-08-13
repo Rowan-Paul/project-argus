@@ -24,6 +24,7 @@ export default function NewMovie() {
         <title>Movie not found | Movies | project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <h1>Looks like we don't have this movie...</h1>
       <p>You can try adding by selecting the correct movie below.</p>
       <SearchResults year={movie.year} title={movie.title} />

@@ -4,6 +4,7 @@ import { getProviders, signIn, useSession } from 'next-auth/client'
 import { OnClickButton } from '../../components/buttons'
 import Layout from '../../components/layout'
 import { useState } from 'react'
+import Loading from '../../components/loading'
 import MaterialIcon from '../../lib/materialIcons'
 
 export default function Auth({ providers }) {
@@ -45,7 +46,7 @@ export default function Auth({ providers }) {
     return (
       <>
         <Head>
-          <title>Sign In | project argus</title>
+          <title>Authentication | project argus</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -107,7 +108,16 @@ export default function Auth({ providers }) {
     )
   }
 
-  return <p>Loading...</p>
+  return (
+    <>
+      <Head>
+        <title>Authentication | project argus</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Loading small={false} />
+    </>
+  )
 }
 
 export async function getServerSideProps(context) {

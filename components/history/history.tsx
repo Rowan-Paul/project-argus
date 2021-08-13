@@ -5,6 +5,7 @@ import { arraysEqual } from '../../lib/utils'
 import OverviewNew from './overviewNew'
 import BackgroundOverlay from '../backgroundOverlay'
 import OverviewExisting from './overviewExisting'
+import Loading from '../loading'
 
 const fetcher = async (
   input: RequestInfo,
@@ -31,7 +32,15 @@ export default function History({ type, id }) {
 
   if (loading) {
     return (
-      <BackgroundOverlay onClick={() => {}} icon="Pending" text="Loading..." />
+      <BackgroundOverlay
+        onClick={() => {}}
+        icon=""
+        text={
+          <span className="w-6">
+            <Loading small={true} />
+          </span>
+        }
+      />
     )
   }
 

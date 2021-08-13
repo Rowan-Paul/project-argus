@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/client'
 import { OnClickButton } from '../components/buttons'
 import Layout from '../components/layout'
+import Loading from '../components/loading'
 
 export default function Home() {
   const [session, loading] = useSession()
@@ -34,7 +35,15 @@ export default function Home() {
     )
   }
 
-  return <p>Loading...</p>
+  return (
+    <>
+      <Head>
+        <title>Dashboard | project argus</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Loading small={false} />
+    </>
+  )
 }
 
 Home.getLayout = (page) => <Layout>{page}</Layout>

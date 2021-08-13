@@ -2,6 +2,7 @@ import { signIn } from 'next-auth/client'
 import { useState } from 'react'
 import { mutate } from 'swr'
 import MaterialIcon from '../../lib/materialIcons'
+import Loading from '../loading'
 
 export default function Add({ type, id, session, text }) {
   const [loading, setLoading] = useState(false)
@@ -39,8 +40,8 @@ export default function Add({ type, id, session, text }) {
 
   if (loading) {
     return (
-      <span className="pl-2">
-        <MaterialIcon request="Pending" />
+      <span className="pl-2 w-6">
+        <Loading small={true} />
       </span>
     )
   }

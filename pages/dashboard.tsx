@@ -1,14 +1,15 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { getSession, signIn, useSession } from 'next-auth/client'
+import { signIn } from 'next-auth/client'
 import { MinimalLayout } from '../components/layout'
 import DiscoverMovies from '../components/carousels/discoverMovies'
 import { useRouter } from 'next/router'
 import MaterialIcon from '../lib/materialIcons'
+import Loading from '../components/loading'
 
 export default function Dashboard() {
-  const [session, setSession] = useState({})
+  const [session, setSession] = useState()
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -17,10 +18,20 @@ export default function Dashboard() {
       .then((res) => res.json())
       .then((res) => {
         setLoading(false)
-        setSession(res)
 
-        if (!res.user?.name) {
-          router.push('/auth/email')
+        // check if object is empty
+        if (
+          res &&
+          Object.keys(res).length === 0 &&
+          res.constructor === Object
+        ) {
+          if (!res.user?.name) {
+            router.push('/auth/account-details')
+          }
+
+          signIn()
+        } else {
+          setSession(res)
         }
       })
       .catch((error) => {
@@ -30,6 +41,20 @@ export default function Dashboard() {
   }, [])
 
   if (!loading && session) {
+    if (!session?.user?.name) {
+      router.push('/auth/account-details')
+      return (
+        <>
+          <Head>
+            <title>Dashboard | project argus</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+
+          <Loading small={false} />
+        </>
+      )
+    }
+
     return (
       <>
         <Head>
@@ -56,7 +81,16 @@ export default function Dashboard() {
     )
   }
 
-  return <p>Loading...</p>
+  return (
+    <>
+      <Head>
+        <title>Dashboard | project argus</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Loading small={false} />
+    </>
+  )
 }
 
 Dashboard.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>

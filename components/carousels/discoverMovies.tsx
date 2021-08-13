@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import Image from 'next/image'
 import Link from 'next/link'
+import Loading from '../loading'
 
 const fetcher = async (
   input: RequestInfo,
@@ -18,7 +19,14 @@ export default function DiscoverMovies() {
   )
 
   if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
+  if (!data) {
+    return (
+      <>
+        <h2 className="my-5">Movies</h2>
+        <Loading small={false} />
+      </>
+    )
+  }
 
   return (
     <div className="my-5">

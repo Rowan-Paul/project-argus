@@ -6,7 +6,8 @@ import { useState } from 'react'
 import { mutate } from 'swr'
 import { signIn } from 'next-auth/client'
 import MaterialIcon from '../../lib/materialIcons'
-import { LargeButton, OnClickButton } from '../buttons'
+import { LargeButton } from '../buttons'
+import Loading from '../loading'
 
 export default function AddSpecific({ session, type, id }) {
   const [modalIsOpen, setIsOpen] = useState(false)
@@ -93,8 +94,8 @@ export default function AddSpecific({ session, type, id }) {
 
   if (loading) {
     return (
-      <span className="pl-2">
-        <MaterialIcon request="Pending" />
+      <span className="pl-2 w-6">
+        <Loading small={true} />
       </span>
     )
   }

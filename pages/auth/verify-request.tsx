@@ -14,7 +14,7 @@ export default function VerifyRequest() {
   return (
     <>
       <Head>
-        <title>Sign In | project argus</title>
+        <title>E-mail send | Authentication | project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
