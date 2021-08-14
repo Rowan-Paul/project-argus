@@ -25,7 +25,7 @@ export default function Dashboard() {
           Object.keys(res).length === 0 &&
           res.constructor === Object
         ) {
-          if (!res.user?.name) {
+          if (!res.user?.name && session && !loading) {
             router.push('/auth/account-details')
           }
 

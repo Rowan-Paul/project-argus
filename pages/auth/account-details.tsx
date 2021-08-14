@@ -1,14 +1,20 @@
+import Image from 'next/image'
+import Head from 'next/head'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/client'
 import Loading from '../../components/loading'
-import Head from 'next/head'
 import Layout from '../../components/layout/layout'
-
+import MaterialIcon from '../../lib/materialIcons'
+/**
+ *
+ * TODO: add validation of the form
+ */
 export default function AccountDetails() {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
+  const [localImage, setLocalImage] = useState()
   const [session, loadingSession] = useSession()
   const router = useRouter()
 
@@ -59,6 +65,12 @@ export default function AccountDetails() {
       .catch((err) => setError(true))
   }
 
+  function handleImageChange(e) {
+    setImage(e.target.files[0])
+
+    setLocalImage(URL.createObjectURL(e.target.files[0]))
+  }
+
   if (error) {
     return (
       <>
@@ -83,9 +95,6 @@ export default function AccountDetails() {
     if (!session) {
       signIn()
     }
-    if (session.user?.name) {
-      router.push('/dashboard')
-    }
 
     return (
       <>
@@ -104,6 +113,7 @@ export default function AccountDetails() {
               type="text"
               name="name"
               placeholder=" "
+              defaultValue={session?.user?.name ? session.user.name : ''}
               required
               className="block w-full appearance-none focus:outline-none bg-transparent"
             />
@@ -114,12 +124,30 @@ export default function AccountDetails() {
               Username
             </label>
           </div>
+
           <div className="relative border-b-2 focus-within:border-blue-500">
+            {localImage ? (
+              <img
+                src={localImage}
+                alt="Profile picture"
+                width={96}
+                height={96}
+              />
+            ) : session.user?.image ? (
+              <Image
+                src={session.user?.image}
+                alt="Profile picture"
+                width={96}
+                height={96}
+              />
+            ) : (
+              <MaterialIcon request="PersonLarge" />
+            )}
             <input
               type="file"
               accept="image/*"
               name="image"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={handleImageChange}
               className="block w-full appearance-none focus:outline-none bg-transparent"
             />
             <label

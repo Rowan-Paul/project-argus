@@ -7,6 +7,7 @@ export default NextAuth({
   pages: {
     signIn: '/auth',
     verifyRequest: '/auth/verify-request',
+    newUser: '/auth/account-details',
   },
   providers: [
     Providers.Google({
