@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
-import { MovieLayout } from '../../components/layout'
+import { MinimalLayout } from '../../components/layout/layout'
 import MovieDetails from '../../components/movieDetails'
 import Backdrop from '../../components/backdrop'
 import Loading from '../../components/loading'
@@ -113,4 +113,4 @@ export default function Movie() {
   )
 }
 
-Movie.getLayout = (page) => <MovieLayout>{page}</MovieLayout>
+Movie.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>

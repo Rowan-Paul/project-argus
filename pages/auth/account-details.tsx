@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/client'
 import Loading from '../../components/loading'
 import Head from 'next/head'
-import Layout from '../../components/layout'
+import Layout from '../../components/layout/layout'
 
 export default function AccountDetails() {
   const [error, setError] = useState(false)

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/client'
 import { OnClickButton } from '../components/buttons'
-import Layout from '../components/layout'
+import Layout from '../components/layout/layout'
 import Loading from '../components/loading'
 
 export default function Home() {

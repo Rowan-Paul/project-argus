@@ -29,7 +29,7 @@ export default function DiscoverMovies() {
   }
 
   return (
-    <div className="my-5">
+    <div className="m-5 md:my-5">
       <h2>Movies</h2>
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2 my-2 md:mx-5 justify-center">
         {Object.values(data.results)

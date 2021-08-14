@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Layout from '../../components/layout'
+import Layout from '../../components/layout/layout'
 import { removeLastWord } from '../../lib/utils'
 import SearchResults from '../../components/carousels/searchMovies'
 

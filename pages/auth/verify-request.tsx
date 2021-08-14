@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import Layout from '../../components/layout'
+import Layout from '../../components/layout/layout'
 
 export default function VerifyRequest() {
   const [session, loading] = useSession()

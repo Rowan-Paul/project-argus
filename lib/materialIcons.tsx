@@ -53,6 +53,10 @@ export default function MaterialIcon({ request }) {
     case 'Person':
       icon = PersonIcon()
       break
+
+    case 'PersonLarge':
+      icon = PersonLargeIcon()
+      break
   }
 
   return <div className="inline-block text-center align-middle">{icon}</div>
@@ -273,6 +277,21 @@ export function PersonIcon() {
       height="32px"
       viewBox="0 0 24 24"
       width="32px"
+      fill="#000000"
+    >
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+    </svg>
+  )
+}
+
+export function PersonLargeIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="96px"
+      viewBox="0 0 24 24"
+      width="96px"
       fill="#000000"
     >
       <path d="M0 0h24v24H0V0z" fill="none" />

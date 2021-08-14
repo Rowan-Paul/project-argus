@@ -15,16 +15,6 @@ export default function Layout({ children }) {
 
 export function MinimalLayout({ children }) {
   return (
-    <>
-      <Navbar />
-      <main className="p-5 pt-10 md:p-10">{children}</main>
-      <Footer />
-    </>
-  )
-}
-
-export function MovieLayout({ children }) {
-  return (
     <div>
       <Navbar />
       <main className="pt-10 md:p-10">{children}</main>
