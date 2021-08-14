@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Dashboard | project argus</title>
+        <title>project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Loading small={false} />

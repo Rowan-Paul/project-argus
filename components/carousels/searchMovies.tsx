@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { useState } from 'react'
 import Image from 'next/image'
-import { LoadButton, OnClickButton } from '../buttons'
+import { OnClickButton } from '../buttons'
 import router from 'next/router'
 import Loading from '../loading'
 
@@ -99,7 +99,7 @@ export function HorizontalMovie({ movie }) {
         <p>Release date: {movie.release_date}</p>
         <p>{movie.overview}</p>
         {loading ? (
-          <LoadButton />
+          <Loading small={true} />
         ) : error ? (
           <p className="ml-5 text-red-700 font-bold">
             Something went wrong, reload the page to try again

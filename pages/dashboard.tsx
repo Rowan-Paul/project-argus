@@ -25,7 +25,7 @@ export default function Dashboard() {
           Object.keys(res).length === 0 &&
           res.constructor === Object
         ) {
-          if (!res.user?.name && session && !loading) {
+          if (!res.user?.name && !loading) {
             router.push('/auth/account-details')
           }
 
@@ -35,7 +35,6 @@ export default function Dashboard() {
         }
       })
       .catch((error) => {
-        console.log(error)
         signIn()
       })
   }, [])

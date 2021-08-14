@@ -22,7 +22,6 @@ export default async function handler(req: any, res: any) {
 
       res.status(201).end()
     } catch (error) {
-      console.log(error)
       res.status(500).end()
     }
   } else if (req.method === 'GET') {

@@ -34,7 +34,6 @@ export default function User() {
   }, [url])
 
   if (error) {
-    console.log(error)
     return (
       <>
         <Head>

@@ -9,15 +9,22 @@ import MaterialIcon from '../../lib/materialIcons'
 
 export default function Auth({ providers }) {
   const [session, loading] = useSession()
+  const [formError, setFormError] = useState(String)
   const [formLoading, setFormLoading] = useState(false)
   const router = useRouter()
 
   const registerUser = (event) => {
     event.preventDefault()
-    setFormLoading(true)
 
-    const email = event.target.email.value
-    signIn('email', { email })
+    if (!document.getElementById('emailForm').checkValidity()) {
+      setFormError(`Please fill in your email`)
+    } else {
+      setFormError(undefined)
+      setFormLoading(true)
+
+      const email = event.target.email.value
+      signIn('email', { email })
+    }
   }
 
   if (session) {
@@ -50,7 +57,7 @@ export default function Auth({ providers }) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
+        <main className="flex flex-col items-center justify-center w-full flex-1 md:px-20 text-center">
           <div className="max-w-sm mx-auto rounded-lg shadow-xl overflow-hidden p-6 space-y-10">
             <h1>Sign in</h1>
             {Object.values(providers).map((provider) => {
@@ -59,14 +66,17 @@ export default function Auth({ providers }) {
                   <form
                     onSubmit={registerUser}
                     key="emailForm"
-                    className="text-left "
+                    className="text-left"
+                    id="emailForm"
+                    noValidate
                   >
-                    <p className="text-sm text-center">Or use E-mail</p>
+                    <p className="text-sm text-center pb-2">Or use E-mail</p>
                     <div className="relative border-b-2 min-w-96 focus-within:border-blue-500">
                       <input
                         type="email"
                         name="email"
                         placeholder=" "
+                        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                         required
                         className="block w-full appearance-none focus:outline-none bg-transparent"
                       />
@@ -77,6 +87,13 @@ export default function Auth({ providers }) {
                         E-mail
                       </label>
                     </div>
+                    {formError ? (
+                      <p className="text-red-700 text-center w-60 overflow-ellipsis overflow-hidden">
+                        {formError}
+                      </p>
+                    ) : (
+                      <p className="text-red-700 text-center w-60 overflow-ellipsis overflow-hidden"></p>
+                    )}
                     {formLoading ? (
                       <span className="p-3 text-white bg-green-400 mt-10 inline-block">
                         <MaterialIcon request="Pending" /> Loading...

@@ -46,7 +46,6 @@ export default function Add({ type, id, session, text }) {
     )
   }
   if (error) {
-    console.log(error)
     return <span className="pl-2">Something went wrong...</span>
   }
 
