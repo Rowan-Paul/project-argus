@@ -26,17 +26,27 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'GET') {
     try {
-      const movie = {
-        title: removeLastWord(req.query.movie, '-'),
-        year: req.query.movie.split('-').pop(),
+      // I'm lazy so I'm just copying it
+      if (isNaN(req.query.movie) || isNaN(parseFloat(req.query.movie))) {
+        const movie = {
+          title: removeLastWord(req.query.movie, '-'),
+          year: req.query.movie.split('-').pop(),
+        }
+
+        const result = await prisma.movies.findFirst({
+          where: { title: movie.title, year: parseInt(movie.year) },
+        })
+
+        if (result == null) throw new Error('No movie found')
+        res.json(result)
+      } else {
+        const result = await prisma.movies.findUnique({
+          where: { id: parseInt(req.query.movie) },
+        })
+
+        if (result == null) throw new Error('No movie found')
+        res.json(result)
       }
-
-      const result = await prisma.movies.findFirst({
-        where: { title: movie.title, year: parseInt(movie.year) },
-      })
-
-      if (result == null) throw new Error('No movie found')
-      res.json(result).end()
     } catch (error) {
       res.status(404).end()
     }

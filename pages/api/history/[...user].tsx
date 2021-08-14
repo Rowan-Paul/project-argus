@@ -31,7 +31,11 @@ export default async function handler(req: any, res: any) {
       }
 
       if (req.query.user[1] === 'movies') {
-        data.movie_id = parseInt(req.query.user[2])
+        if (req.query.user[2]) {
+          data.movie_id = parseInt(req.query.user[2])
+        }
+
+        data.NOT = [{ movie_id: null }]
       }
 
       const result = await prisma.history.findMany({
@@ -42,7 +46,7 @@ export default async function handler(req: any, res: any) {
       })
 
       if (result == null || result.length < 1) throw new Error('No movie found')
-      res.json(result).end()
+      res.json(result)
     } catch (error) {
       res.status(404).end()
     }

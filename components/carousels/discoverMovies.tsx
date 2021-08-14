@@ -1,7 +1,6 @@
 import useSWR from 'swr'
-import Image from 'next/image'
-import Link from 'next/link'
 import Loading from '../loading'
+import Movie from './Movie'
 
 const fetcher = async (
   input: RequestInfo,
@@ -31,40 +30,20 @@ export default function DiscoverMovies() {
   return (
     <div className="m-5 md:my-5">
       <h2>Movies</h2>
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 my-2 md:mx-5 justify-center">
+      <div className="p-2 grid gap-6 grid-flow-col grid-cols-auto auto-cols-10 overflow-x-auto overflow-y-hidden scrollbar md:scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-700 scrollbar-track-white scrollbar-thumb-rounded-full h-65 md:h-66 lg:h-67">
         {Object.values(data.results)
-          .slice(0, 6)
+          // .slice(0, 6)
           .map((movie: any) => (
             <Movie
               key={movie.title}
               title={movie.title}
-              year={movie.release_date}
+              url={`movies/${movie.title.replace(/\s+/g, '-').toLowerCase()}-${
+                movie.release_date.split('-')[0]
+              }`}
               image={movie.poster_path}
             />
           ))}
       </div>
     </div>
-  )
-}
-
-export function Movie({ title, year, image }) {
-  return (
-    <Link
-      href={`movies/${title.replace(/\s+/g, '-').toLowerCase()}-${
-        year.split('-')[0]
-      }`}
-    >
-      <a className="md:p-2 lg:p-5 no-underline">
-        <div className="flex justify-center align-middle">
-          <Image
-            src={`https://image.tmdb.org/t/p/w185/${image}`} //185x278
-            alt={`${title} movie poster}`}
-            width={165}
-            height={247}
-          />
-        </div>
-        <p className="line-clamp-1 text-sm md:text-base">{title}</p>
-      </a>
-    </Link>
   )
 }

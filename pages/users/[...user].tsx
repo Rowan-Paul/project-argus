@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { MinimalLayout } from '../../components/layout/layout'
 import MaterialIcon from '../../lib/materialIcons'
 import Loading from '../../components/loading'
+import HistoryMovies from '../../components/carousels/historyMovies'
 
 const fetcher = async (
   input: RequestInfo,
@@ -78,6 +79,7 @@ export default function User() {
         )}
 
         <h1>{data?.name}</h1>
+        <HistoryMovies user={data.id} />
       </div>
     </>
   )

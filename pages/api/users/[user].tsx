@@ -7,13 +7,14 @@ export default async function handler(req: any, res: any) {
         name: { equals: req.query.user, mode: 'insensitive' },
       },
       select: {
+        id: true,
         name: true,
         image: true,
       },
     })
 
     if (result == null || result.length < 1) throw new Error('No user found')
-    res.json(result).end()
+    res.json(result)
   } catch (error) {
     res.status(404).end()
   }
