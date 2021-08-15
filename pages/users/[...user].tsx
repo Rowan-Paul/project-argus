@@ -26,8 +26,10 @@ export default function User() {
   useEffect(() => {
     if (!router.isReady) return
 
-    setUrl(`/api/users/${router.query.user}`)
-    setShouldFetch(true)
+    if (!router.query.user !== '[user]') {
+      setUrl(`/api/users/${router.query.user}`)
+      setShouldFetch(true)
+    }
   }, [router.isReady])
   useEffect(() => {
     if (url) {
