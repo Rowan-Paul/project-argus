@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/client'
 import { useState, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import MaterialIcon from '../../lib/materialIcons'
+import router from 'next/router'
 
 export default function NavbarUI() {
   const [session, loading] = useSession()
@@ -62,20 +63,33 @@ function Navbar(props) {
 function NavItem(props) {
   const [open, setOpen] = useState(false)
 
-  return (
-    <Link href={props.url ? props.url : ''}>
+  if (props.children) {
+    return (
       <li className="w-10 flex items-center justify-center cursor-pointer">
-        <a
+        <span
           className="text-text-color no-underline icon-button h-8 w-8 bg-bg-accent rounded-50 p-1 m-1 flex items-center justify-center "
           onClick={() => setOpen(!open)}
         >
           {props.icon}
-        </a>
+        </span>
 
         {open && props.children}
       </li>
-    </Link>
-  )
+    )
+  } else {
+    return (
+      <Link href={props.url ? props.url : ''}>
+        <li className="w-10 flex items-center justify-center cursor-pointer">
+          <a
+            className="text-text-color no-underline icon-button h-8 w-8 bg-bg-accent rounded-50 p-1 m-1 flex items-center justify-center "
+            onClick={() => setOpen(!open)}
+          >
+            {props.icon}
+          </a>
+        </li>
+      </Link>
+    )
+  }
 }
 
 function DropdownMenu() {
@@ -96,14 +110,14 @@ function DropdownMenu() {
   function DropdownItem(props) {
     return (
       <Link href={props.url ? props.url : ''}>
-        <a
+        <span
           className="text-text-color no-underline menu-item h-12 flex items-center rounded-lg p-2 hover:bg-bg-hover"
           onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}
         >
           <span className="icon-button mr-2">{props.leftIcon}</span>
           {props.children}
           <span className="icon-right ml-auto">{props.rightIcon}</span>
-        </a>
+        </span>
       </Link>
     )
   }
