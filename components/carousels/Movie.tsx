@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function Movie({ title, url, image, datetime }) {
+export default function Movie({ title, url, image }) {
   return (
     <Link href={url}>
       <a className="text-center no-underline flex align-middle justify-center">
@@ -14,14 +14,6 @@ export default function Movie({ title, url, image, datetime }) {
           <span className="line-clamp-2 md:line-clamp-1 text-white bg-black bg-opacity-50 text-xs px-3 py-2 bottom-0 block">
             {title}
           </span>
-          {/* 
-          {datetime ? (
-            <span className="line-clamp-1 text-white bg-black bg-opacity-50 text-xs px-3 py-2 bottom-0">
-              {datetime ? formatDate(datetime) : ''}
-            </span>
-          ) : (
-            ''
-          )} */}
         </div>
       </a>
     </Link>
@@ -34,15 +26,4 @@ function tmdbUrlify(image) {
   } else {
     return image
   }
-}
-
-function formatDate(dateString) {
-  const options = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }
-  return new Date(dateString).toLocaleString([], options)
 }

@@ -31,18 +31,16 @@ export default function DiscoverMovies() {
     <div className="m-5 md:my-5">
       <h2>Movies</h2>
       <div className="p-2 grid gap-6 grid-flow-col grid-cols-auto auto-cols-10 overflow-x-auto overflow-y-hidden scrollbar md:scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-700 scrollbar-track-white scrollbar-thumb-rounded-full h-65 md:h-66 lg:h-67">
-        {Object.values(data.results)
-          // .slice(0, 6)
-          .map((movie: any) => (
-            <Movie
-              key={movie.title}
-              title={movie.title}
-              url={`movies/${movie.title.replace(/\s+/g, '-').toLowerCase()}-${
-                movie.release_date.split('-')[0]
-              }`}
-              image={movie.poster_path}
-            />
-          ))}
+        {Object.values(data.results).map((movie: any) => (
+          <Movie
+            key={movie.title}
+            title={movie.title}
+            url={`movies/${movie.title.replace(/\s+/g, '-').toLowerCase()}-${
+              movie.release_date.split('-')[0]
+            }`}
+            image={movie.poster_path}
+          />
+        ))}
       </div>
     </div>
   )
