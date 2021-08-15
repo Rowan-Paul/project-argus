@@ -1,43 +1,61 @@
-import useSWR from 'swr'
 import useReactSimpleMatchMedia from 'react-simple-matchmedia'
 import { useEffect, useState } from 'react'
 import Loading from '../loading'
 import Movie from './Movie'
 import { titleCase } from '../../lib/utils'
 
-const fetcher = async (
-  input: RequestInfo,
-  init: RequestInit,
-  ...args: any[]
-) => {
-  const res = await fetch(input, init)
-  return res.json()
-}
-
 export default function HistoryMovies({ user }) {
-  const [fetchMovieError, setFetchMovieError] = useState(false)
+  const [error, seterror] = useState(false)
   const [movies, setMovies] = useState([])
-  const { data, error } = useSWR(`/api/history/${user}/movies`, fetcher)
+  const [loading, setLoading] = useState(true)
+
+  async function fetchTMDB(tmdb_id) {
+    return await fetch(`
+    https://api.themoviedb.org/3/movie/${tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`)
+      .then((res) => res.json())
+      .then((res) => res.poster_path)
+      .catch((err) =>
+        console.log('I should really start doing better error handling')
+      )
+  }
 
   useEffect(() => {
-    if (!data) return
+    fetch(`/api/history/${user}/movies`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (movies.length >= data.length) return
 
-    setMovies([])
+        setMovies([])
+        data.forEach((item) => {
+          fetch(`/api/movies/${item.movie_id.toString()}`)
+            .then((res) => res.json())
+            .then((res) => {
+              res.title = titleCase(res.title)
+              res.datetime = item.datetime
 
-    data.forEach((item) => {
-      fetch(`/api/movies/${item.movie_id.toString()}`)
-        .then((res) => res.json())
-        .then((res) => {
-          res.title = titleCase(res.title)
-          res.datetime = item.datetime
+              let newArr = movies
+              newArr.push(res)
 
-          let newArr = movies
-          newArr.push(res)
-          setMovies([...newArr])
+              newArr.sort(function (a, b) {
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(b.datetime) - new Date(a.datetime)
+              })
+
+              newArr.forEach(async (movie) => {
+                if (movie.tmdb_id) {
+                  const results = await fetchTMDB(movie.tmdb_id)
+                  movie.poster_path = results
+                }
+              })
+
+              setMovies([...newArr])
+              setLoading(false)
+            })
+            .catch((err) => seterror(true))
         })
-        .catch((err) => setFetchMovieError(true))
-    })
-  }, [data])
+      })
+  }, [])
 
   const sm = useReactSimpleMatchMedia('(min-width: 640px)')
   const md = useReactSimpleMatchMedia('(min-width: 768px)')
@@ -58,8 +76,8 @@ export default function HistoryMovies({ user }) {
     columns = 2
   }
 
-  if (error || fetchMovieError) return <div>Failed to load</div>
-  if (!data) {
+  if (error) return <div>Failed to load</div>
+  if (loading) {
     return (
       <>
         <h2 className="my-5">Movies</h2>
@@ -70,8 +88,8 @@ export default function HistoryMovies({ user }) {
 
   return (
     <div className="my-5 text-left w-full">
-      <h2>Movies</h2>
-      <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-2 mt-2">
+      <h2>Recently watched movies</h2>
+      <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2 mt-2">
         {Object.values(movies)
           .splice(0, columns)
           .map((movie: any, i) => (
@@ -88,7 +106,7 @@ export default function HistoryMovies({ user }) {
                 }
               />
               <span className="text-sm w-full">
-                {formatDate(movie.datetime)}
+                {movie.datetime ? formatDate(movie.datetime) : ''}
               </span>
             </span>
           ))}

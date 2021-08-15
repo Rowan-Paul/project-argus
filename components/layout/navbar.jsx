@@ -26,7 +26,7 @@ export default function NavbarUI() {
                 <MaterialIcon request="Person" />
               )
             }
-            url="/users"
+            url={`/users/${session.user?.name}`}
           />
           <NavItem icon={<MaterialIcon request="Settings" />}>
             <DropdownMenu></DropdownMenu>
