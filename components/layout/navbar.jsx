@@ -46,7 +46,7 @@ export default function NavbarUI() {
 function Navbar(props) {
   return (
     <>
-      <nav className="h-16 bg-background p-1 border-2 border-solid border-bg-accent">
+      <nav className="h-16 bg-primary p-1 border-b-2 border-solid border-accent">
         <ul className="list-none m-0 p-0 max-w-full h-full flex items-center align-middle justify-end">
           <Link href="/">
             <a className="no-underline text-text-color ml-2 mr-auto">
@@ -67,7 +67,7 @@ function NavItem(props) {
     return (
       <li className="w-10 flex items-center justify-center cursor-pointer">
         <span
-          className="text-text-color no-underline icon-button h-8 w-8 bg-bg-accent rounded-50 p-1 m-1 flex items-center justify-center "
+          className="text-text-color no-underline icon-button h-8 w-8 bg-accent rounded-2xl p-1 m-1 flex items-center justify-center "
           onClick={() => setOpen(!open)}
         >
           {props.icon}
@@ -81,7 +81,7 @@ function NavItem(props) {
       <Link href={props.url ? props.url : ''}>
         <li className="w-10 flex items-center justify-center cursor-pointer">
           <a
-            className="text-text-color no-underline icon-button h-8 w-8 bg-bg-accent rounded-50 p-1 m-1 flex items-center justify-center "
+            className="text-text-color no-underline icon-button h-8 w-8 bg-accent rounded-2xl p-1 m-1 flex items-center justify-center "
             onClick={() => setOpen(!open)}
           >
             {props.icon}
@@ -124,7 +124,7 @@ function DropdownMenu() {
 
   return (
     <div
-      className="dropdown z-50 absolute top-14 w-80 bg-background border-2 border-solid border-bg-accent rounded-lg overflow-hidden"
+      className="dropdown z-50 absolute top-14 w-80 bg-primary border-b-2 border-solid border-accent rounded-lg overflow-hidden"
       style={{ height: menuHeight }}
       ref={dropdownRef}
     >

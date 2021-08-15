@@ -30,7 +30,7 @@ export default function DiscoverMovies() {
   return (
     <div className="m-5 md:my-5">
       <h2>Movies</h2>
-      <div className="p-2 grid gap-6 grid-flow-col grid-cols-auto auto-cols-10 overflow-x-auto overflow-y-hidden scrollbar md:scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-700 scrollbar-track-white scrollbar-thumb-rounded-full h-65 md:h-66 lg:h-67">
+      <div className="p-6 mt-2 grid gap-6 grid-flow-col grid-cols-auto auto-cols-10 overflow-x-auto overflow-y-hidden scrollbar md:scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-700 scrollbar-track-white scrollbar-thumb-rounded-full bg-accent rounded-2xl">
         {Object.values(data.results).map((movie: any) => (
           <Movie
             key={movie.title}

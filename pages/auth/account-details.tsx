@@ -141,7 +141,7 @@ export default function AccountDetails() {
               />
               <label
                 htmlFor="name"
-                className="absolute top-0 -z-1 duration-300 origin-0"
+                className="absolute top-0 duration-300 origin-0"
               >
                 Username
               </label>

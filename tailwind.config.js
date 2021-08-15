@@ -3,19 +3,10 @@ module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    borderRadius: {
-      none: '0',
-      sm: '0.125rem',
-      DEFAULT: '0.25rem',
-      md: '0.375rem',
-      lg: '0.5rem',
-      full: '9999px',
-      50: '50%',
-    },
     extend: {
       colors: {
-        background: '#242526',
-        'bg-accent': '#484a4d',
+        primary: '#242526',
+        accent: '#484a4d',
         'text-color': '#dadce1',
         'bg-hover': '#525357',
       },

@@ -89,7 +89,7 @@ export default function HistoryMovies({ user }) {
   return (
     <div className="my-5 text-left w-full">
       <h2>Recently watched movies</h2>
-      <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-2 mt-2">
+      <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-6 mt-2 bg-accent rounded-2xl ">
         {Object.values(movies)
           .splice(0, columns)
           .map((movie: any, i) => (
