@@ -17,6 +17,8 @@ export default function ListHistory({ history, url }) {
       transform: 'translate(-50%, -50%)',
       overflow: 'auto',
       maxHeight: '100vh',
+      backgroundColor: '#242526',
+      borderRadius: '1.5rem',
     },
   }
 
@@ -57,7 +59,7 @@ export default function ListHistory({ history, url }) {
         contentLabel="History List Modal"
         ariaHideApp={false}
       >
-        <div className="sticky bg-white py-2" style={{ top: '-20px' }}>
+        <div className="sticky bg-primary py-2" style={{ top: '-20px' }}>
           <h2 className="inline-block">History</h2>
           <span
             onClick={closeModal}

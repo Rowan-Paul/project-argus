@@ -25,6 +25,8 @@ export default function AddSpecific({ session, type, id }) {
       transform: 'translate(-50%, -50%)',
       overflow: 'auto',
       maxHeight: '100vh',
+      backgroundColor: '#242526',
+      borderRadius: '1.5rem',
     },
   }
 
@@ -116,7 +118,7 @@ export default function AddSpecific({ session, type, id }) {
         contentLabel="Specific time Modal"
         ariaHideApp={false}
       >
-        <div className="sticky bg-white py-2" style={{ top: '-20px' }}>
+        <div className="sticky bg-primary py-2" style={{ top: '-20px' }}>
           <h2 className="inline-block">History</h2>
           <span
             onClick={handleModal}
@@ -137,7 +139,7 @@ export default function AddSpecific({ session, type, id }) {
               inline: true,
               allowInput: true,
               altInput: true,
-              altInputClass: 'text-center',
+              altInputClass: 'text-center bg-primary',
               altFormat: 'd-m-Y H:i',
             }}
             onReady={() => setDate(new Date())}
