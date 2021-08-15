@@ -1,24 +1,21 @@
 import Navbar from './navbar'
-import Footer from './footer'
 
 export default function Layout({ children }) {
   return (
-    <div className="flex flex-col min-h-screen py-2">
+    <div className="min-h-screen">
       <Navbar />
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-10 md:px-20 text-center">
+      <main className="flex flex-col items-center justify-center w-full flex-1 py-16 px-5 md:p-20 text-center">
         {children}
       </main>
-      <Footer />
     </div>
   )
 }
 
 export function MinimalLayout({ children }) {
   return (
-    <div>
+    <>
       <Navbar />
-      <main className="pt-10 md:p-10">{children}</main>
-      <Footer />
-    </div>
+      <main className="m-5 md:mx-10">{children}</main>
+    </>
   )
 }
