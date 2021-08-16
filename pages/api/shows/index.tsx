@@ -1,6 +1,7 @@
 import prisma from '../../../lib/prisma'
 
 export default async function handle(req, res) {
+  // GET /api/shows
   try {
     const shows = await prisma.shows.findMany()
 

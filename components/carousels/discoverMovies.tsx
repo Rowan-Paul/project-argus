@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import Loading from '../loading'
-import Movie from './Movie'
+import Item from '../Item'
 
 const fetcher = async (
   input: RequestInfo,
@@ -32,7 +32,7 @@ export default function DiscoverMovies() {
       <h2>Movies</h2>
       <div className="p-6 mt-2 grid gap-6 grid-flow-col grid-cols-auto auto-cols-10 overflow-x-auto overflow-y-hidden scrollbar md:scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-700 scrollbar-track-white scrollbar-thumb-rounded-full bg-accent rounded-2xl">
         {Object.values(data.results).map((movie: any) => (
-          <Movie
+          <Item
             key={movie.title}
             title={movie.title}
             url={`movies/${movie.title.replace(/\s+/g, '-').toLowerCase()}-${

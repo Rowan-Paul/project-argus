@@ -4,9 +4,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
 import { MinimalLayout } from '../../components/layout/layout'
-import ShowDetails from '../../components/showDetails'
+import ShowDetails from '../../components/itemDetails/showDetails'
 import Backdrop from '../../components/backdrop'
 import Loading from '../../components/loading'
+import Seasons from '../../components/seasons'
 
 const fetcher = async (
   input: RequestInfo,
@@ -35,7 +36,7 @@ export default function Show() {
     fetch(`/api/shows/${router.query.show.toString()}`)
       .then((res) => res.json())
       .then((res) => {
-        res.title = titleCase(res.name)
+        res.name = titleCase(res.name)
         setShow(res)
 
         if (res.tmdb_id) {
@@ -93,11 +94,11 @@ export default function Show() {
       </Head>
 
       <div className="ml-10 md:ml-0 mb-5">
-        <h1 className="inline-block mr-3">{show.title}</h1>
+        <h1 className="inline-block mr-3">{show.name}</h1>
         <span>{show.year}</span>
       </div>
 
-      <div className="grid md:grid-cols-3">
+      <div className="grid md:grid-cols-6">
         <Backdrop
           path={backdropPath}
           id={show.id}
@@ -105,13 +106,18 @@ export default function Show() {
           showHistory={false}
         />
 
-        <div className="p-5 md:p-10">
+        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-2">
           <p className="italic">{tmdb.tagline}</p>
           <p>{show.overview}</p>
         </div>
       </div>
 
       <ShowDetails tmdb={tmdb} />
+      {show.seasons ? (
+        <Seasons show={show.name} seasons={show.seasons} tmdb={tmdb.seasons} />
+      ) : (
+        ''
+      )}
     </>
   )
 }

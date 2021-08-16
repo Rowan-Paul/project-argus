@@ -1,7 +1,7 @@
 import useReactSimpleMatchMedia from 'react-simple-matchmedia'
 import { useEffect, useState } from 'react'
 import Loading from '../loading'
-import Movie from './Movie'
+import Item from '../Item'
 import { titleCase } from '../../lib/utils'
 
 export default function HistoryMovies({ user }) {
@@ -87,12 +87,12 @@ export default function HistoryMovies({ user }) {
   return (
     <div className="my-5 text-left w-full">
       <h2>Recently watched movies</h2>
-      <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-6 mt-2 bg-accent rounded-2xl ">
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 text-center p-6 mt-2 bg-accent rounded-2xl ">
         {Object.values(movies)
           .splice(0, columns)
           .map((movie, i) => (
             <span key={movie.title + movie.datetime + i}>
-              <Movie
+              <Item
                 title={movie.title}
                 url={`/movies/${movie.title
                   .replace(/\s+/g, '-')
