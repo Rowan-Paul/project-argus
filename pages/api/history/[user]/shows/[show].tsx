@@ -1,16 +1,15 @@
-import prisma from '../../../lib/prisma'
+import prisma from '../../../../../lib/prisma'
 
 export default async function handler(req: any, res: any) {
   if (req.method === 'POST') {
+    // POST /api/history/[user]/shows/[show]
     try {
       let data: any = {
-        user_id: parseInt(req.query.user[0]),
+        user_id: parseInt(req.query.user),
+        episode_id: parseInt(req.query.show),
         datetime: new Date(),
       }
 
-      if (req.query.user[1] === 'movies') {
-        data.movie_id = parseInt(req.query.user[2])
-      }
       if (req.body.datetime) {
         data.datetime = req.body.datetime[0]
       }
@@ -25,17 +24,11 @@ export default async function handler(req: any, res: any) {
       res.status(500).end()
     }
   } else if (req.method === 'GET') {
+    // GET /api/history/[user]/shows/[show]
     try {
       let data: any = {
-        user_id: parseInt(req.query.user[0]),
-      }
-
-      if (req.query.user[1] === 'movies') {
-        if (req.query.user[2]) {
-          data.movie_id = parseInt(req.query.user[2])
-        }
-
-        data.NOT = [{ movie_id: null }]
+        user_id: parseInt(req.query.user),
+        episode_id: parseInt(req.query.show),
       }
 
       const result = await prisma.history.findMany({
@@ -49,18 +42,6 @@ export default async function handler(req: any, res: any) {
       res.json(result)
     } catch (error) {
       res.status(404).end()
-    }
-  } else if (req.method === 'DELETE') {
-    try {
-      await prisma.history.delete({
-        where: {
-          id: parseInt(req.query.user[0]),
-        },
-      })
-
-      res.status(200).end()
-    } catch (error) {
-      res.status(500).end()
     }
   }
 }

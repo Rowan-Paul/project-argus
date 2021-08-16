@@ -1,8 +1,8 @@
-import { removeLastWord } from '../../../../../lib/utils'
-import prisma from '../../../../../lib/prisma'
+import { removeLastWord } from '../../../../../../../lib/utils'
+import prisma from '../../../../../../../lib/prisma'
 
 export default async function handler(req, res) {
-  // GET /api/[show]/seasons/[season]
+  // GET /api/[show]/seasons/[season]/episodes
   try {
     if (isNaN(req.query.show)) {
       const show = await prisma.shows.findFirst({
@@ -18,33 +18,25 @@ export default async function handler(req, res) {
         },
       })
       const season = await prisma.seasons.findFirst({
-        where: {
-          show_id: show.id,
-          season_number: parseInt(req.query.season),
-        },
+        where: { show_id: show.id, season_number: parseInt(req.query.season) },
       })
       const episodes = await prisma.episodes.findMany({
-        where: {
-          season_id: season.id,
-        },
+        where: { season_id: season.id },
       })
 
-      let tempObj = season
-      tempObj.show_name = show.name
-      tempObj.show_year = show.year
-      tempObj.show_tmdb_id = show.tmdb_id
-      tempObj.episodes = episodes
-
-      res.json(tempObj)
+      res.json(episodes)
     } else {
-      const season = await prisma.seasons.findMany({
+      const season = await prisma.seasons.findFirst({
         where: {
           show_id: parseInt(req.query.show),
           season_number: parseInt(req.query.season),
         },
       })
+      const episodes = await prisma.episodes.findMany({
+        where: { season_id: season.id },
+      })
 
-      res.json(season)
+      res.json(episodes)
     }
   } catch (error) {
     res.status(404).end()

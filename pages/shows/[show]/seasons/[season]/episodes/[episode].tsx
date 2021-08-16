@@ -3,11 +3,10 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { titleCase } from '../../../../lib/utils'
-import { MinimalLayout } from '../../../../components/layout/layout'
-import Backdrop from '../../../../components/backdrop'
-import Loading from '../../../../components/loading'
-import Episodes from '../../../../components/episodes'
+import { titleCase } from '../../../../../../lib/utils'
+import { MinimalLayout } from '../../../../../../components/layout/layout'
+import Backdrop from '../../../../../../components/backdrop'
+import Loading from '../../../../../../components/loading'
 
 const fetcher = async (
   input: RequestInfo,
@@ -18,8 +17,8 @@ const fetcher = async (
   return res.json()
 }
 
-export default function Season() {
-  const [season, setSeason] = useState({})
+export default function Episode() {
+  const [episode, setEpisode] = useState({})
   const [initialLoadError, setError] = useState(false)
   const [tmdb, setTmdb] = useState({})
   const [posterPath, setPosterPath] = useState(
@@ -36,17 +35,17 @@ export default function Season() {
     fetch(
       `/api/shows/${router.query.show.toString()}/seasons/${
         router.query.season
-      }`
+      }/episodes/${router.query.episode}`
     )
       .then((res) => res.json())
       .then((res) => {
         res.name = titleCase(res.name)
         res.show_name = titleCase(res.show_name)
-        setSeason(res)
+        setEpisode(res)
 
         if (res.tmdb_id) {
           setUrl(
-            `https://api.themoviedb.org/3/tv/${res.show_tmdb_id}/season/${res.season_number}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+            `https://api.themoviedb.org/3/tv/${res.show_tmdb_id}/season/${router.query.episode}/episode/${res.episode_number}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
           )
           setShouldFetch(true)
         }
@@ -61,7 +60,7 @@ export default function Season() {
       <>
         <Head>
           <title>
-            {season.name ? `${season.name} | ` : ''}Shows | project argus
+            {episode.name ? `${episode.name} | ` : ''}Shows | project argus
           </title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -70,12 +69,12 @@ export default function Season() {
       </>
     )
   }
-  if (!data && !season.tmdb_id)
+  if (!data && !episode.tmdb_id)
     return (
       <>
         <Head>
           <title>
-            {season.name ? `${season.name} ${season.name} | ` : ''}Shows |
+            {episode.name ? `${episode.name} ${episode.name} | ` : ''}Shows |
             project argus
           </title>
           <link rel="icon" href="/favicon.ico" />
@@ -85,47 +84,48 @@ export default function Season() {
       </>
     )
 
-  if (data?.poster_path && !tmdb?.poster_path) {
+  if (data?.still_path && !tmdb?.still_path) {
     setTmdb(data)
-    setPosterPath('https://www.themoviedb.org/t/p/w1280' + data.poster_path)
+    setPosterPath('https://www.themoviedb.org/t/p/w1280' + data.still_path)
   }
 
   return (
     <>
       <Head>
         <title>
-          {season.name ? `${season.name} | ${season.show_name} | ` : ''}Shows |
-          project argus
+          {episode.name ? `${episode.name} | ${episode.show_name} | ` : ''}Shows
+          | project argus
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className="ml-10 md:ml-0 mb-5">
-        <Link
-          href={`/shows/${season.show_name
-            .replace(/[^a-zA-Z0-9 !]+/g, '')
-            .replace(/\s+/g, '-')
-            .toLowerCase()}-${season.show_year}`}
-        >
+        <Link href={`/shows/${router.query.show}`}>
           <a>
-            <h1 className="inline-block mr-3">{season.show_name}</h1>
+            <h1 className="inline-block mr-3">{episode.show_name} </h1>
           </a>
         </Link>
-        <span>{season.year}</span>
+        <Link
+          href={`/shows/${router.query.show}/seasons/${router.query.season}`}
+        >
+          <a>
+            <span className="text-sm">Season {router.query.season}</span>
+          </a>
+        </Link>
+        <span>{episode.year}</span>
       </div>
 
-      <div className="grid md:grid-cols-6">
+      <div className="grid md:grid-cols-10">
         <Backdrop
           path={posterPath}
-          id={season.id}
+          id={episode.id}
           type="shows"
-          showHistory={false}
-          poster={true}
+          showHistory={true}
         />
 
-        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-5">
-          <h2>{season.name}</h2>
-          <p>{season.overview}</p>
+        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
+          <h2>{episode.name}</h2>
+          <p>{episode.overview}</p>
         </div>
       </div>
 
@@ -133,22 +133,11 @@ export default function Season() {
         <span className="font-bold mr-4">Premiered</span>
         <span className="text-sm">{formatDate(tmdb.air_date)}</span>
       </div>
-
-      {season.episodes ? (
-        <Episodes
-          show={season.show_name}
-          season={season.name}
-          episodes={season.episodes}
-          tmdb={tmdb.episodes}
-        />
-      ) : (
-        ''
-      )}
     </>
   )
 }
 
-Season.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>
+Episode.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>
 
 function formatDate(dateString) {
   const options = {

@@ -31,7 +31,6 @@ export default async function handler(req, res) {
       res.json(seasons)
     }
   } catch (error) {
-    console.log(error)
     res.status(404).end()
   }
 }

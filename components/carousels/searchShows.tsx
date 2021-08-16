@@ -34,7 +34,7 @@ export default function SearchResults({ name, year }) {
   return (
     <div className="my-5 text-left">
       <h2>Results</h2>
-      <div className="">
+      <div>
         {Object.values(data.results)
           .slice(0, 6)
           .map((show: any) => (
