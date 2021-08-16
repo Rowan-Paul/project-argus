@@ -15,7 +15,6 @@ export default function HistoryMovies({ user }) {
       .then((res) => res.json())
       .then((res) => res.poster_path)
       .catch((err) =>
-        console.log('I should really start doing better error handling')
       )
   }
 
@@ -39,7 +38,7 @@ export default function HistoryMovies({ user }) {
               newArr.sort(function (a, b) {
                 // Turn your strings into dates, and then subtract them
                 // to get a value that is either negative, positive, or zero.
-                return new Date(b.datetime) - new Date(a.datetime)
+                return new Date(a.datetime) - new Date(a.datetime)
               })
 
               newArr.forEach(async (movie) => {
@@ -92,7 +91,7 @@ export default function HistoryMovies({ user }) {
       <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-6 mt-2 bg-accent rounded-2xl ">
         {Object.values(movies)
           .splice(0, columns)
-          .map((movie: any, i) => (
+          .map((movie, i) => (
             <span key={movie.title + movie.datetime + i}>
               <Movie
                 title={movie.title}

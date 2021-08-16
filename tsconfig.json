@@ -22,8 +22,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/signin.tsx", "pages/api/auth/[...nextauth].tsx", "pages/movies/[movie].jsx", "lib/utils.js", "components/layout/navbar.jsx"  ],
+, "pages/signin.tsx", "pages/api/auth/[...nextauth].tsx", "pages/movies/[movie].jsx", "lib/utils.js", "components/layout/navbar.jsx", "components/carousels/historyMovies.jsx"  ],
   "exclude": [
-    "node_modules"
+    "node_modules","./node_modules","./node_modules/.prisma/client/index.d.ts"
   ]
 }

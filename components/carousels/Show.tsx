@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default function Movie({ title, url, image }) {
+export default function Show({ title, url, image }) {
   return (
     <Link href={url}>
       <a className="text-center no-underline flex align-middle justify-center">
@@ -20,9 +20,9 @@ export default function Movie({ title, url, image }) {
 }
 
 function tmdbUrlify(image) {
-  if (image.indexOf('/') === 0) {
+  if (image?.indexOf('/') === 0) {
     return `https://image.tmdb.org/t/p/w185/${image}`
   } else {
-    return image
+    return image ? image : 'http://via.placeholder.com/185x278?text=No%20Poster'
   }
 }

@@ -48,7 +48,6 @@ model User {
   updatedAt     DateTime  @default(now()) @map("updated_at")
   history       history[] @relation("historyTousers")
 
-  @@unique(fields: [name], name: "username")
   @@map("users")
 }
 
@@ -81,4 +80,14 @@ model history {
   movie_id Int?
   movies   movies?   @relation(fields: [movie_id], references: [id])
   users    User      @relation("historyTousers", fields: [user_id], references: [id])
+}
+
+model shows {
+  id       Int    @unique @default(autoincrement())
+  name     String @db.VarChar
+  overview String @db.VarChar
+  tmdb_id  Int?   @unique
+  year     Int    @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
+
+  @@unique([name, year], name: "shows.name.year_unique")
 }

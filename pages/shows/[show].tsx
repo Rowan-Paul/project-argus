@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
 import { MinimalLayout } from '../../components/layout/layout'
-import MovieDetails from '../../components/movieDetails'
+import ShowDetails from '../../components/showDetails'
 import Backdrop from '../../components/backdrop'
 import Loading from '../../components/loading'
 
@@ -17,8 +17,8 @@ const fetcher = async (
   return res.json()
 }
 
-export default function Movie() {
-  const [movie, setMovie] = useState({})
+export default function Show() {
+  const [show, setShow] = useState({})
   const [initialLoadError, setError] = useState(false)
   const [tmdb, setTmdb] = useState({})
   const [backdropPath, setBackdropPath] = useState(
@@ -32,30 +32,31 @@ export default function Movie() {
   useEffect(() => {
     if (!router.isReady) return
 
-    fetch(`/api/movies/${router.query.movie.toString()}`)
+    fetch(`/api/shows/${router.query.show.toString()}`)
       .then((res) => res.json())
       .then((res) => {
-        res.title = titleCase(res.title)
-        setMovie(res)
+        res.title = titleCase(res.name)
+        setShow(res)
 
         if (res.tmdb_id) {
           setUrl(
-            `https://api.themoviedb.org/3/movie/${res.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+            `https://api.themoviedb.org/3/tv/${res.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
           )
           setShouldFetch(true)
         }
       })
-      .catch((err) => setError(true))
+      .catch((err) => {
+        setError(true)
+      })
   }, [router.isReady])
 
   if (initialLoadError) {
-    router.push(`/movies/new?movie=${router.query.movie}`)
+    router.push(`/shows/new?show=${router.query.show}`)
     return (
       <>
         <Head>
           <title>
-            {movie.title ? `${movie.title} ${movie.year} | ` : ''}Movies |
-            project argus
+            {show.name ? `${show.name} | ` : ''}Shows | project argus
           </title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -64,13 +65,13 @@ export default function Movie() {
       </>
     )
   }
-  if (!data && movie.tmdb_id)
+  if (!data && !show.tmdb_id)
     return (
       <>
         <Head>
           <title>
-            {movie.title ? `${movie.title} ${movie.year} | ` : ''}Movies |
-            project argus
+            {show.name ? `${show.name} ${show.name} | ` : ''}Shows | project
+            argus
           </title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -87,35 +88,32 @@ export default function Movie() {
   return (
     <>
       <Head>
-        <title>
-          {movie.title ? `${movie.title} ${movie.year} | ` : ''}Movies | project
-          argus
-        </title>
+        <title>{show.name ? `${show.name} | ` : ''}Shows | project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className="ml-10 md:ml-0 mb-5">
-        <h1 className="inline-block mr-3">{movie.title}</h1>
-        <span>{movie.year}</span>
+        <h1 className="inline-block mr-3">{show.title}</h1>
+        <span>{show.year}</span>
       </div>
 
       <div className="grid md:grid-cols-3">
         <Backdrop
           path={backdropPath}
-          id={movie.id}
-          type="movies"
-          showHistory={true}
+          id={show.id}
+          type="shows"
+          showHistory={false}
         />
 
         <div className="p-5 md:p-10">
           <p className="italic">{tmdb.tagline}</p>
-          <p>{movie.overview}</p>
+          <p>{show.overview}</p>
         </div>
       </div>
 
-      <MovieDetails tmdb={tmdb} />
+      <ShowDetails tmdb={tmdb} />
     </>
   )
 }
 
-Movie.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>
+Show.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>
