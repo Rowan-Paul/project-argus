@@ -68,13 +68,13 @@ export function HorizontalShow({ show }) {
       }
     )
       .then((res) => {
-        setLoading(false)
         if (res.status === 201) {
           router.push(
             `/shows/${show.name.replace(/\s+/g, '-').toLowerCase()}-${
               show.first_air_date.split('-')[0]
             }`
           )
+          setLoading(false)
         } else {
           setError(true)
         }

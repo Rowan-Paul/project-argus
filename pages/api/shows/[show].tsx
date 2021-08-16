@@ -12,11 +12,7 @@ export default async function handler(req, res) {
         tmdb_id: req.body.tmdb,
       }
 
-      /**
-       * TODO: add seasons of a show
-       */
-
-      await prisma.shows.create({
+      const showRes = await prisma.shows.create({
         data: {
           overview: show.overview,
           year: parseInt(show.year),
@@ -25,8 +21,32 @@ export default async function handler(req, res) {
         },
       })
 
+      fetch(
+        `https://api.themoviedb.org/3/tv/${show.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+      )
+        .then((res) => res.json())
+        .then((movieDetails) => {
+          movieDetails.seasons.forEach(async (season: any) => {
+            await prisma.seasons.create({
+              data: {
+                show_id: showRes.id,
+                name: season.name,
+                overview: season.overview,
+                season_number: season.season_number,
+                episode_count: season.episode_count,
+                air_date: new Date(season.air_date),
+                tmdb_id: season.id,
+              },
+            })
+          })
+        })
+        .catch((error) => {
+          throw new Error('Failed fetching seasons')
+        })
+
       res.status(201).end()
-    } catch {
+    } catch (error) {
+      console.log(error)
       res.status(500).end()
     }
   } else if (req.method === 'GET') {

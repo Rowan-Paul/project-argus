@@ -98,11 +98,12 @@ model seasons {
   show_id       Int
   name          String   @db.VarChar
   overview      String   @db.VarChar
-  season_number Int      @unique
+  season_number Int
   episode_count Int
   air_date      DateTime @db.Timestamp(6)
   tmdb_id       Int?     @unique
   shows         shows    @relation(fields: [show_id], references: [id])
 
   @@unique([show_id, name], name: "seasons.show_id_name_unique")
+  @@unique([show_id, season_number], name: "seasons.show_id_season_number_unique")
 }
