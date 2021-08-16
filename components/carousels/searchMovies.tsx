@@ -96,7 +96,7 @@ export function HorizontalMovie({ movie }) {
       </div>
       <div className="col-span-5">
         <h3>{movie.title}</h3>
-        <p>Release date: {formatDate(movie.release_date}</p>
+        <p>Release date: {formatDate(movie.release_date)}</p>
         <p>{movie.overview}</p>
         {loading ? (
           <Loading small={true} />

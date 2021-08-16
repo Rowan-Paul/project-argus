@@ -14,8 +14,7 @@ export default function HistoryMovies({ user }) {
     https://api.themoviedb.org/3/movie/${tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`)
       .then((res) => res.json())
       .then((res) => res.poster_path)
-      .catch((err) =>
-      )
+      .catch((err) => {})
   }
 
   useEffect(() => {
