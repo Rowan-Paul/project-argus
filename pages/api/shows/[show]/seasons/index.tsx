@@ -20,6 +20,9 @@ export default async function handler(req, res) {
 
       const seasons = await prisma.seasons.findMany({
         where: { show_id: show.id },
+        orderBy: {
+          season_number: 'asc',
+        },
       })
 
       res.json(seasons)

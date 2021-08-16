@@ -27,6 +27,9 @@ export default async function handler(req, res) {
         where: {
           season_id: season.id,
         },
+        orderBy: {
+          air_date: 'asc',
+        },
       })
 
       let tempObj = season

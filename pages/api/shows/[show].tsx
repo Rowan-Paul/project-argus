@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         .then((res) => res.json())
         .then((movieDetails) => {
           movieDetails.seasons.forEach(async (season: any) => {
-            await prisma.seasons.create({
+            const seasonRes = await prisma.seasons.create({
               data: {
                 show_id: showRes.id,
                 name: season.name,
@@ -38,6 +38,25 @@ export default async function handler(req, res) {
                 tmdb_id: season.id,
               },
             })
+
+            fetch(
+              `https://api.themoviedb.org/3/tv/${show.tmdb_id}/season/1?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+            )
+              .then((res) => res.json())
+              .then((res) => {
+                res.episodes.forEach(async (episode) => {
+                  await prisma.episodes.create({
+                    data: {
+                      name: episode.name,
+                      overview: episode.overview,
+                      season_id: seasonRes.id,
+                      tmdb_id: episode.id,
+                      air_date: new Date(episode.air_date),
+                      episode_number: episode.episode_number,
+                    },
+                  })
+                })
+              })
           })
         })
         .catch((error) => {
@@ -63,6 +82,9 @@ export default async function handler(req, res) {
         })
         const seasons = await prisma.seasons.findMany({
           where: { show_id: result.id },
+          orderBy: {
+            season_number: 'asc',
+          },
         })
 
         result.seasons = seasons
@@ -75,6 +97,9 @@ export default async function handler(req, res) {
         })
         const seasons = await prisma.seasons.findMany({
           where: { show_id: result.id },
+          orderBy: {
+            season_number: 'asc',
+          },
         })
 
         result.seasons = seasons
