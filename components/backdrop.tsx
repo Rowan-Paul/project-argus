@@ -11,7 +11,7 @@ export default function Backdrop({ path, id, type, showHistory, poster }) {
       className={`min-h-439 ${
         poster
           ? 'md:col-span-2 lg:col-span-1'
-          : 'md:col-span-2 lg:col-span-4 md:rounded-xl lg:rounded-2xl'
+          : 'md:col-span-6 lg:col-span-7 md:rounded-xl lg:rounded-2xl'
       }`}
     >
       {showHistory ? <History type={type} id={id} /> : ''}

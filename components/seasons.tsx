@@ -7,8 +7,8 @@ export default function Seasons({ show, seasons, tmdb }) {
 
   if (tmdb?.length > 0) {
     return (
-      <>
-        <h2 className="mt-2">Seasons</h2>
+      <div className="m-5">
+        <h2>Seasons</h2>
         <div className="py-5 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {Object.values(seasons).map((season: any, i) => (
             <Item
@@ -19,7 +19,7 @@ export default function Seasons({ show, seasons, tmdb }) {
             />
           ))}
         </div>
-      </>
+      </div>
     )
   }
 

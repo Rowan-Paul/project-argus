@@ -102,6 +102,7 @@ export default function Season() {
       <div className="ml-10 md:ml-0 mb-5">
         <Link
           href={`/shows/${season.show_name
+            .replace(/[^a-zA-Z0-9 !]+/g, '')
             .replace(/\s+/g, '-')
             .toLowerCase()}-${season.show_year}`}
         >

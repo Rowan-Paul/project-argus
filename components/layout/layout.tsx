@@ -17,7 +17,7 @@ export function MinimalLayout({ children }) {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="m-5 md:mx-10">{children}</main>
+      <main className="mt-5 md:mx-10">{children}</main>
     </div>
   )
 }

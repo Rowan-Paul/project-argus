@@ -51,9 +51,10 @@ export function HorizontalMovie({ movie }) {
   const handleClick = () => {
     setLoading(true)
     fetch(
-      `/api/movies/${movie.title.replace(/\s+/g, '-').toLowerCase()}-${
-        movie.release_date.split('-')[0]
-      }`,
+      `/api/movies/${movie.title
+        .replace(/[^a-zA-Z0-9 !]+/g, '')
+        .replace(/\s+/g, '-')
+        .toLowerCase()}-${movie.release_date.split('-')[0]}`,
       {
         method: 'POST',
         cache: 'no-cache',
@@ -70,9 +71,10 @@ export function HorizontalMovie({ movie }) {
         setLoading(false)
         if (res.status === 201) {
           router.push(
-            `/movies/${movie.title.replace(/\s+/g, '-').toLowerCase()}-${
-              movie.release_date.split('-')[0]
-            }`
+            `/movies/${movie.title
+              .replace(/[^a-zA-Z0-9 !]+/g, '')
+              .replace(/\s+/g, '-')
+              .toLowerCase()}-${movie.release_date.split('-')[0]}`
           )
         } else {
           setError(true)

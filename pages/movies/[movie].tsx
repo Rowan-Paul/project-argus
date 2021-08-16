@@ -99,7 +99,7 @@ export default function Movie() {
         <span>{movie.year}</span>
       </div>
 
-      <div className="grid md:grid-cols-3">
+      <div className="grid md:grid-cols-10">
         <Backdrop
           path={backdropPath}
           id={movie.id}
@@ -107,7 +107,7 @@ export default function Movie() {
           showHistory={true}
         />
 
-        <div className="p-5 md:p-10">
+        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
           <p className="italic">{tmdb.tagline}</p>
           <p>{movie.overview}</p>
         </div>

@@ -52,9 +52,10 @@ export function HorizontalShow({ show }) {
   const handleClick = () => {
     setLoading(true)
     fetch(
-      `/api/shows/${show.name.replace(/\s+/g, '-').toLowerCase()}-${
-        show.first_air_date.split('-')[0]
-      }`,
+      `/api/shows/${show.name
+        .replace(/[^a-zA-Z0-9 !]+/g, '')
+        .replace(/\s+/g, '-')
+        .toLowerCase()}-${show.first_air_date.split('-')[0]}`,
       {
         method: 'POST',
         cache: 'no-cache',
@@ -70,9 +71,10 @@ export function HorizontalShow({ show }) {
       .then((res) => {
         if (res.status === 201) {
           router.push(
-            `/shows/${show.name.replace(/\s+/g, '-').toLowerCase()}-${
-              show.first_air_date.split('-')[0]
-            }`
+            `/shows/${show.name
+              .replace(/[^a-zA-Z0-9 !]+/g, '')
+              .replace(/\s+/g, '-')
+              .toLowerCase()}-${show.first_air_date.split('-')[0]}`
           )
           setLoading(false)
         } else {

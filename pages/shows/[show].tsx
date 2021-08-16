@@ -98,7 +98,7 @@ export default function Show() {
         <span>{show.year}</span>
       </div>
 
-      <div className="grid md:grid-cols-6">
+      <div className="grid md:grid-cols-10">
         <Backdrop
           path={backdropPath}
           id={show.id}
@@ -106,7 +106,7 @@ export default function Show() {
           showHistory={false}
         />
 
-        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-2">
+        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
           <p className="italic">{tmdb.tagline}</p>
           <p>{show.overview}</p>
         </div>

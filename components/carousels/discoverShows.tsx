@@ -35,9 +35,10 @@ export default function DiscoverShows() {
           <Show
             key={show.name}
             title={show.name}
-            url={`/shows/${show.name.replace(/\s+/g, '-').toLowerCase()}-${
-              show.first_air_date.split('-')[0]
-            }`}
+            url={`/shows/${show.name
+              .replace(/[^a-zA-Z0-9 !]+/g, '')
+              .replace(/\s+/g, '-')
+              .toLowerCase()}-${show.first_air_date.split('-')[0]}`}
             image={show.poster_path}
           />
         ))}

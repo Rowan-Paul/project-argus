@@ -95,6 +95,7 @@ export default function HistoryMovies({ user }) {
               <Item
                 title={movie.title}
                 url={`/movies/${movie.title
+                  .replace(/[^a-zA-Z0-9 !]+/g, '')
                   .replace(/\s+/g, '-')
                   .toLowerCase()}-${movie.year}`}
                 image={
