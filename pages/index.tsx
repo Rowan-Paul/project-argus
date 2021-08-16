@@ -16,20 +16,32 @@ export default function Home() {
     }
   }, [session, loading])
 
+  if (!loading && !session) {
+    return (
+      <>
+        <Head>
+          <title>project argus</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <h1 className="text-6xl font-bold">project argus</h1>
+
+        <p className="mt-3 text-2xl">Track everything</p>
+
+        <span>
+          <OnClickButton text="Join project-argus" onClick={() => signIn()} />
+        </span>
+      </>
+    )
+  }
+
   return (
     <>
       <Head>
         <title>project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <h1 className="text-6xl font-bold">project argus</h1>
-
-      <p className="mt-3 text-2xl">Track everything</p>
-
-      <span>
-        <OnClickButton text="Join project-argus" onClick={() => signIn()} />
-      </span>
+      <Loading small={false} />
     </>
   )
 }
