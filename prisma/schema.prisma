@@ -83,11 +83,26 @@ model history {
 }
 
 model shows {
-  id       Int    @unique @default(autoincrement())
-  name     String @db.VarChar
-  overview String @db.VarChar
-  tmdb_id  Int?   @unique
-  year     Int    @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
+  id       Int       @unique @default(autoincrement())
+  name     String    @db.VarChar
+  overview String    @db.VarChar
+  tmdb_id  Int?      @unique
+  year     Int       @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
+  seasons  seasons[]
 
   @@unique([name, year], name: "shows.name.year_unique")
+}
+
+model seasons {
+  id            Int      @unique @default(autoincrement())
+  show_id       Int
+  name          String   @db.VarChar
+  overview      String   @db.VarChar
+  season_number Int      @unique
+  episode_count Int
+  air_date      DateTime @db.Timestamp(6)
+  tmdb_id       Int?     @unique
+  shows         shows    @relation(fields: [show_id], references: [id])
+
+  @@unique([show_id, name], name: "seasons.show_id_name_unique")
 }
