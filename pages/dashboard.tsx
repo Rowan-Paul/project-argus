@@ -7,6 +7,7 @@ import DiscoverMovies from '../components/carousels/discoverMovies'
 import { useRouter } from 'next/router'
 import MaterialIcon from '../lib/materialIcons'
 import Loading from '../components/loading'
+import DiscoverShows from '../components/carousels/discoverShows'
 
 export default function Dashboard() {
   const [session, setSession] = useState()
@@ -76,6 +77,7 @@ export default function Dashboard() {
         </div>
 
         <DiscoverMovies />
+        <DiscoverShows />
       </>
     )
   }

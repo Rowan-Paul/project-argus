@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { OnClickButton } from '../buttons'
 import router from 'next/router'
 import Loading from '../loading'
+import Show from './Show'
 
 const fetcher = async (
   input: RequestInfo,
@@ -14,9 +15,9 @@ const fetcher = async (
   return res.json()
 }
 
-export default function SearchResults({ title, year }) {
+export default function SearchResults({ name, year }) {
   const { data, error } = useSWR(
-    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${title}&page=1&include_adult=false&year=${year}`,
+    `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&query=${name}&include_adult=false&first_air_date_year=${year}`,
     fetcher
   )
 
@@ -33,28 +34,28 @@ export default function SearchResults({ title, year }) {
   return (
     <div className="my-5 text-left">
       <h2>Results</h2>
-      <div className="">
+      <div>
         {Object.values(data.results)
           .slice(0, 6)
-          .map((movie: any) => (
-            <HorizontalMovie key={movie.title} movie={movie} />
+          .map((show: any) => (
+            <HorizontalShow key={show.name} show={show} />
           ))}
       </div>
     </div>
   )
 }
 
-export function HorizontalMovie({ movie }) {
+export function HorizontalShow({ show }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const handleClick = () => {
     setLoading(true)
     fetch(
-      `/api/movies/${movie.title
+      `/api/shows/${show.name
         .replace(/[^a-zA-Z0-9 !]+/g, '')
         .replace(/\s+/g, '-')
-        .toLowerCase()}-${movie.release_date.split('-')[0]}`,
+        .toLowerCase()}-${show.first_air_date.split('-')[0]}`,
       {
         method: 'POST',
         cache: 'no-cache',
@@ -62,20 +63,20 @@ export function HorizontalMovie({ movie }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          overview: movie.overview,
-          tmdb: movie.id,
+          overview: show.overview,
+          tmdb: show.id,
         }),
       }
     )
       .then((res) => {
-        setLoading(false)
         if (res.status === 201) {
           router.push(
-            `/movies/${movie.title
+            `/shows/${show.name
               .replace(/[^a-zA-Z0-9 !]+/g, '')
               .replace(/\s+/g, '-')
-              .toLowerCase()}-${movie.release_date.split('-')[0]}`
+              .toLowerCase()}-${show.first_air_date.split('-')[0]}`
           )
+          setLoading(false)
         } else {
           setError(true)
         }
@@ -90,16 +91,16 @@ export function HorizontalMovie({ movie }) {
     <div className="grid md:grid-cols-6 p-6 gap-4 mt-2 bg-accent rounded-2xl">
       <div className="col-span-6 md:col-span-1">
         <Image
-          src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} //185x278
-          alt={`${movie.title} movie poster`}
+          src={`https://image.tmdb.org/t/p/w185/${show.poster_path}`} //185x278
+          alt={`${show.title} show poster`}
           width={165}
           height={247}
         />
       </div>
       <div className="col-span-5">
-        <h3>{movie.title}</h3>
-        <p>Release date: {formatDate(movie.release_date)}</p>
-        <p>{movie.overview}</p>
+        <h3>{show.name}</h3>
+        <p>Premiered: {formatDate(show.first_air_date)}</p>
+        <p>{show.overview}</p>
         {loading ? (
           <Loading small={true} />
         ) : error ? (
@@ -107,7 +108,7 @@ export function HorizontalMovie({ movie }) {
             Something went wrong, reload the page to try again
           </p>
         ) : (
-          <OnClickButton text="Add movie" onClick={() => handleClick()} />
+          <OnClickButton text="Add show" onClick={() => handleClick()} />
         )}
       </div>
     </div>

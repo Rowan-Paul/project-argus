@@ -1,7 +1,7 @@
 import useReactSimpleMatchMedia from 'react-simple-matchmedia'
 import { useEffect, useState } from 'react'
 import Loading from '../loading'
-import Movie from './Movie'
+import Item from '../Item'
 import { titleCase } from '../../lib/utils'
 
 export default function HistoryMovies({ user }) {
@@ -14,9 +14,7 @@ export default function HistoryMovies({ user }) {
     https://api.themoviedb.org/3/movie/${tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`)
       .then((res) => res.json())
       .then((res) => res.poster_path)
-      .catch((err) =>
-        console.log('I should really start doing better error handling')
-      )
+      .catch((err) => {})
   }
 
   useEffect(() => {
@@ -39,7 +37,7 @@ export default function HistoryMovies({ user }) {
               newArr.sort(function (a, b) {
                 // Turn your strings into dates, and then subtract them
                 // to get a value that is either negative, positive, or zero.
-                return new Date(b.datetime) - new Date(a.datetime)
+                return new Date(a.datetime) - new Date(a.datetime)
               })
 
               newArr.forEach(async (movie) => {
@@ -89,14 +87,15 @@ export default function HistoryMovies({ user }) {
   return (
     <div className="my-5 text-left w-full">
       <h2>Recently watched movies</h2>
-      <div className="grid grid-cols-2 text-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 p-6 mt-2 bg-accent rounded-2xl ">
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 text-center p-6 mt-2 bg-accent rounded-2xl ">
         {Object.values(movies)
           .splice(0, columns)
-          .map((movie: any, i) => (
+          .map((movie, i) => (
             <span key={movie.title + movie.datetime + i}>
-              <Movie
+              <Item
                 title={movie.title}
                 url={`/movies/${movie.title
+                  .replace(/[^a-zA-Z0-9 !]+/g, '')
                   .replace(/\s+/g, '-')
                   .toLowerCase()}-${movie.year}`}
                 image={

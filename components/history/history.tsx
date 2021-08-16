@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 import { arraysEqual } from '../../lib/utils'
 import OverviewNew from './overviewNew'
-import BackgroundOverlay from '../backgroundOverlay'
+import { BackdropOverlay } from '../backdrop'
 import OverviewExisting from './overviewExisting'
 import Loading from '../loading'
 
@@ -32,7 +32,7 @@ export default function History({ type, id }) {
 
   if (loading) {
     return (
-      <BackgroundOverlay
+      <BackdropOverlay
         onClick={() => {}}
         icon=""
         text={
