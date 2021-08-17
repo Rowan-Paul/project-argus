@@ -112,7 +112,6 @@ export default function Episode() {
             <span className="text-sm">Season {router.query.season}</span>
           </a>
         </Link>
-        <span>{episode.year}</span>
       </div>
 
       <div className="grid md:grid-cols-10">
@@ -124,7 +123,7 @@ export default function Episode() {
         />
 
         <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
-          <h2>{episode.name}</h2>
+          <h2>{`${router.query.season}x${router.query.episode} ${episode.name}`}</h2>
           <p>{episode.overview}</p>
         </div>
       </div>

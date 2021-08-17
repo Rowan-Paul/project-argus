@@ -36,6 +36,7 @@ export default async function handler(req, res) {
       tempObj.show_name = show.name
       tempObj.show_year = show.year
       tempObj.show_tmdb_id = show.tmdb_id
+      tempObj.season_number = season.season_number
       tempObj.episodes = episodes
 
       res.json(tempObj)

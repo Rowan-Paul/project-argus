@@ -2,9 +2,8 @@ import { useRouter } from 'next/router'
 import ItemHorizontal from './ItemHorizontal'
 import Loading from './loading'
 
-export default function Episodes({ show, season, episodes, tmdb }) {
+export default function Episodes({ season, episodes, tmdb }) {
   const router = useRouter()
-
   if (tmdb?.length > 0) {
     return (
       <div className="m-5">
@@ -14,6 +13,7 @@ export default function Episodes({ show, season, episodes, tmdb }) {
             <ItemHorizontal
               item={episode}
               image={tmdb[i].still_path}
+              season={season}
               url={`/shows/${router.query.show}/seasons/${
                 router.query.season
               }/episodes/${i + 1}`}

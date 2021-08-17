@@ -136,9 +136,8 @@ export default function Season() {
 
       {season.episodes ? (
         <Episodes
-          show={season.show_name}
-          season={season.name}
           episodes={season.episodes}
+          season={season.season_number}
           tmdb={tmdb.episodes}
         />
       ) : (
