@@ -21,7 +21,7 @@ export default function MovieDetails({ tmdb }) {
               : tmdb.status
           }
         />
-        <Detail title="Runtime" text={tmdb.runtime} />
+        <Detail title="Runtime" text={`${tmdb.runtime} minutes`} />
         <Detail
           title="Genres"
           text={tmdb.genres?.map((genre, i) => {
