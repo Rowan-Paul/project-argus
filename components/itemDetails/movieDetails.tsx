@@ -17,7 +17,7 @@ export default function MovieDetails({ tmdb }) {
           }
           text={
             Date.parse(tmdb.release_date) < Date.now()
-              ? tmdb.release_date
+              ? formatDate(tmdb.release_date)
               : tmdb.status
           }
         />
@@ -54,4 +54,13 @@ function Detail({ title, text }) {
       <span className="text-sm">{text}</span>
     </div>
   )
+}
+
+function formatDate(dateString) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }
+  return new Date(dateString).toLocaleString([], options)
 }
