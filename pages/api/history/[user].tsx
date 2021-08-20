@@ -9,7 +9,7 @@ export default async function handler(req: any, res: any) {
       })
 
       if (result == null || result.length < 1)
-        throw new Error('No hisotry found')
+        throw new Error('No history found')
       res.json(result)
     } catch (error) {
       res.status(404).end()
