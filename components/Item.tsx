@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Item({ title, url, image }) {
   return (
     <Link href={url}>
-      <a className="text-center no-underline flex align-middle justify-center">
+      <a className="text-center no-underline flex align-middle justify-center bg-accent">
         <div
           style={{
             background: `url(${tmdbUrlify(image)}) no-repeat center center`,

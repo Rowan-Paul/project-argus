@@ -22,9 +22,7 @@ export default function Season() {
   const [season, setSeason] = useState({})
   const [initialLoadError, setError] = useState(false)
   const [tmdb, setTmdb] = useState({})
-  const [posterPath, setPosterPath] = useState(
-    'http://via.placeholder.com/1280x720?text=No%20backdrop%20available'
-  )
+  const [posterPath, setPosterPath] = useState('')
   const [shouldFetch, setShouldFetch] = useState(false)
   const [url, setUrl] = useState('')
   const router = useRouter()

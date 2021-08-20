@@ -4,15 +4,19 @@ import MaterialIcon from '../lib/materialIcons'
 export default function Backdrop({ path, id, type, showHistory, poster }) {
   return (
     <div
-      style={{
-        background: `url(${path}) no-repeat center center / cover`,
-        minHeight: '300px',
-      }}
+      style={
+        path
+          ? {
+              background: `url(${path}) no-repeat center center / cover`,
+              minHeight: '300px',
+            }
+          : {}
+      }
       className={`min-h-439 ${
         poster
           ? 'md:col-span-2 lg:col-span-1'
           : 'md:col-span-6 lg:col-span-7 md:rounded-xl lg:rounded-2xl'
-      }`}
+      } bg-accent`}
     >
       {showHistory ? <History type={type} id={id} /> : ''}
     </div>

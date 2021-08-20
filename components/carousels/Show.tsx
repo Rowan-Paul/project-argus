@@ -23,6 +23,6 @@ function tmdbUrlify(image) {
   if (image?.indexOf('/') === 0) {
     return `https://image.tmdb.org/t/p/w185/${image}`
   } else {
-    return image ? image : 'http://via.placeholder.com/185x278?text=No%20Poster'
+    return image
   }
 }

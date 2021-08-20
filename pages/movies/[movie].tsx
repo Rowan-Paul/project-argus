@@ -21,9 +21,7 @@ export default function Movie() {
   const [movie, setMovie] = useState({})
   const [initialLoadError, setError] = useState(false)
   const [tmdb, setTmdb] = useState({})
-  const [backdropPath, setBackdropPath] = useState(
-    'http://via.placeholder.com/1280x720?text=No%20backdrop%20available'
-  )
+  const [backdropPath, setBackdropPath] = useState('')
   const [shouldFetch, setShouldFetch] = useState(false)
   const [url, setUrl] = useState('')
   const router = useRouter()
