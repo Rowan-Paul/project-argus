@@ -4,14 +4,10 @@ import MaterialIcon from '../lib/materialIcons'
 export default function Backdrop({ path, id, type, showHistory, poster }) {
   return (
     <div
-      style={
-        path
-          ? {
-              background: `url(${path}) no-repeat center center / cover`,
-              minHeight: '300px',
-            }
-          : {}
-      }
+      style={{
+        background: path ? `url(${path}) no-repeat center center / cover` : '',
+        minHeight: '300px',
+      }}
       className={`min-h-439 ${
         poster
           ? 'md:col-span-2 lg:col-span-1'
