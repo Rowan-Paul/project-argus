@@ -112,7 +112,7 @@ export default function Show() {
 
       <ItemDetails tmdb={tmdb} />
       {show.seasons ? (
-        <Seasons show={show.name} seasons={show.seasons} tmdb={tmdb.seasons} />
+        <Seasons seasons={show.seasons} tmdb={tmdb.seasons} />
       ) : (
         ''
       )}

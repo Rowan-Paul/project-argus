@@ -7,8 +7,9 @@ export default function Item({ title, url, image }) {
         <div
           style={{
             background: `url(${tmdbUrlify(image)}) no-repeat center center`,
+            backgroundColor: '#484a4d',
           }}
-          className="h-poster-1/2 w-poster-1/2 md:h-poster-3/4 md:w-poster-3/4 lg:h-poster-90 lg:w-poster-90 bg-accent"
+          className="h-poster-1/2 w-poster-1/2 md:h-poster-3/4 md:w-poster-3/4 lg:h-poster-90 lg:w-poster-90"
         >
           <span className="line-clamp-2 text-white bg-black bg-opacity-50 text-xs px-3 py-1 bottom-0 block">
             {title}
