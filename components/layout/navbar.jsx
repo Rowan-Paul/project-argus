@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/client'
 import { useState, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import MaterialIcon from '../../lib/materialIcons'
-import router from 'next/router'
 
 export default function NavbarUI() {
   const [session, loading] = useSession()

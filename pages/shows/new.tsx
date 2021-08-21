@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/layout/layout'
 import { removeLastWord } from '../../lib/utils'
-import SearchResults from '../../components/carousels/searchShows'
+import SearchResults from '../../components/searchResults'
 import Loading from '../../components/loading'
 
 export default function NewShow() {
@@ -29,7 +29,9 @@ export default function NewShow() {
 
         <h1>Looks like we don't have this show...</h1>
         <p>You can try adding by selecting the correct show below.</p>
-        <SearchResults year={show.year} name={show.name} />
+        <SearchResults
+          url={`https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&query=${show.name}&include_adult=false&first_air_date_year=${show.year}`}
+        />
       </>
     )
   }

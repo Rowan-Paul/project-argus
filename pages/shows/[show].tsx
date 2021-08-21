@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
 import { MinimalLayout } from '../../components/layout/layout'
-import ShowDetails from '../../components/itemDetails/showDetails'
+import ItemDetails from '../../components/itemDetails'
 import Backdrop from '../../components/backdrop'
 import Loading from '../../components/loading'
 import Seasons from '../../components/seasons'
@@ -110,7 +110,7 @@ export default function Show() {
         </div>
       </div>
 
-      <ShowDetails tmdb={tmdb} />
+      <ItemDetails tmdb={tmdb} />
       {show.seasons ? (
         <Seasons show={show.name} seasons={show.seasons} tmdb={tmdb.seasons} />
       ) : (

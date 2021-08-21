@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/client'
 import { MinimalLayout } from '../components/layout/layout'
-import DiscoverMovies from '../components/carousels/discoverMovies'
+import Discover from '../components/discover'
 import { useRouter } from 'next/router'
 import MaterialIcon from '../lib/materialIcons'
 import Loading from '../components/loading'
@@ -76,8 +76,14 @@ export default function Dashboard() {
           <h1>Welcome, {session.user?.name}</h1>
         </div>
 
-        <DiscoverMovies />
-        <DiscoverShows />
+        <Discover
+          url={`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`}
+          type="Movies"
+        />
+        <Discover
+          url={`https://api.themoviedb.org/3/discover/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&include_null_first_air_dates=false&with_watch_monetization_types=flatrate`}
+          type="TV Shows"
+        />
       </>
     )
   }

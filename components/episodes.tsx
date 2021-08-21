@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import ItemHorizontal from './ItemHorizontal'
+import ItemHorizontal from './itemHorizontal'
 import Loading from './loading'
 
 export default function Episodes({ season, episodes, tmdb }) {

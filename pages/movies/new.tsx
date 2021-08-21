@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/layout/layout'
 import { removeLastWord } from '../../lib/utils'
-import SearchResults from '../../components/carousels/searchMovies'
+import SearchResults from '../../components/searchResults'
 
 export default function NewMovie() {
   const [movie, setMovie] = useState({})
@@ -27,7 +27,9 @@ export default function NewMovie() {
 
       <h1>Looks like we don't have this movie...</h1>
       <p>You can try adding by selecting the correct movie below.</p>
-      <SearchResults year={movie.year} title={movie.title} />
+      <SearchResults
+        url={`https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${movie.title}&page=1&include_adult=false&year=${movie.year}`}
+      />
     </>
   )
 }

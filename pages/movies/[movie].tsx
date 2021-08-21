@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { titleCase } from '../../lib/utils'
 import { MinimalLayout } from '../../components/layout/layout'
-import MovieDetails from '../../components/itemDetails/movieDetails'
+import ItemDetails from '../../components/itemDetails'
 import Backdrop from '../../components/backdrop'
 import Loading from '../../components/loading'
 
@@ -111,7 +111,7 @@ export default function Movie() {
         </div>
       </div>
 
-      <MovieDetails tmdb={tmdb} />
+      <ItemDetails tmdb={tmdb} />
     </>
   )
 }

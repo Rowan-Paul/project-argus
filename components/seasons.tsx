@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
-import Item from './Item'
+import Item from './item'
 import Loading from './loading'
 
-export default function Seasons({ show, seasons, tmdb }) {
+export default function Seasons({ seasons, tmdb }) {
   const router = useRouter()
 
   if (tmdb?.length > 0) {
