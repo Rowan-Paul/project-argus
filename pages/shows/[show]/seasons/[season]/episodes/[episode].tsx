@@ -43,7 +43,7 @@ export default function Episode() {
 
         if (res.tmdb_id) {
           setUrl(
-            `https://api.themoviedb.org/3/tv/${res.show_tmdb_id}/season/${router.query.episode}/episode/${res.episode_number}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+            `https://api.themoviedb.org/3/tv/${res.show_tmdb_id}/season/${router.query.season}/episode/${res.episode_number}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
           )
           setShouldFetch(true)
         }
