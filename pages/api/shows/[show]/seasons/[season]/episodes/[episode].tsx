@@ -29,11 +29,25 @@ export default async function handler(req, res) {
           episode_number: parseInt(req.query.episode),
         },
       })
+      const episodeNext = await prisma.episodes.findFirst({
+        where: {
+          season_id: season.id,
+          episode_number: parseInt(req.query.episode) + 1,
+        },
+      })
+      const episodePrev = await prisma.episodes.findFirst({
+        where: {
+          season_id: season.id,
+          episode_number: parseInt(req.query.episode) - 1,
+        },
+      })
 
       let tempObj = episode
       tempObj.show_name = show.name
       tempObj.show_year = show.year
       tempObj.show_tmdb_id = show.tmdb_id
+      tempObj.next_episode = episodeNext
+      tempObj.prev_episode = episodePrev
 
       res.json(tempObj)
     } else {
@@ -53,6 +67,7 @@ export default async function handler(req, res) {
       res.json(episode)
     }
   } catch (error) {
+    console.log(error)
     res.status(404).end()
   }
 }

@@ -30,6 +30,13 @@ export default function Episode() {
   useEffect(() => {
     if (!router.isReady) return
 
+    setEpisode({})
+    setError(false)
+    setTmdb({})
+    setPosterPath('')
+    setShouldFetch(false)
+    setUrl('')
+
     fetch(
       `/api/shows/${router.query.show.toString()}/seasons/${
         router.query.season
@@ -51,7 +58,7 @@ export default function Episode() {
       .catch((err) => {
         setError(true)
       })
-  }, [router.isReady])
+  }, [router.isReady, router.query])
 
   if (initialLoadError) {
     return (
@@ -121,6 +128,24 @@ export default function Episode() {
         />
 
         <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
+          {episode.prev_episode ? (
+            <Link
+              href={`/shows/${router.query.show}/seasons/${router.query.season}/episodes/${episode.prev_episode.episode_number}`}
+            >
+              <a>Previous</a>
+            </Link>
+          ) : (
+            ''
+          )}
+          {episode.next_episode ? (
+            <Link
+              href={`/shows/${router.query.show}/seasons/${router.query.season}/episodes/${episode.next_episode.episode_number}`}
+            >
+              <a className="float-right">Next</a>
+            </Link>
+          ) : (
+            ''
+          )}
           <h2>{`${router.query.season}x${router.query.episode} ${episode.name}`}</h2>
           <p>{episode.overview}</p>
         </div>

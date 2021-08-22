@@ -46,7 +46,7 @@ export default function ItemHorizontal({
         <p>
           {item.release_date
             ? `Release date: ${formatDate(item.release_date)}`
-            : `Premiered: ${formatDate(item.first_air_date)}`}
+            : `Premiered: ${formatDate(item.air_date)}`}
         </p>
         <p>{item.overview}</p>
         {handleClick ? (
