@@ -51,7 +51,7 @@ export default function ItemDetails({ tmdb }) {
   } else {
     return (
       <>
-        <div className="grid mx-5 md:mx-0 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 md:my-5 gap-4">
+        <div className="grid mx-5 md:mx-0 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-4 md:my-5 gap-4">
           {tmdb.first_air_date ? (
             <Detail title="Premiered" text={formatDate(tmdb.first_air_date)} />
           ) : (
