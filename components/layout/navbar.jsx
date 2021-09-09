@@ -49,7 +49,7 @@ function Navbar(props) {
         <ul className="list-none m-0 p-0 max-w-full h-full flex items-center align-middle justify-end">
           <Link href="/">
             <a className="no-underline text-text-color ml-2 mr-auto">
-              project-argus
+              project-argus <sup>alpha</sup>
             </a>
           </Link>
           {props.children}
