@@ -1,23 +1,14 @@
-import Navbar from './navbar'
-import Footer from './footer'
+import Footer from '../footer/footer'
+import Navbar from '../navbar/navbar'
 
-export default function Layout({ children }) {
+const Layout = ({ children }): JSX.Element => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen m-0 flex flex-col">
       <Navbar />
-      <main className="flex flex-col items-center justify-center w-full flex-1 py-16 px-5 md:p-20 text-center">
-        {children}
-      </main>
+      <main className="my-5 px-10">{children}</main>
       <Footer />
     </div>
   )
 }
 
-export function MinimalLayout({ children }) {
-  return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main className="mt-5 md:mx-10">{children}</main>
-    </div>
-  )
-}
+export default Layout
