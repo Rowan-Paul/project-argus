@@ -15,7 +15,8 @@
     "prisma": "^3.1.1",
     "rc-progress": "^3.1.4",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "swr": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^16.10.0",

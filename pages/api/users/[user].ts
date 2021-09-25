@@ -1,14 +1,32 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getSession } from 'next-auth/react'
+
 import prisma from '../../../lib/prisma'
 
-interface IData {
+interface IPUTData {
   name: string
   image?: string
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getSession({ req })
+
+  switch (req.method) {
+    case 'PUT':
+      if (session && session.user.id === (req.query?.user as string)) {
+        return updateMethod(req, res)
+      }
+      return res.status(401).end()
+
+    default:
+      res.status(405).end()
+      break
+  }
+}
+
+const updateMethod = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let data: IData = {
+    let data: IPUTData = {
       name: req.body.name,
     }
 
@@ -23,10 +41,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data,
     })
 
-    res.status(201).end()
+    return res.status(201).end()
   } catch (error) {
-    console.log(error)
-    res.status(500).end()
+    return res.status(500).end()
   }
 }
 

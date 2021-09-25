@@ -44,6 +44,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  history       history[] @relation("historyTousers")
 }
 
 model VerificationToken {
@@ -52,4 +53,65 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model movies {
+  id       Int       @unique @default(autoincrement())
+  title    String    @db.VarChar
+  year     Int       @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
+  overview String    @db.VarChar
+  tmdb_id  Int?      @unique
+  history  history[]
+
+  @@unique([title, year])
+}
+
+model history {
+  id         Int       @unique @default(autoincrement())
+  datetime   DateTime? @db.Timestamptz(6)
+  user_id    String
+  movie_id   Int?
+  episode_id Int?
+  episodes   episodes? @relation(fields: [episode_id], references: [id])
+  movies     movies?   @relation(fields: [movie_id], references: [id])
+  users      User      @relation("historyTousers", fields: [user_id], references: [id])
+}
+
+model shows {
+  id       Int       @unique @default(autoincrement())
+  name     String    @db.VarChar
+  overview String    @db.VarChar
+  tmdb_id  Int?      @unique
+  year     Int       @default(dbgenerated("date_part('year'::text, CURRENT_DATE)"))
+  seasons  seasons[]
+
+  @@unique([name, year])
+}
+
+model seasons {
+  id            Int        @unique @default(autoincrement())
+  show_id       Int
+  name          String     @db.VarChar
+  overview      String     @db.VarChar
+  season_number Int
+  episode_count Int
+  air_date      DateTime   @db.Timestamp(6)
+  tmdb_id       Int?       @unique
+  shows         shows      @relation(fields: [show_id], references: [id])
+  episodes      episodes[]
+
+  @@unique([show_id, name])
+  @@unique([show_id, season_number])
+}
+
+model episodes {
+  id             Int       @unique @default(autoincrement())
+  name           String    @db.VarChar
+  overview       String    @db.VarChar
+  season_id      Int
+  tmdb_id        Int?
+  air_date       DateTime  @db.Timestamp(6)
+  episode_number Int
+  seasons        seasons   @relation(fields: [season_id], references: [id])
+  history        history[]
 }
