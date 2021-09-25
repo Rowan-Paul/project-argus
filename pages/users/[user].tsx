@@ -41,8 +41,6 @@ export default function UserPage(props: IUserPageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { slug } = ctx.params
-
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -55,7 +53,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     })
 
-    return user ? { props: { user } } : { notFound: true }
+    return user ? { props: { user }, revalidate: 15 * 60 } : { notFound: true }
   } catch (error) {
     console.log(error)
     return { notFound: true }
@@ -74,7 +72,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   })
 
   return {
-    paths: ['/users/RowanPaul'],
+    paths,
     fallback: true,
   }
 }
