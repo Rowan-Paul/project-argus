@@ -44,7 +44,6 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse, id: strin
 
     res.status(201).end()
   } catch (error) {
-    console.log(error)
     return res.status(500).end()
   }
 }

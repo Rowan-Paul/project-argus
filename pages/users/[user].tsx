@@ -55,7 +55,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     return user ? { props: { user }, revalidate: 15 * 60 } : { notFound: true }
   } catch (error) {
-    console.log(error)
     return { notFound: true }
   }
 }

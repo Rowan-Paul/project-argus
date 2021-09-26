@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import prisma from '../../lib/prisma'
 import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
-import { getLastWord, removeLastWord } from '../../lib/utils'
+import { getLastWord, removeLastWord, titleCase } from '../../lib/utils'
 import Backdrop from '../../components/backdrop/backdrop'
 import ItemDetails from '../../components/item-details/item-details'
 import { useRouter } from 'next/router'
@@ -95,6 +95,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     })
     let tmdb = {}
+    movie.title = titleCase(movie.title)
 
     if (movie?.tmdb_id) {
       tmdb = await fetch(
@@ -104,7 +105,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     return movie ? { props: { movie, tmdb: tmdb as Itmdb }, revalidate: 15 * 60 } : { notFound: true }
   } catch (error) {
-    console.log(error)
     return { notFound: true }
   }
 }

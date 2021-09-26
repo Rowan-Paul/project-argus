@@ -36,10 +36,10 @@ export default function AccountSettingsPage() {
 }
 
 const Settings = (props: ISettingsProps): JSX.Element => {
-  const [loading, setLoading] = useState<Boolean>(false)
-  const [formError, setFormError] = useState<string>('')
-  const [image, setImage] = useState<string | Blob>('')
-  const [localImage, setLocalImage] = useState<string>('')
+  const [loading, setLoading] = useState<Boolean>()
+  const [formError, setFormError] = useState<string>()
+  const [image, setImage] = useState<string | Blob>()
+  const [localImage, setLocalImage] = useState<string>()
   const router = useRouter()
 
   const submitForm = async (event) => {
@@ -116,7 +116,7 @@ const Settings = (props: ISettingsProps): JSX.Element => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Loading small={false} />
+        <Loading />
       </>
     )
   }
