@@ -8,6 +8,7 @@ import Loading from '../../components/loading/loading'
 import { getLastWord, removeLastWord } from '../../lib/utils'
 import Backdrop from '../../components/backdrop/backdrop'
 import ItemDetails from '../../components/item-details/item-details'
+import { useRouter } from 'next/router'
 
 interface IMoviePageProps {
   movie: {
@@ -47,6 +48,7 @@ interface IProductionCompany {
 
 export default function MoviePage(props: IMoviePageProps) {
   const [backdrop, setBackdrop] = useState<string>()
+  const router = useRouter()
 
   useEffect(() => {
     if (props.tmdb?.backdrop_path && backdrop === undefined) {
@@ -54,7 +56,7 @@ export default function MoviePage(props: IMoviePageProps) {
     }
   }, [props.tmdb, backdrop])
 
-  if (props.movie) {
+  if (props.movie && !router.isFallback) {
     return (
       <>
         <Head>
@@ -80,6 +82,7 @@ export default function MoviePage(props: IMoviePageProps) {
       </>
     )
   }
+
   return <Loading />
 }
 
