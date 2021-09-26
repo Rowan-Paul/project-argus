@@ -17,18 +17,20 @@ interface IMoviePageProps {
     overview: string
     tmdb_id?: number
   }
-  tmdb: {
-    backdrop_path?: string | null
-    tagline?: string | null
-    title?: string
-    release_date?: string
-    status?: string
-    runtime?: number | null
-    genres?: IGenre[]
-    production_companies?: IProductionCompany[]
-    first_air_date?: string
-    episode_run_time?: number[]
-  }
+  tmdb: Itmdb
+}
+
+interface Itmdb {
+  backdrop_path?: string | null
+  tagline?: string | null
+  title?: string
+  release_date?: string
+  status?: string
+  runtime?: number | null
+  genres?: IGenre[]
+  production_companies?: IProductionCompany[]
+  first_air_date?: string
+  episode_run_time?: number[]
 }
 
 interface IGenre {
@@ -97,7 +99,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       ).then((res) => res.json())
     }
 
-    return movie ? { props: { movie, tmdb: tmdb as TMDBmovie }, revalidate: 15 * 60 } : { notFound: true }
+    return movie ? { props: { movie, tmdb: tmdb as Itmdb }, revalidate: 15 * 60 } : { notFound: true }
   } catch (error) {
     console.log(error)
     return { notFound: true }
