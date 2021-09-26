@@ -38,7 +38,7 @@ const ItemDetails = (props: IItemDetailsProps): JSX.Element => {
                 : props.tmdb?.status
             }
           />
-          <Detail title="Runtime" text={`${props.tmdb?.runtime} minutes`} />
+          <Detail title="Runtime" text={`${props.tmdb?.runtime != undefined && props.tmdb?.runtime} minutes`} />
           <Detail
             title="Genres"
             text={props.tmdb?.genres?.map((genre, i) => {
@@ -96,6 +96,15 @@ const ItemDetails = (props: IItemDetailsProps): JSX.Element => {
 }
 
 function Detail({ title, text }) {
+  if (text === undefined || text === 'undefined minutes') {
+    return (
+      <div>
+        <span className="font-bold">{title} </span>
+        <span className="text-sm">-</span>
+      </div>
+    )
+  }
+
   return (
     <div>
       <span className="font-bold">{title} </span>

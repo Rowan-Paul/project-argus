@@ -17,13 +17,30 @@ interface IMoviePageProps {
     overview: string
     tmdb_id?: number
   }
-  tmdb: TMDBmovie
+  tmdb: {
+    backdrop_path?: string | null
+    tagline?: string | null
+    title?: string
+    release_date?: string
+    status?: string
+    runtime?: number | null
+    genres?: IGenre[]
+    production_companies?: IProductionCompany[]
+    first_air_date?: string
+    episode_run_time?: number[]
+  }
 }
 
-interface TMDBmovie {
-  backdrop_path?: string | null
-  tagline?: string | null
-  title?: string
+interface IGenre {
+  id?: number
+  name?: string
+}
+
+interface IProductionCompany {
+  name?: string
+  id?: number
+  logo_path?: string | null
+  origin_country?: string
 }
 
 export default function MoviePage(props: IMoviePageProps) {
@@ -57,7 +74,7 @@ export default function MoviePage(props: IMoviePageProps) {
           </div>
         </div>
 
-        <ItemDetails tmdb={props.tmdb} />
+        {props.movie?.tmdb_id && <ItemDetails tmdb={props.tmdb} />}
       </>
     )
   }
