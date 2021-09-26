@@ -1,27 +1,45 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
 
 import prisma from '../../lib/prisma'
 import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
 import { getLastWord, removeLastWord } from '../../lib/utils'
+import Backdrop from '../../components/backdrop/backdrop'
+import ItemDetails from '../../components/item-details/item-details'
 
 interface IMoviePageProps {
   movie: {
-    id: string
+    id: number
     title: string
     year: number
     overview: string
     tmdb_id?: number
   }
+  tmdb: TMDBmovie
+}
+
+interface TMDBmovie {
+  backdrop_path?: string | null
+  tagline?: string | null
+  title?: string
 }
 
 export default function MoviePage(props: IMoviePageProps) {
+  const [backdrop, setBackdrop] = useState<string>()
+
+  useEffect(() => {
+    if (props.tmdb?.backdrop_path && backdrop === undefined) {
+      setBackdrop(`https://www.themoviedb.org/t/p/w1280/${props.tmdb?.backdrop_path}`)
+    }
+  }, [props.tmdb, backdrop])
+
   if (props.movie) {
     return (
       <>
         <Head>
-          <title>{props.movie.title ? `${props.movie.title} ${props.movie.year} | ` : ''}Movies | project argus</title>
+          <title>{props.movie?.title ? `${props.movie.title} ${props.movie.year} | ` : ''}Movies | project argus</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -30,18 +48,19 @@ export default function MoviePage(props: IMoviePageProps) {
           <span>{props.movie.year}</span>
         </div>
 
-        <div className="grid md:grid-cols-10">
-          {/* <Backdrop path={backdropPath} id={movie.id} type="movies" showHistory={true} /> */}
+        <div className="md:grid md:grid-cols-10">
+          <Backdrop path={backdrop} id={props.movie.id} type="movies" showHistory={true} poster={false} />
 
           <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
-            {/* <p className="italic">{tmdb.tagline}</p> */}
+            {props.tmdb?.tagline && <p className="italic">{props.tmdb.tagline}</p>}
             <p>{props.movie.overview}</p>
           </div>
         </div>
+
+        <ItemDetails tmdb={props.tmdb} />
       </>
     )
   }
-
   return <Loading />
 }
 
@@ -53,8 +72,15 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         year: parseInt(getLastWord(ctx.params?.movie, '-')),
       },
     })
+    let tmdb = {}
 
-    return movie ? { props: { movie }, revalidate: 15 * 60 } : { notFound: true }
+    if (movie?.tmdb_id) {
+      tmdb = await fetch(
+        `https://api.themoviedb.org/3/movie/${movie.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+      ).then((res) => res.json())
+    }
+
+    return movie ? { props: { movie, tmdb: tmdb as TMDBmovie }, revalidate: 15 * 60 } : { notFound: true }
   } catch (error) {
     console.log(error)
     return { notFound: true }

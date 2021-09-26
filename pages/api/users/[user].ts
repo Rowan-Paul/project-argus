@@ -34,7 +34,7 @@ const updateMethod = async (req: NextApiRequest, res: NextApiResponse) => {
       data.image = req.body.image
     }
 
-    const updateUser = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id: req.query.user as string,
       },
