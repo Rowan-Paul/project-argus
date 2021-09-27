@@ -4,6 +4,13 @@ import { getSession } from 'next-auth/react'
 import prisma from '../../../lib/prisma'
 import { getLastWord, removeLastWord } from '../../../lib/utils'
 
+interface ICreateData {
+  overview: string
+  year: number
+  title: string
+  tmdb_id?: number
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
 
@@ -25,7 +32,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    // I'm lazy so I'm just copying it
     if (isNaN(req.query.movie as any) || isNaN(parseFloat(req.query.movie as any))) {
       const movie = {
         title: removeLastWord(req.query.movie, '-'),
@@ -58,13 +64,15 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse) => {
       tmdb_id: req.body.tmdb,
     }
 
+    const data: ICreateData = {
+      overview: movie.overview,
+      year: parseInt(movie.year),
+      title: movie.title,
+      tmdb_id: parseInt(movie.tmdb_id),
+    }
+
     await prisma.movies.create({
-      data: {
-        overview: movie.overview,
-        year: parseInt(movie.year),
-        title: movie.title,
-        tmdb_id: parseInt(movie.tmdb_id),
-      },
+      data,
     })
 
     return res.status(201).end()

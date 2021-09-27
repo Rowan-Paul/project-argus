@@ -5,15 +5,14 @@ import Head from 'next/head'
 import Layout from '../../components/layout/layout'
 import { getLastWord, removeLastWord } from '../../lib/utils'
 import Loading from '../../components/loading/loading'
-import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
 import SearchResults from '../../components/search-results/search-results'
+import { useSession } from 'next-auth/react'
 
 interface IMovie {
   title: string
   year: number
 }
 
-// TODO: also check if movie already exists
 const NewMoviePage = () => {
   const [movie, setMovie] = useState<IMovie>()
   const [loading, setLoading] = useState<boolean>()
@@ -21,6 +20,7 @@ const NewMoviePage = () => {
   const [results, setResults] = useState<IMovie[]>()
   const [movieExists, setMovieExists] = useState<boolean>()
   const router = useRouter()
+  const { status } = useSession()
 
   useEffect(() => {
     if (!router.isReady) return
@@ -41,6 +41,14 @@ const NewMoviePage = () => {
     }
   }, [router.isReady, router.query.movie])
 
+  switch (status) {
+    case 'loading':
+      return <Loading />
+
+    case 'unauthenticated':
+      router.push('/404')
+      return <Loading />
+  }
   if (movieExists) {
     router.push(`/movies/${router.query.movie}`)
     return <Loading />
