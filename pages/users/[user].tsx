@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     })
 
-    return user ? { props: { user }, revalidate: 15 * 60 } : { notFound: true }
+    return user ? { props: { user } } : { notFound: true }
   } catch (error) {
     return { notFound: true }
   }

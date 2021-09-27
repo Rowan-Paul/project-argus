@@ -103,7 +103,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       ).then((res) => res.json())
     }
 
-    return movie ? { props: { movie, tmdb: tmdb as Itmdb }, revalidate: 15 * 60 } : { notFound: true }
+    return movie ? { props: { movie, tmdb: tmdb as Itmdb } } : { notFound: true }
   } catch (error) {
     return { notFound: true }
   }
