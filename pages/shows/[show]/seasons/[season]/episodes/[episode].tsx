@@ -68,7 +68,7 @@ const EpisodePage = (props: IEpisodePageProps): JSX.Element => {
   const router = useRouter()
 
   useEffect(() => {
-    if (props.tmdb?.still_path && still === undefined) {
+    if (props.tmdb?.still_path && still !== props.tmdb?.still_path) {
       setStill(`https://www.themoviedb.org/t/p/w1280/${props.tmdb?.still_path}`)
     }
   }, [props.tmdb, still])

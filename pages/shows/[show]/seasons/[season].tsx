@@ -71,7 +71,7 @@ const SeasonPage = (props: ISeasonPageProps): JSX.Element => {
   const { season } = props
 
   useEffect(() => {
-    if (props.tmdb?.poster_path && poster === undefined) {
+    if (props.tmdb?.poster_path && poster !== props.tmdb?.poster_path) {
       setPoster(`https://www.themoviedb.org/t/p/w1280/${props.tmdb?.poster_path}`)
     }
   }, [props.tmdb, poster])
@@ -95,11 +95,6 @@ const SeasonPage = (props: ISeasonPageProps): JSX.Element => {
 
         <div className="grid md:grid-cols-10">
           <div className="md:col-span-4 lg:col-span-3 md:mr-8">
-            {/* <div className="flex flex-nowrap">
-              <a>Previous</a>
-              <a className="ml-auto">Next</a>
-            </div> */}
-
             <p className="p-5">{season?.overview}</p>
           </div>
           <Backdrop path={poster} type="shows" showHistory={false} poster={true} />

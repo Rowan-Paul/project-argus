@@ -60,7 +60,7 @@ const ShowPage = (props: IShowPageProps): JSX.Element => {
   const router = useRouter()
 
   useEffect(() => {
-    if (props.tmdb?.backdrop_path && backdrop === undefined) {
+    if (props.tmdb?.backdrop_path && backdrop !== props.tmdb?.backdrop_path) {
       setBackdrop(`https://www.themoviedb.org/t/p/w1280/${props.tmdb?.backdrop_path}`)
     }
   }, [props.tmdb, backdrop])
