@@ -1,17 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
-import prisma from '../../../../lib/prisma'
+import prisma from '../../../../../../lib/prisma'
 
 interface IPOSTData {
   user_id: string
-  movie_id: number
+  episode_id: number
   datetime: Date
 }
 
 interface IGETData {
   user_id: string
-  movie_id: number
+  episode_id: number
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -40,7 +40,7 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse, id: strin
   try {
     let data: IPOSTData = {
       user_id: id,
-      movie_id: parseInt(req.query.movie as string),
+      episode_id: parseInt(req.query.episode as string),
       datetime: new Date(),
     }
 
@@ -63,7 +63,7 @@ const readMethod = async (req: NextApiRequest, res: NextApiResponse, id: string)
   try {
     let data: IGETData = {
       user_id: id,
-      movie_id: parseInt(req.query.movie as string),
+      episode_id: parseInt(req.query.episode as string),
     }
 
     const result = await prisma.history.findMany({

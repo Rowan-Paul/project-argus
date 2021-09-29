@@ -1,5 +1,4 @@
 import HistoryPanel from '../history-panel/history-panel'
-import Image from 'next/image'
 
 interface IBackdropProps {
   path: string

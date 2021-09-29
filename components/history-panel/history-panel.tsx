@@ -21,7 +21,6 @@ interface IHistoryProps {
 
 const HistoryPanel = (props: IHistoryProps): JSX.Element => {
   const [history, setHistory] = useState<any[]>()
-  const [shouldFetch, setShouldFetch] = useState<boolean>()
   const { status } = useSession()
   const { data, error, isValidating } = useSWR(
     status === 'authenticated' ? `/api/history/${props.type}/${props.id}` : null,

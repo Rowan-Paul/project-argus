@@ -46,7 +46,7 @@ interface IProductionCompany {
   origin_country?: string
 }
 
-export default function MoviePage(props: IMoviePageProps) {
+const MoviePage = (props: IMoviePageProps): JSX.Element => {
   const [backdrop, setBackdrop] = useState<string>()
   const router = useRouter()
 
@@ -129,3 +129,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
 MoviePage.getLayout = function getLayout(page: JSX.Element) {
   return <Layout>{page}</Layout>
 }
+
+export default MoviePage

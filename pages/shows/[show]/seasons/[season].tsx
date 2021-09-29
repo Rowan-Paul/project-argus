@@ -15,6 +15,12 @@ interface ISeasonPageProps {
   tmdb?: Itmdb
   season: ISeason
   episodes: IEpisode[]
+  next_season: {
+    season_number: number
+  }
+  prev_season: {
+    season_number: number
+  }
 }
 
 interface IEpisode {
@@ -99,7 +105,22 @@ const SeasonPage = (props: ISeasonPageProps): JSX.Element => {
           <Backdrop path={poster} type="shows" showHistory={false} poster={true} />
         </div>
 
-        {props?.episodes && (
+        <div className="flex mt-10">
+          {props.prev_season ? (
+            <Link href={`/shows/${router.query.show}/seasons/${props.prev_season.season_number}}`}>
+              <a>Previous</a>
+            </Link>
+          ) : (
+            ''
+          )}
+          {props.next_season && (
+            <Link href={`/shows/${router.query.show}/seasons/${props.next_season.season_number}`}>
+              <a className="ml-auto">Next</a>
+            </Link>
+          )}
+        </div>
+
+        {props?.episodes?.length > 0 && (
           <Episodes episodes={props.episodes} season={season.season_number} show={router.query.show as string} />
         )}
       </>
@@ -153,8 +174,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       })
     }
 
+    const seasons = await prisma.seasons.findMany()
+    const next_season: any = seasons.find((s) => s.id === season.season_number + 1)
+    const prev_season: any = seasons.find((s) => s.id === season.season_number - 1)
+
     return season
-      ? { props: { season: { ...season, show: show.name }, tmdb: tmdb as Itmdb, episodes } }
+      ? { props: { season: { ...season, show: show.name }, next_season, prev_season, tmdb: tmdb as Itmdb, episodes } }
       : { notFound: true }
   } catch (error) {
     return { notFound: true }
