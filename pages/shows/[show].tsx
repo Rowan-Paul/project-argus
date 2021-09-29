@@ -82,7 +82,7 @@ const ShowPage = (props: IShowPageProps): JSX.Element => {
           <Backdrop path={backdrop} id={props.show.id} type="shows" showHistory={false} poster={false} />
 
           <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
-            <p className="italic">{props.tmdb.tagline}</p>
+            {props.tmdb?.tagline && <p className="italic">{props.tmdb.tagline}</p>}
             <p>{props.show.overview}</p>
           </div>
         </div>
@@ -121,14 +121,20 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         name: true,
         season_number: true,
       },
+      orderBy: {
+        season_number: 'asc',
+      },
     })
     let seasons: any = seasonsResult
-    seasons.map((season) => {
-      const result = tmdb.seasons.find((element) => element.season_number === season.season_number)
-      if (result?.poster_path) {
-        season.image = result.poster_path
-      }
-    })
+
+    if (tmdb?.seasons) {
+      seasons.map((season) => {
+        const result = tmdb.seasons.find((element) => element.season_number === season.season_number)
+        if (result?.poster_path) {
+          season.image = result.poster_path
+        }
+      })
+    }
 
     return show ? { props: { show, tmdb: tmdb as Itmdb, seasons } } : { notFound: true }
   } catch (error) {
@@ -153,8 +159,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export default ShowPage
-
 ShowPage.getLayout = function getLayout(page: JSX.Element) {
   return <Layout>{page}</Layout>
 }
+
+export default ShowPage

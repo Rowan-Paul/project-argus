@@ -18,13 +18,13 @@ interface IItemHorizontalProps {
 
 const ItemHorizontal = (props: IItemHorizontalProps): JSX.Element => {
   return (
-    <div className="grid md:grid-cols-7 gap-4 p-4 bg-accent rounded-2xl">
-      <div className="col-span-2 md:col-span-1">
+    <div className="grid md:grid-cols-6 gap-4 p-4 bg-accent rounded-2xl">
+      <div className="col-span-2">
         {props.url ? (
           <Link href={props.url}>
             <a>
               <Image
-                src={`https://image.tmdb.org/t/p/w1280/${props.image}`} //185x278
+                src={`https://image.tmdb.org/t/p/w1280/${props.image}`}
                 alt={`${props.item?.name} poster`}
                 width={1280}
                 height={720}
@@ -33,14 +33,14 @@ const ItemHorizontal = (props: IItemHorizontalProps): JSX.Element => {
           </Link>
         ) : (
           <Image
-            src={`https://image.tmdb.org/t/p/w1280/${props.image}`} //185x278
+            src={`https://image.tmdb.org/t/p/w1280/${props.image}`}
             alt={`${props.item?.title} poster`}
             width={256}
             height={384}
           />
         )}
       </div>
-      <div className="col-span-5">
+      <div className="col-span-4">
         {props.url ? (
           <Link href={props.url}>
             <a>
