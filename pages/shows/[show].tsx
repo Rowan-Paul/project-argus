@@ -19,40 +19,16 @@ interface IShowPageProps {
     overview: string
     tmdb_id?: number
   }
-  tmdb?: Itmdb
+  tmdb?: {
+    backdrop_path?: string | null
+    tagline?: string | null
+  }
   seasons?: ISeason[]
 }
 
 interface ISeason {
   name: string
   season_number: number
-  show: string
-  image?: string
-}
-
-interface Itmdb {
-  backdrop_path?: string | null
-  tagline?: string | null
-  title?: string
-  release_date?: string
-  status?: string
-  runtime?: number | null
-  genres?: IGenre[]
-  production_companies?: IProductionCompany[]
-  first_air_date?: string
-  episode_run_time?: number[]
-}
-
-interface IGenre {
-  id?: number
-  name?: string
-}
-
-interface IProductionCompany {
-  name?: string
-  id?: number
-  logo_path?: string | null
-  origin_country?: string
 }
 
 const ShowPage = (props: IShowPageProps): JSX.Element => {
@@ -136,7 +112,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       })
     }
 
-    return show ? { props: { show, tmdb: tmdb as Itmdb, seasons } } : { notFound: true }
+    return show ? { props: { show, tmdb: tmdb, seasons } } : { notFound: true }
   } catch (error) {
     return { notFound: true }
   }

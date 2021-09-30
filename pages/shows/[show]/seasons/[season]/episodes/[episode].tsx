@@ -1,4 +1,4 @@
-import next, { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
@@ -11,8 +11,10 @@ import { getLastWord, removeLastWord, titleCase } from '../../../../../../lib/ut
 import Backdrop from '../../../../../../components/backdrop/backdrop'
 
 interface IEpisodePageProps {
-  tmdb?: Itmdb
   episode: IEpisode
+  tmdb?: {
+    still_path?: string | null
+  }
   next_episode: {
     season_id: number
     episode_number: number
@@ -26,41 +28,9 @@ interface IEpisodePageProps {
 interface IEpisode {
   id: number
   name: string
-  tmdb_id: string
-  episode_number: number
-  still_path?: string
   show: string
-  season: number
   overview: string
   air_date: string
-}
-
-interface Itmdb {
-  backdrop_path?: string | null
-  tagline?: string | null
-  title?: string
-  release_date?: string
-  status?: string
-  runtime?: number | null
-  genres?: IGenre[]
-  production_companies?: IProductionCompany[]
-  first_air_date?: string
-  episode_run_time?: number[]
-  poster_path?: string | null
-  still_path?: string | null
-  air_date?: string
-}
-
-interface IGenre {
-  id?: number
-  name?: string
-}
-
-interface IProductionCompany {
-  name?: string
-  id?: number
-  logo_path?: string | null
-  origin_country?: string
 }
 
 const EpisodePage = (props: IEpisodePageProps): JSX.Element => {
@@ -211,7 +181,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
             episode: { ...episode, show: show.name, season: season.season_number },
             next_episode,
             prev_episode,
-            tmdb: tmdb as Itmdb,
+            tmdb: tmdb,
           },
         }
       : { notFound: true }

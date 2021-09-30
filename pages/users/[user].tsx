@@ -14,7 +14,7 @@ interface IUserPageProps {
   }
 }
 
-export default function UserPage(props: IUserPageProps) {
+const UserPage = (props: IUserPageProps): JSX.Element => {
   if (props.user) {
     return (
       <>
@@ -79,3 +79,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
 UserPage.getLayout = function getLayout(page: JSX.Element) {
   return <Layout>{page}</Layout>
 }
+
+export default UserPage

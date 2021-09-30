@@ -16,7 +16,7 @@ interface ISessionUser {
   email: string
 }
 
-export default function DashboardPage() {
+const DashboardPage = (): JSX.Element => {
   const { data: session, status } = useSession()
   const user: ISessionUser = session?.user as ISessionUser
   const router = useRouter()
@@ -52,3 +52,5 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 DashboardPage.getLayout = function getLayout(page: JSX.Element) {
   return <Layout>{page}</Layout>
 }
+
+export default DashboardPage

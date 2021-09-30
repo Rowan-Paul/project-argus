@@ -5,7 +5,7 @@ import Head from 'next/head'
 import CenterLayout from '../components/center-layout/center-layout'
 import Loading from '../components/loading/loading'
 
-export default function Home() {
+const Home = (): JSX.Element => {
   const { status } = useSession()
   const router = useRouter()
 
@@ -40,3 +40,5 @@ const Landingpage = (): JSX.Element => {
 Home.getLayout = function getLayout(page: JSX.Element) {
   return <CenterLayout>{page}</CenterLayout>
 }
+
+export default Home

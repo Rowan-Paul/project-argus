@@ -12,9 +12,11 @@ import prisma from '../../../../lib/prisma'
 import { getLastWord, removeLastWord, titleCase } from '../../../../lib/utils'
 
 interface ISeasonPageProps {
-  tmdb?: Itmdb
   season: ISeason
   episodes: IEpisode[]
+  tmdb?: {
+    poster_path?: string | null
+  }
   next_season: {
     season_number: number
   }
@@ -27,42 +29,13 @@ interface IEpisode {
   name: string
   tmdb_id: string
   episode_number: number
-  still_path?: string
 }
 
 interface ISeason {
   name: string
   season_number: number
   show: string
-  image?: string
   overview: string
-  air_date: string
-}
-
-interface Itmdb {
-  backdrop_path?: string | null
-  tagline?: string | null
-  title?: string
-  release_date?: string
-  status?: string
-  runtime?: number | null
-  genres?: IGenre[]
-  production_companies?: IProductionCompany[]
-  first_air_date?: string
-  episode_run_time?: number[]
-  poster_path?: string | null
-}
-
-interface IGenre {
-  id?: number
-  name?: string
-}
-
-interface IProductionCompany {
-  name?: string
-  id?: number
-  logo_path?: string | null
-  origin_country?: string
 }
 
 const SeasonPage = (props: ISeasonPageProps): JSX.Element => {
@@ -174,7 +147,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     const prev_season: any = seasons.find((s) => s.id === season.season_number - 1)
 
     return season
-      ? { props: { season: { ...season, show: show.name }, next_season, prev_season, tmdb: tmdb as Itmdb, episodes } }
+      ? { props: { season: { ...season, show: show.name }, next_season, prev_season, tmdb: tmdb, episodes } }
       : { notFound: true }
   } catch (error) {
     return { notFound: true }
