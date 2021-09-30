@@ -1,123 +1,142 @@
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { titleCase } from '../../lib/utils'
-import { MinimalLayout } from '../../components/layout/layout'
-import ItemDetails from '../../components/itemDetails'
-import Backdrop from '../../components/backdrop'
-import Loading from '../../components/loading'
-import Seasons from '../../components/seasons'
+import Backdrop from '../../components/backdrop/backdrop'
+import ItemDetails from '../../components/item-details/item-details'
+import Layout from '../../components/layout/layout'
+import Loading from '../../components/loading/loading'
+import Seasons from '../../components/seasons/seasons'
 
-const fetcher = async (
-  input: RequestInfo,
-  init: RequestInit,
-  ...args: any[]
-) => {
-  const res = await fetch(input, init)
-  return res.json()
+import prisma from '../../lib/prisma'
+import { getLastWord, removeLastWord, titleCase } from '../../lib/utils'
+
+interface IShowPageProps {
+  show: {
+    id: number
+    name: string
+    year: number
+    overview: string
+    tmdb_id?: number
+  }
+  tmdb?: {
+    backdrop_path?: string | null
+    tagline?: string | null
+  }
+  seasons?: ISeason[]
 }
 
-export default function Show() {
-  const [show, setShow] = useState({})
-  const [initialLoadError, setError] = useState(false)
-  const [tmdb, setTmdb] = useState({})
-  const [backdropPath, setBackdropPath] = useState('')
-  const [shouldFetch, setShouldFetch] = useState(false)
-  const [url, setUrl] = useState('')
+interface ISeason {
+  name: string
+  season_number: number
+}
+
+const ShowPage = (props: IShowPageProps): JSX.Element => {
+  const [backdrop, setBackdrop] = useState<string>()
   const router = useRouter()
-  const { data, error } = useSWR(shouldFetch ? url : null, fetcher)
 
   useEffect(() => {
-    if (!router.isReady) return
+    if (props.tmdb?.backdrop_path && backdrop !== props.tmdb?.backdrop_path) {
+      setBackdrop(`https://www.themoviedb.org/t/p/w1280/${props.tmdb?.backdrop_path}`)
+    }
+  }, [props.tmdb, backdrop])
 
-    fetch(`/api/shows/${router.query.show.toString()}`)
-      .then((res) => res.json())
-      .then((res) => {
-        res.name = titleCase(res.name)
-        setShow(res)
-
-        if (res.tmdb_id) {
-          setUrl(
-            `https://api.themoviedb.org/3/tv/${res.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
-          )
-          setShouldFetch(true)
-        }
-      })
-      .catch((err) => {
-        setError(true)
-      })
-  }, [router.isReady])
-
-  if (initialLoadError) {
-    router.push(`/shows/new?show=${router.query.show}`)
+  if (props.show && !router.isFallback) {
     return (
       <>
         <Head>
-          <title>
-            {show.name ? `${show.name} | ` : ''}Shows | project argus
-          </title>
+          <title>{props.show.name ? `${props.show.name} | ` : ''}Shows | project argus</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div>Failed to load</div>
-      </>
-    )
-  }
-  if (!data && !show.tmdb_id)
-    return (
-      <>
-        <Head>
-          <title>
-            {show.name ? `${show.name} ${show.name} | ` : ''}Shows | project
-            argus
-          </title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <Loading small={false} />
-      </>
-    )
-
-  if (data?.backdrop_path && !tmdb?.backdrop_path) {
-    setTmdb(data)
-    setBackdropPath('https://www.themoviedb.org/t/p/w1280' + data.backdrop_path)
-  }
-
-  return (
-    <>
-      <Head>
-        <title>{show.name ? `${show.name} | ` : ''}Shows | project argus</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className="ml-10 md:ml-0 mb-5">
-        <h1 className="inline-block mr-3">{show.name}</h1>
-        <span>{show.year}</span>
-      </div>
-
-      <div className="grid md:grid-cols-10">
-        <Backdrop
-          path={backdropPath}
-          id={show.id}
-          type="shows"
-          showHistory={false}
-        />
-
-        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
-          <p className="italic">{tmdb.tagline}</p>
-          <p>{show.overview}</p>
+        <div className="ml-10 md:ml-0 mb-5">
+          <h1 className="inline-block mr-3">{props.show.name}</h1>
+          <span>{props.show.year}</span>
         </div>
-      </div>
 
-      <ItemDetails tmdb={tmdb} />
-      {show.seasons ? (
-        <Seasons seasons={show.seasons} tmdb={tmdb.seasons} />
-      ) : (
-        ''
-      )}
-    </>
-  )
+        <div className="grid md:grid-cols-10">
+          <Backdrop path={backdrop} id={props.show.id} type="shows" showHistory={false} poster={false} />
+
+          <div className="p-5 md:p-10 md:col-span-4 lg:col-span-3">
+            {props.tmdb?.tagline && <p className="italic">{props.tmdb.tagline}</p>}
+            <p>{props.show.overview}</p>
+          </div>
+        </div>
+
+        {props.show?.tmdb_id && <ItemDetails tmdb={props.tmdb} />}
+        {props.seasons ? <Seasons seasons={props.seasons} show={router.query?.show as string} /> : ''}
+      </>
+    )
+  }
+
+  return <Loading />
 }
 
-Show.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  try {
+    const show = await prisma.shows.findFirst({
+      where: {
+        name: { equals: removeLastWord(ctx.params?.show, '-'), mode: 'insensitive' },
+        year: parseInt(getLastWord(ctx.params?.show, '-')),
+      },
+    })
+    let tmdb: any = {}
+    show.name = titleCase(show.name)
+
+    if (show?.tmdb_id) {
+      tmdb = await fetch(
+        `https://api.themoviedb.org/3/tv/${show.tmdb_id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+      ).then((res) => res.json())
+    }
+
+    const seasonsResult = await prisma.seasons.findMany({
+      where: {
+        show_id: show.id,
+      },
+      select: {
+        name: true,
+        season_number: true,
+      },
+      orderBy: {
+        season_number: 'asc',
+      },
+    })
+    let seasons: any = seasonsResult
+
+    if (tmdb?.seasons) {
+      seasons.map((season) => {
+        const result = tmdb.seasons.find((element) => element.season_number === season.season_number)
+        if (result?.poster_path) {
+          season.image = result.poster_path
+        }
+      })
+    }
+
+    return show ? { props: { show, tmdb: tmdb, seasons } } : { notFound: true }
+  } catch (error) {
+    return { notFound: true }
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const shows = await prisma.shows.findMany({
+    select: {
+      name: true,
+    },
+  })
+  const paths = []
+  shows.map((show) => {
+    paths.push(`/shows/${show}`)
+  })
+
+  return {
+    paths,
+    fallback: true,
+  }
+}
+
+ShowPage.getLayout = function getLayout(page: JSX.Element) {
+  return <Layout>{page}</Layout>
+}
+
+export default ShowPage

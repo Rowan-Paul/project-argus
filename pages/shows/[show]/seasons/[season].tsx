@@ -1,151 +1,194 @@
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { titleCase } from '../../../../lib/utils'
-import { MinimalLayout } from '../../../../components/layout/layout'
-import Backdrop from '../../../../components/backdrop'
-import Loading from '../../../../components/loading'
-import Episodes from '../../../../components/episodes'
 
-const fetcher = async (
-  input: RequestInfo,
-  init: RequestInit,
-  ...args: any[]
-) => {
-  const res = await fetch(input, init)
-  return res.json()
+import Backdrop from '../../../../components/backdrop/backdrop'
+import Episodes from '../../../../components/episodes/episodes'
+import Layout from '../../../../components/layout/layout'
+import Loading from '../../../../components/loading/loading'
+import prisma from '../../../../lib/prisma'
+import { getLastWord, removeLastWord, titleCase } from '../../../../lib/utils'
+
+interface ISeasonPageProps {
+  season: ISeason
+  episodes: IEpisode[]
+  tmdb?: {
+    poster_path?: string | null
+  }
+  next_season: {
+    season_number: number
+  }
+  prev_season: {
+    season_number: number
+  }
 }
 
-export default function Season() {
-  const [season, setSeason] = useState({})
-  const [initialLoadError, setError] = useState(false)
-  const [tmdb, setTmdb] = useState({})
-  const [posterPath, setPosterPath] = useState('')
-  const [shouldFetch, setShouldFetch] = useState(false)
-  const [url, setUrl] = useState('')
+interface IEpisode {
+  name: string
+  tmdb_id: string
+  episode_number: number
+}
+
+interface ISeason {
+  name: string
+  season_number: number
+  show: string
+  overview: string
+}
+
+const SeasonPage = (props: ISeasonPageProps): JSX.Element => {
+  const [poster, setPoster] = useState<string>()
   const router = useRouter()
-  const { data, error } = useSWR(shouldFetch ? url : null, fetcher)
+  const { season } = props
 
   useEffect(() => {
-    if (!router.isReady) return
+    if (props.tmdb?.poster_path && poster !== props.tmdb?.poster_path) {
+      setPoster(`https://www.themoviedb.org/t/p/w1280/${props.tmdb?.poster_path}`)
+    }
+  }, [props.tmdb, poster])
 
-    fetch(
-      `/api/shows/${router.query.show.toString()}/seasons/${
-        router.query.season
-      }`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        res.name = titleCase(res.name)
-        res.show_name = titleCase(res.show_name)
-        setSeason(res)
-
-        if (res.tmdb_id) {
-          setUrl(
-            `https://api.themoviedb.org/3/tv/${res.show_tmdb_id}/season/${res.season_number}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
-          )
-          setShouldFetch(true)
-        }
-      })
-      .catch((err) => {
-        setError(true)
-      })
-  }, [router.isReady])
-
-  if (initialLoadError) {
+  if (props.season && !router.isFallback) {
     return (
       <>
         <Head>
-          <title>
-            {season.name ? `${season.name} | ` : ''}Shows | project argus
-          </title>
+          <title>{season?.name && `${season.name} | ${season?.show} | `}Shows | project argus</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div>Failed to load</div>
-      </>
-    )
-  }
-  if (!data && !season.tmdb_id)
-    return (
-      <>
-        <Head>
-          <title>
-            {season.name ? `${season.name} ${season.name} | ` : ''}Shows |
-            project argus
-          </title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <Loading small={false} />
-      </>
-    )
-
-  if (data?.poster_path && !tmdb?.poster_path) {
-    setTmdb(data)
-    setPosterPath('https://www.themoviedb.org/t/p/w1280' + data.poster_path)
-  }
-
-  return (
-    <>
-      <Head>
-        <title>
-          {season.name ? `${season.name} | ${season.show_name} | ` : ''}Shows |
-          project argus
-        </title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className="ml-10 md:ml-0 mb-5">
-        <Link
-          href={`/shows/${season.show_name
-            .replace(/[^a-zA-Z0-9 !]+/g, '')
-            .replace(/\s+/g, '-')
-            .toLowerCase()}-${season.show_year}`}
-        >
-          <a>
-            <h1 className="inline-block mr-3">{season.show_name}</h1>
-          </a>
-        </Link>
-        <span>{season.year}</span>
-      </div>
-
-      <div className="grid md:grid-cols-6">
-        <Backdrop
-          path={posterPath}
-          id={season.id}
-          type="shows"
-          showHistory={false}
-          poster={true}
-        />
-
-        <div className="p-5 md:p-10 md:col-span-4 lg:col-span-5">
-          <h2>{season.name}</h2>
-          <p>{season.overview}</p>
+        <div className="mb-5">
+          <Link href={`/shows/${router.query.show}`}>
+            <a className="no-underline">
+              <h1 className="inline-block mr-3">{season.show}</h1>
+              <span>{season?.name}</span>
+            </a>
+          </Link>
         </div>
-      </div>
 
-      <div className="mx-5 md:mx-0 md:my-5">
-        <span className="font-bold mr-4">Premiered</span>
-        <span className="text-sm">{formatDate(tmdb.air_date)}</span>
-      </div>
+        <div className="grid md:grid-cols-10">
+          <div className="md:col-span-4 lg:col-span-3 md:mr-8">
+            <p className="p-5">{season?.overview}</p>
+          </div>
+          <Backdrop path={poster} type="shows" showHistory={false} poster={true} />
+        </div>
 
-      {season.episodes ? (
-        <Episodes
-          episodes={season.episodes}
-          season={season.season_number}
-          tmdb={tmdb.episodes}
-        />
-      ) : (
-        ''
-      )}
-    </>
-  )
+        <div className="flex mt-10">
+          {props.prev_season ? (
+            <Link href={`/shows/${router.query.show}/seasons/${props.prev_season.season_number}`}>
+              <a>Previous</a>
+            </Link>
+          ) : (
+            ''
+          )}
+          {props.next_season && (
+            <Link href={`/shows/${router.query.show}/seasons/${props.next_season.season_number}`}>
+              <a className="ml-auto">Next</a>
+            </Link>
+          )}
+        </div>
+
+        {props?.episodes?.length > 0 && (
+          <Episodes episodes={props.episodes} season={season.season_number} show={router.query.show as string} />
+        )}
+      </>
+    )
+  }
+
+  return <Loading />
 }
 
-Season.getLayout = (page) => <MinimalLayout>{page}</MinimalLayout>
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  try {
+    const show = await prisma.shows.findFirst({
+      where: {
+        name: { equals: removeLastWord(ctx.params?.show, '-'), mode: 'insensitive' },
+        year: parseInt(getLastWord(ctx.params?.show, '-')),
+      },
+    })
+    show.name = titleCase(show.name)
+
+    const season = await prisma.seasons.findFirst({
+      where: {
+        show_id: show.id,
+        season_number: parseInt(ctx.params?.season as string),
+      },
+    })
+
+    let tmdb: any = {}
+    if (show?.tmdb_id && season?.tmdb_id) {
+      tmdb = await fetch(
+        `https://api.themoviedb.org/3/tv/${show.tmdb_id}/season/${season.season_number}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+      ).then((res) => res.json())
+    }
+
+    const episodesResult = await prisma.episodes.findMany({
+      where: {
+        season_id: season.id,
+      },
+      orderBy: {
+        episode_number: 'asc',
+      },
+    })
+    let episodes: any = episodesResult
+
+    if (tmdb?.episodes) {
+      episodes.map((episode) => {
+        const result = tmdb.episodes.find((element) => element.episode_number === episode.episode_number)
+
+        if (result?.still_path) {
+          episode.still_path = result.still_path
+        }
+      })
+    }
+
+    const seasons = await prisma.seasons.findMany({ where: { show_id: show.id } })
+    const next_season: any = seasons.find((s) => s.season_number === season.season_number + 1)
+    const prev_season: any = seasons.find((s) => s.season_number === season.season_number - 1)
+
+    return season
+      ? { props: { season: { ...season, show: show.name }, next_season, prev_season, tmdb: tmdb, episodes } }
+      : { notFound: true }
+  } catch (error) {
+    return { notFound: true }
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const shows = await prisma.shows.findMany({
+    select: {
+      name: true,
+      id: true,
+    },
+  })
+
+  const paths = []
+  shows.map(async (show) => {
+    const seasons = await prisma.seasons.findMany({
+      where: {
+        show_id: show.id,
+      },
+      select: {
+        season_number: true,
+      },
+    })
+
+    seasons.map((season) => {
+      paths.push(`/shows/${show}/${season.season_number}`)
+    })
+  })
+
+  return {
+    paths,
+    fallback: true,
+  }
+}
+
+SeasonPage.getLayout = function getLayout(page: JSX.Element) {
+  return <Layout>{page}</Layout>
+}
+
+export default SeasonPage
 
 function formatDate(dateString) {
   const options = {
@@ -153,5 +196,6 @@ function formatDate(dateString) {
     month: 'short',
     day: 'numeric',
   }
+  // @ts-ignore
   return new Date(dateString).toLocaleString([], options)
 }
