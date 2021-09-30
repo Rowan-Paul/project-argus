@@ -8,12 +8,13 @@ interface IItemHorizontalProps {
     episode_number?: number
     release_date?: string
     air_date?: string
+    first_air_date?: string
     overview?: string
   }
   image: string
   season?: number
   url?: string
-  handleClick?: React.MouseEventHandler<HTMLButtonElement>
+  handleClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
 const ItemHorizontal = (props: IItemHorizontalProps): JSX.Element => {
@@ -54,18 +55,14 @@ const ItemHorizontal = (props: IItemHorizontalProps): JSX.Element => {
         <p>
           {props.item?.release_date
             ? `Release date: ${formatDate(props.item.release_date)}`
-            : `Premiered: ${formatDate(props.item?.air_date)}`}
+            : `Premiered: ${formatDate(props.item?.air_date ? props.item.air_date : props.item?.first_air_date)}`}
         </p>
-        <p>{props.item?.overview}</p>
+        <p className="line-clamp-6">{props.item?.overview}</p>
       </div>
-      {props.handleClick ? (
-        <div className="flex flex-col text-center justify-center">
-          <span onClick={props.handleClick} className="p-5 rounded-lg cursor-pointer text-white bg-blue-400">
-            Add movie
-          </span>
+      {props.handleClick && (
+        <div className="col-span-6 p-5 bg-blue-700 cursor-pointer" onClick={props.handleClick}>
+          Add {props.item?.title ? 'movie' : 'show'}
         </div>
-      ) : (
-        ''
       )}
     </div>
   )

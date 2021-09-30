@@ -13,9 +13,8 @@ const Backdrop = (props: IBackdropProps): JSX.Element => {
     <div
       style={{
         background: props.path ? `url(${props.path}) no-repeat center center / cover` : '',
-        minHeight: '300px',
       }}
-      className={`-mx-5 md:col-span-6 md:rounded-2xl'} bg-accent`}
+      className={`-mx-5 h-80 my-auto md:col-span-6 md:rounded-2xl'} bg-accent`}
     >
       {props.showHistory ? <HistoryPanel type={props.type} id={props.id} /> : ''}
     </div>

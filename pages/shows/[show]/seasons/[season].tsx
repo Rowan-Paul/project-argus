@@ -75,7 +75,7 @@ const SeasonPage = (props: ISeasonPageProps): JSX.Element => {
 
         <div className="flex mt-10">
           {props.prev_season ? (
-            <Link href={`/shows/${router.query.show}/seasons/${props.prev_season.season_number}}`}>
+            <Link href={`/shows/${router.query.show}/seasons/${props.prev_season.season_number}`}>
               <a>Previous</a>
             </Link>
           ) : (
@@ -142,9 +142,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       })
     }
 
-    const seasons = await prisma.seasons.findMany()
-    const next_season: any = seasons.find((s) => s.id === season.season_number + 1)
-    const prev_season: any = seasons.find((s) => s.id === season.season_number - 1)
+    const seasons = await prisma.seasons.findMany({ where: { show_id: show.id } })
+    const next_season: any = seasons.find((s) => s.season_number === season.season_number + 1)
+    const prev_season: any = seasons.find((s) => s.season_number === season.season_number - 1)
 
     return season
       ? { props: { season: { ...season, show: show.name }, next_season, prev_season, tmdb: tmdb, episodes } }

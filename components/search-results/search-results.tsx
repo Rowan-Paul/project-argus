@@ -3,9 +3,11 @@ import { useState } from 'react'
 import ItemHorizontal from '../item-horizontal/item-horizontal'
 import Loading from '../loading/loading'
 
-interface ISearchResultsProps {}
+interface ISearchResultsProps {
+  results: any[]
+}
 
-const SearchResults = (props: any): JSX.Element => {
+const SearchResults = (props: ISearchResultsProps): JSX.Element => {
   const [loading, setLoading] = useState<boolean>()
   const [error, setError] = useState<boolean>()
   const router = useRouter()
@@ -61,7 +63,12 @@ const SearchResults = (props: any): JSX.Element => {
   }
 
   if (loading) {
-    return <Loading />
+    return (
+      <div className="text-center">
+        <Loading />
+        <p>This might take a while</p>
+      </div>
+    )
   }
   if (error) {
     return <p className="text-red-400">Failed to add</p>

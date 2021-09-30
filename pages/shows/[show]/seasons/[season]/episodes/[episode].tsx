@@ -16,12 +16,12 @@ interface IEpisodePageProps {
     still_path?: string | null
   }
   next_episode: {
-    season_id: number
+    season_number: number
     episode_number: number
   }
   prev_episode: {
     episode_number: number
-    season_id: number
+    season_number: number
   }
 }
 
@@ -84,7 +84,7 @@ const EpisodePage = (props: IEpisodePageProps): JSX.Element => {
         <div className="flex mt-10">
           {props.prev_episode ? (
             <Link
-              href={`/shows/${router.query.show}/seasons/${props.prev_episode.season_id}/episodes/${props.prev_episode.episode_number}`}
+              href={`/shows/${router.query.show}/seasons/${props.prev_episode.season_number}/episodes/${props.prev_episode.episode_number}`}
             >
               <a>Previous</a>
             </Link>
@@ -93,7 +93,7 @@ const EpisodePage = (props: IEpisodePageProps): JSX.Element => {
           )}
           {props.next_episode && (
             <Link
-              href={`/shows/${router.query.show}/seasons/${props.next_episode.season_id}/episodes/${props.next_episode.episode_number}`}
+              href={`/shows/${router.query.show}/seasons/${props.next_episode.season_number}/episodes/${props.next_episode.episode_number}`}
             >
               <a className="ml-auto">Next</a>
             </Link>
@@ -154,10 +154,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
       if (nextSeason) {
         next_episode = {
-          season_id: nextSeason.season_number,
+          season_number: nextSeason.season_number,
           episode_number: 1,
         }
       }
+    } else {
+      next_episode.season_number = season.season_number
     }
     if (!prev_episode) {
       const prevSeason = await prisma.seasons.findFirst({
@@ -168,11 +170,13 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       })
 
       if (prevSeason) {
-        next_episode = {
-          season_id: prevSeason.season_number,
+        prev_episode = {
+          season_number: prevSeason.season_number,
           episode_number: 1,
         }
       }
+    } else {
+      prev_episode.season_number = season.season_number
     }
 
     return episode

@@ -1,45 +1,63 @@
+import { useSession } from 'next-auth/react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import Head from 'next/head'
 
 import Layout from '../../components/layout/layout'
-import { getLastWord, removeLastWord } from '../../lib/utils'
 import Loading from '../../components/loading/loading'
 import SearchResults from '../../components/search-results/search-results'
-import { useSession } from 'next-auth/react'
+import { getLastWord, removeLastWord } from '../../lib/utils'
 
-interface IMovie {
-  title: string
+interface IShow {
+  name: string
   year: number
 }
 
-const NewMoviePage = () => {
-  const [movie, setMovie] = useState<IMovie>()
+const NewShowPage = (): JSX.Element => {
+  const [show, setShow] = useState<IShow>()
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IMovie[]>()
-  const [movieExists, setMovieExists] = useState<boolean>()
+  const [results, setResults] = useState<IShow[]>()
+  const [showExists, setShowExists] = useState<boolean>()
   const router = useRouter()
   const { status } = useSession()
 
   useEffect(() => {
     if (!router.isReady) return
 
-    if (router.query?.movie) {
-      setMovie({
-        title: removeLastWord(router.query.movie, '-'),
-        year: parseInt(getLastWord(router.query.movie.toString(), '-')),
+    if (router.query?.show) {
+      setShow({
+        name: removeLastWord(router.query.show, '-'),
+        year: parseInt(getLastWord(router.query.show.toString(), '-')),
       })
 
-      fetch(`/api/movies/${router.query.movie}`)
+      fetch(
+        `https://api.themoviedb.org/3/search/tv?api_key=${
+          process.env.NEXT_PUBLIC_TMDB_API_KEY
+        }&language=en-US&page=1&query=${removeLastWord(
+          router.query.show,
+          '-'
+        )}&include_adult=false&first_air_date_year=${parseInt(getLastWord(router.query.show.toString(), '-'))}`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.length < 1) {
+            throw new Error('res.length is 0')
+          }
+          setResults(res.results)
+          setLoading(false)
+        })
+        .catch(() => setFormError('No movie found'))
+
+      fetch(`/api/shows/${router.query.show}`)
         .then((res) => res.json())
         .then((result) => {
           if (result.length > 0) {
-            setMovieExists(true)
+            setShowExists(true)
           }
         })
     }
-  }, [router.isReady, router.query.movie])
+  }, [router.isReady, router.query.show])
 
   switch (status) {
     case 'loading':
@@ -49,8 +67,8 @@ const NewMoviePage = () => {
       router.push('/404')
       return <Loading />
   }
-  if (movieExists) {
-    router.push(`/movies/${router.query.movie}`)
+  if (showExists) {
+    router.push(`/shows/${router.query.show}`)
     return <Loading />
   }
 
@@ -61,14 +79,14 @@ const NewMoviePage = () => {
     } else {
       setFormError(undefined)
       setLoading(true)
-      setMovie({
-        title: event.target.title.value,
+      setShow({
+        name: event.target.name.value,
         year: event.target.year?.value,
       })
 
       if (event.target?.year?.value) {
         fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${event.target.title.value}&page=1&include_adult=false&year=${event.target.year.value}`
+          `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&query=${event.target.name.value}&include_adult=false&first_air_date_year=${event.target.year.value}`
         )
           .then((res) => res.json())
           .then((res) => {
@@ -78,10 +96,10 @@ const NewMoviePage = () => {
             setResults(res.results)
             setLoading(false)
           })
-          .catch((error) => setFormError('No movie found'))
+          .catch(() => setFormError('No movie found'))
       } else {
         fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${event.target.title.value}&page=1&include_adult=false`
+          `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&query=${event.target.name.value}&include_adult=false}`
         )
           .then((res) => res.json())
           .then((res) => {
@@ -91,7 +109,7 @@ const NewMoviePage = () => {
             setResults(res.results)
             setLoading(false)
           })
-          .catch((error) => setFormError('No movie found'))
+          .catch(() => setFormError('No movie found'))
       }
     }
   }
@@ -99,11 +117,11 @@ const NewMoviePage = () => {
   return (
     <>
       <Head>
-        <title>Add a new movie | Movies | project argus</title>
+        <title>Add a new show | Shows | project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Add a new movie</h1>
+      <h1>Add a new show</h1>
 
       <form
         onSubmit={submitForm}
@@ -114,9 +132,9 @@ const NewMoviePage = () => {
         <input
           className="col-span-4 border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-sm focus:outline-none mr-2"
           type="search"
-          name="title"
-          defaultValue={movie?.title}
-          placeholder="Movie title"
+          name="name"
+          defaultValue={show?.name && show?.name}
+          placeholder="Show name"
           required
         />
         <input
@@ -126,7 +144,7 @@ const NewMoviePage = () => {
           min="1900"
           max="2099"
           step="1"
-          defaultValue={movie?.year}
+          defaultValue={show?.year && show?.year}
           placeholder="Year"
         />
         <button type="submit" className="ml-3 bg-accent py-3 px-5 rounded-lg">
@@ -153,8 +171,8 @@ const NewMoviePage = () => {
   )
 }
 
-NewMoviePage.getLayout = function getLayout(page: JSX.Element) {
+NewShowPage.getLayout = function getLayout(page: JSX.Element) {
   return <Layout>{page}</Layout>
 }
 
-export default NewMoviePage
+export default NewShowPage

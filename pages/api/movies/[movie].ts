@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (isNaN(req.query.movie as any) || isNaN(parseFloat(req.query.movie as any))) {
+    if (isNaN(req.query.movie as any) || isNaN(parseFloat(req.query.movie as string))) {
       const movie = {
         title: removeLastWord(req.query.movie, '-'),
         year: getLastWord(req.query.movie, '-'),
