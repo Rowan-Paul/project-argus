@@ -46,6 +46,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   history       history[] @relation("historyTousers")
+  initialized   Boolean   @default(false)
 }
 
 model VerificationToken {
