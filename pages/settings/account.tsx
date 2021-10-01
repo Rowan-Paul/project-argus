@@ -71,7 +71,7 @@ const Settings = (props: ISettingsProps): JSX.Element => {
               throw new Error('Failed')
             }
           })
-          .catch((error) => {
+          .catch(() => {
             setLoading(false)
             setFormError('Something went wrong, most likely the username already exists')
           })
@@ -94,7 +94,7 @@ const Settings = (props: ISettingsProps): JSX.Element => {
         }
       )
         .then((res) => res.json())
-        .catch((err) => setFormError('Could not upload image'))
+        .catch(() => setFormError('Could not upload image'))
     } else {
       return {
         error: true,
@@ -109,22 +109,13 @@ const Settings = (props: ISettingsProps): JSX.Element => {
   }
 
   if (loading) {
-    return (
-      <>
-        <Head>
-          <title>Account Details | project argus</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <Loading />
-      </>
-    )
+    return <Loading />
   }
 
   return (
     <>
       <Head>
-        <title>Settings | project argus</title>
+        <title>Account Settings | project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -168,11 +159,7 @@ const Settings = (props: ISettingsProps): JSX.Element => {
             Profile Picture
           </label>
         </div>
-        {formError ? (
-          <p className="text-red-500 text-center w-72 overflow-ellipsis overflow-hidden">{formError}</p>
-        ) : (
-          ''
-        )}
+        {formError && <p className="text-red-500 text-center w-72 overflow-ellipsis overflow-hidden">{formError}</p>}
         <button type="submit" className="p-3 text-white bg-green-400">
           Submit
         </button>

@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 interface INavItemProps {
   link?: string
@@ -17,7 +19,16 @@ interface ISessionUser {
 
 const Navbar = (): JSX.Element => {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const user: ISessionUser = session?.user as ISessionUser
+
+  useEffect(() => {
+    if (status === 'authenticated' && !session?.initialized && router.pathname !== '/settings/account') {
+      fetch(`/api/users/${session.user.id}`)
+        .then((res) => res.json())
+        .then((res) => !res.initialized && router.push('/settings/account'))
+    }
+  }, [router, session, status])
 
   return (
     <nav className="bg-primary p-4 border-b-2 border-solid border-accent no-underline">
