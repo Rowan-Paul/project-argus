@@ -114,34 +114,36 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (tmdbSeasons) {
-      tmdbSeasons.map(async (season) => {
-        let episodesData = []
+      await Promise.all(
+        tmdbSeasons.map(async (season) => {
+          let episodesData = []
 
-        const season_id = await prisma.seasons.findFirst({
-          where: {
-            tmdb_id: season.id,
-          },
-          select: {
-            id: true,
-          },
-        })
+          const season_id = await prisma.seasons.findFirst({
+            where: {
+              tmdb_id: season.id,
+            },
+            select: {
+              id: true,
+            },
+          })
 
-        season.episodes.map(async (episode) => {
-          episodesData.push({
-            name: episode.name,
-            overview: episode.overview,
-            season_id: season_id.id,
-            tmdb_id: episode.tmdb_id,
-            air_date: new Date(episode.air_date),
-            episode_number: episode.episode_number,
+          season.episodes.map((episode) => {
+            episodesData.push({
+              name: episode.name,
+              overview: episode.overview,
+              season_id: season_id.id,
+              tmdb_id: episode.id,
+              air_date: new Date(episode.air_date),
+              episode_number: episode.episode_number,
+            })
+          })
+
+          await prisma.episodes.createMany({
+            data: episodesData,
+            skipDuplicates: true,
           })
         })
-
-        const createEpisodes = await prisma.episodes.createMany({
-          data: episodesData,
-          skipDuplicates: true,
-        })
-      })
+      )
     }
 
     return res.status(201).end()
