@@ -138,7 +138,7 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse) => {
             })
           })
 
-          const createEpisodes = await prisma.episodes.createMany({
+          await prisma.episodes.createMany({
             data: episodesData,
             skipDuplicates: true,
           })
