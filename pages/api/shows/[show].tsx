@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
+import { withSentry } from '@sentry/nextjs'
 
 import prisma from '../../../lib/prisma'
 import { getLastWord, removeLastWord } from '../../../lib/utils'
@@ -153,4 +154,4 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default handler
+export default withSentry(handler)
