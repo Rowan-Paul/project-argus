@@ -83,7 +83,9 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
             key={item.poster_path}
             name={item.title ? item.title : item.name}
             title={item.title ? item.title : item.name}
-            subtitle={`Release date: ${item.release_date ? formatDate(item.release_date) : formatDate(item.air_date)}`}
+            subtitle={`Release date: ${
+              item.release_date ? formatDate(item.release_date) : formatDate(item.first_air_date)
+            }`}
             description={item.overview}
             image={item.poster_path}
             handleClick={() => handleClick(item)}
