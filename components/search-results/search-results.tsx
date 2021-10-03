@@ -81,13 +81,27 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
         .map((item: any) => (
           <ItemHorizontal
             key={item.poster_path}
-            item={item}
+            name={item.title ? item.title : item.name}
+            title={item.title ? item.title : item.name}
+            subtitle={`Release date: ${item.release_date ? formatDate(item.release_date) : formatDate(item.air_date)}`}
+            description={item.overview}
             image={item.poster_path}
             handleClick={() => handleClick(item)}
+            type={item.title ? 'movie' : 'show'}
           />
         ))}
     </div>
   )
+}
+
+function formatDate(dateString) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }
+  // @ts-ignore
+  return new Date(dateString).toLocaleString([], options)
 }
 
 export default SearchResults
