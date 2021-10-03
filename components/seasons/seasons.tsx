@@ -20,12 +20,20 @@ const Seasons = (props: ISeasonsProps): JSX.Element => {
             key={season.name}
             title={season.name}
             url={`/shows/${props.show}/seasons/${season.season_number}`}
-            image={season?.image}
+            image={tmdbUrlify(season?.image)}
           />
         ))}
       </div>
     </div>
   )
+}
+
+function tmdbUrlify(image) {
+  if (image?.indexOf('/') === 0) {
+    return `https://image.tmdb.org/t/p/w185/${image}`
+  } else {
+    return image
+  }
 }
 
 export default Seasons

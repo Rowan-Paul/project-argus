@@ -20,11 +20,13 @@ const Episodes = (props: IEpisodesProps): JSX.Element => {
       <div className="grid gap-6 mt-2 ">
         {Object.values(props.episodes).map((episode: any, i) => (
           <ItemHorizontal
-            item={episode}
+            name={episode?.name}
+            title={`${props.season}x${episode.episode_number} ${episode.name}`}
             image={episode?.still_path}
-            season={props.season}
+            subtitle={`Air date: ${formatDate(episode.air_date)}`}
             url={`/shows/${props.show}/seasons/${props.season}/episodes/${i + 1}`}
             key={episode.name}
+            description={episode.overview}
           />
         ))}
       </div>
@@ -33,3 +35,13 @@ const Episodes = (props: IEpisodesProps): JSX.Element => {
 }
 
 export default Episodes
+
+function formatDate(dateString) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }
+  // @ts-ignore
+  return new Date(dateString).toLocaleString([], options)
+}
