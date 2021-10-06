@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import CenterLayout from '../../components/center-layout/center-layout'
@@ -66,7 +66,11 @@ const Settings = (props: ISettingsProps): JSX.Element => {
         })
           .then(async (res) => {
             if (res.status === 201) {
-              router.push('/dashboard')
+              if (router.query?.callbackUrl) {
+                router.push(router.query?.callbackUrl as string)
+              } else {
+                router.push('/dashboard')
+              }
             } else {
               throw new Error('Failed')
             }
