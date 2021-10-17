@@ -12,7 +12,7 @@ const MoviesDiscoverPage = (props: IMoviesDiscoverPageProps): JSX.Element => {
   return (
     <>
       <h1>Discover movies</h1>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 my-5">
+      <div className="grid auto-rows-fr grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 my-5">
         {results.map((result) => {
           return <Item url="#" title={result.title} image={tmdbUrlify(result.poster_path)} key={result.title} />
         })}
