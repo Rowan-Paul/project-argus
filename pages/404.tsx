@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -6,8 +7,9 @@ import CenterLayout from '../components/center-layout/center-layout'
 
 const Custom404 = (): JSX.Element => {
   const router = useRouter()
+  const { status } = useSession()
 
-  if (router.query?.movie && router.query.movie !== 'new') {
+  if (router.query?.movie && router.query.movie !== 'new' && status === 'authenticated') {
     return (
       <>
         <Head>
@@ -24,7 +26,7 @@ const Custom404 = (): JSX.Element => {
         </p>
       </>
     )
-  } else if (router.query?.show && router.query.show !== 'new') {
+  } else if (router.query?.show && router.query.show !== 'new'  && status === 'authenticated') {
     return (
       <>
         <Head>
