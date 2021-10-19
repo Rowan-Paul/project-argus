@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
 import { withSentry } from '@sentry/nextjs'
 
 import prisma from '../../../lib/prisma'

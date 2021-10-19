@@ -1,6 +1,8 @@
 import Layout from '../../components/layout/layout'
 import { GetStaticProps } from 'next'
+import Head from 'next/head'
 import Item from '../../components/item/item'
+import Loading from '../../components/loading/loading'
 
 interface IMoviesDiscoverPageProps {
   results: any
@@ -11,11 +13,30 @@ const MoviesDiscoverPage = (props: IMoviesDiscoverPageProps): JSX.Element => {
 
   return (
     <>
+      <Head>
+        <title>Discover | Movies | project argus</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <h1>Discover movies</h1>
       <div className="grid auto-rows-fr grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 my-5">
-        {results.map((result) => {
-          return <Item url="#" title={result.title} image={tmdbUrlify(result.poster_path)} key={result.title} />
-        })}
+        {results.length > 0 ? (
+          results.map((result) => {
+            return (
+              <Item
+                url={`/movies/${result.title
+                  .replace(/[^a-zA-Z0-9 !]+/g, '')
+                  .replace(/\s+/g, '-')
+                  .toLowerCase()}-${result.release_date.split('-')[0]}`}
+                title={result.title}
+                image={tmdbUrlify(result.poster_path)}
+                key={result.title}
+              />
+            )
+          })
+        ) : (
+          <Loading />
+        )}
       </div>
     </>
   )

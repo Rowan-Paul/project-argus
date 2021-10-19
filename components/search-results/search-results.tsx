@@ -76,22 +76,20 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
 
   return (
     <div className="grid lg:grid-cols-2 gap-6 mt-2">
-      {Object.values(props.results)
-        .slice(0, 6)
-        .map((item: any) => (
-          <ItemHorizontal
-            key={item.poster_path}
-            name={item.title ? item.title : item.name}
-            title={item.title ? item.title : item.name}
-            subtitle={`Release date: ${
-              item.release_date ? formatDate(item.release_date) : formatDate(item.first_air_date)
-            }`}
-            description={item.overview}
-            image={item.poster_path}
-            handleClick={() => handleClick(item)}
-            type={item.title ? 'movie' : 'show'}
-          />
-        ))}
+      {Object.values(props.results).map((item: any) => (
+        <ItemHorizontal
+          key={item.poster_path}
+          name={item.title ? item.title : item.name}
+          title={item.title ? item.title : item.name}
+          subtitle={`Release date: ${
+            item.release_date ? formatDate(item.release_date) : formatDate(item.first_air_date)
+          }`}
+          description={item.overview}
+          image={item.poster_path}
+          handleClick={() => handleClick(item)}
+          type={item.title ? 'movie' : 'show'}
+        />
+      ))}
     </div>
   )
 }
