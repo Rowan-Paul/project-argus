@@ -77,7 +77,7 @@ const SearchShowPage = () => {
       {formError ? <p className="text-red-500">{formError}</p> : ''}
 
       {loading && <Loading />}
-      {results?.length > 0 && (
+      {results?.length > 0 && !formerror && (
         <div className="grid lg:grid-cols-2 gap-6 mt-2">
           {Object.values(results).map((item: IShow) => (
             <Link href={`/shows/${item.name}-${item.year}`} key={item.id}>
