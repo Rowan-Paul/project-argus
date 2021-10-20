@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 
 import CenterLayout from '../components/center-layout/center-layout'
+import { getLastWord, removeLastWord } from '../lib/utils'
 
 const Custom404 = (): JSX.Element => {
   const router = useRouter()
@@ -20,13 +21,18 @@ const Custom404 = (): JSX.Element => {
         <h1>Movie not found</h1>
         <p>
           Perhaps you got the year wrong or it doesn&apos;t exist yet? <br></br>
-          <Link href={`/movies/new?movie=${router.query.movie}`}>
+          <Link
+            href={`/movies/new?movie=${removeLastWord(router.query.movie, '-')}&year=${getLastWord(
+              router.query.movie,
+              '-'
+            )}`}
+          >
             <a>You can always add a new movie here.</a>
           </Link>
         </p>
       </>
     )
-  } else if (router.query?.show && router.query.show !== 'new'  && status === 'authenticated') {
+  } else if (router.query?.show && router.query.show !== 'new' && status === 'authenticated') {
     return (
       <>
         <Head>
@@ -37,7 +43,12 @@ const Custom404 = (): JSX.Element => {
         <h1>Show not found</h1>
         <p>
           Perhaps you got the year wrong or it doesn&apos;t exist yet? <br></br>
-          <Link href={`/shows/new?show=${router.query.show}`}>
+          <Link
+            href={`/shows/new?show=${removeLastWord(router.query.show, '-')}&year=${getLastWord(
+              router.query.show,
+              '-'
+            )}`}
+          >
             <a>You can always add a new show here.</a>
           </Link>
         </p>

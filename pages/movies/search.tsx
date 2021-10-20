@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -6,18 +6,45 @@ import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
 import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
 import { titleCase } from '../../lib/utils'
+import { useRouter } from 'next/router'
 
 interface IMovie {
   title: string
   year: number
-  overview: string
-  id: number
+  overview?: string
+  id?: number
 }
 
 const SearchMoviePage = () => {
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
   const [results, setResults] = useState<IMovie[]>()
+  const [movie, setMovie] = useState<IMovie>()
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!router.isReady) return
+
+    if (router.query?.movie) {
+      setMovie({
+        title: router.query.movie as string,
+        year: parseInt(router.query.year as string),
+      })
+
+      fetch(`/api/movies/search?movie=${router.query.movie}`)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.length < 1) {
+            throw new Error('No results')
+          }
+
+          setResults(res)
+          setLoading(false)
+        })
+        .catch(() => setFormError('No movie found for this query'))
+    }
+  }, [router.isReady, router.query.movie, router.query.year])
 
   const submitForm = async (event) => {
     event.preventDefault()
@@ -26,18 +53,12 @@ const SearchMoviePage = () => {
     } else {
       setFormError(undefined)
       setLoading(true)
+      setMovie({
+        title: event.target.title.value,
+        year: event.target.year?.value,
+      })
 
-      fetch(`/api/movies/search?movie=${event.target?.title?.value}`)
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.length < 1) {
-            throw new Error('res.length is 0')
-          }
-
-          setResults(res)
-          setLoading(false)
-        })
-        .catch((error) => setFormError('No movie found'))
+      router.push(`/movies/search?movie=${event.target.title.value}`)
     }
   }
 
@@ -56,6 +77,7 @@ const SearchMoviePage = () => {
           type="search"
           name="title"
           placeholder="Movie title"
+          defaultValue={movie?.title}
           required
         />
         <button type="submit" className="ml-auto bg-accent py-3 px-10 h-full rounded-lg">

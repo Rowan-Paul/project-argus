@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import Layout from '../../components/layout/layout'
-import { getLastWord, removeLastWord } from '../../lib/utils'
 import Loading from '../../components/loading/loading'
 import SearchResults from '../../components/search-results/search-results'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 interface IMovie {
   title: string
@@ -27,9 +26,26 @@ const NewMoviePage = () => {
 
     if (router.query?.movie) {
       setMovie({
-        title: removeLastWord(router.query.movie, '-'),
-        year: parseInt(getLastWord(router.query.movie.toString(), '-')),
+        title: router.query.movie as string,
+        year: parseInt(router.query.year as string),
       })
+
+      fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=${
+          process.env.NEXT_PUBLIC_TMDB_API_KEY
+        }&language=en-US&page=1&query=${router.query.movie}&include_adult=false${
+          router.query.year && `&year=${parseInt(router.query.year as string)}`
+        }`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.length < 1) {
+            throw new Error('No show returned')
+          }
+          setResults(res.results)
+          setLoading(false)
+        })
+        .catch(() => setFormError('No show found'))
 
       fetch(`/api/movies/${router.query.movie}`)
         .then((res) => res.json())
@@ -39,18 +55,18 @@ const NewMoviePage = () => {
           }
         })
     }
-  }, [router.isReady, router.query.movie])
+  }, [router.isReady, router.query.movie, router.query.year])
 
   switch (status) {
     case 'loading':
       return <Loading />
 
     case 'unauthenticated':
-      router.push('/404')
+      signIn()
       return <Loading />
   }
   if (movieExists) {
-    router.push(`/movies/${router.query.movie}`)
+    router.push(`/movies/${router.query.movie}-${router.query.year}`)
     return <Loading />
   }
 
@@ -61,38 +77,10 @@ const NewMoviePage = () => {
     } else {
       setFormError(undefined)
       setLoading(true)
-      setMovie({
-        title: event.target.title.value,
-        year: event.target.year?.value,
-      })
 
-      if (event.target?.year?.value) {
-        fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${event.target.title.value}&page=1&include_adult=false&year=${event.target.year.value}`
-        )
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.length < 1) {
-              throw new Error('res.length is 0')
-            }
-            setResults(res.results)
-            setLoading(false)
-          })
-          .catch((error) => setFormError('No movie found'))
-      } else {
-        fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${event.target.title.value}&page=1&include_adult=false`
-        )
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.length < 1) {
-              throw new Error('res.length is 0')
-            }
-            setResults(res.results)
-            setLoading(false)
-          })
-          .catch((error) => setFormError('No movie found'))
-      }
+      router.push(
+        `/movies/new?movie=${event.target.title.value}${event.target.year.value && `&year=${event.target.year.value}`}`
+      )
     }
   }
 

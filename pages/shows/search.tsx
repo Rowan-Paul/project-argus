@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -6,18 +6,45 @@ import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
 import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
 import { titleCase } from '../../lib/utils'
+import { useRouter } from 'next/router'
 
 interface IShow {
   name: string
   year: number
-  overview: string
-  id: number
+  overview?: string
+  id?: number
 }
 
 const SearchShowPage = () => {
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
   const [results, setResults] = useState<IShow[]>()
+  const [show, setShow] = useState<IShow>()
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!router.isReady) return
+
+    if (router.query?.show) {
+      setShow({
+        name: router.query.show as string,
+        year: parseInt(router.query.year as string),
+      })
+
+      fetch(`/api/shows/search?show=${router.query.show}`)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.length < 1) {
+            throw new Error('No show found')
+          }
+
+          setResults(res)
+          setLoading(false)
+        })
+        .catch(() => setFormError('No show found with that name'))
+    }
+  }, [router.isReady, router.query.show, router.query.year])
 
   const submitForm = async (event) => {
     event.preventDefault()
@@ -26,18 +53,12 @@ const SearchShowPage = () => {
     } else {
       setFormError(undefined)
       setLoading(true)
+      setShow({
+        name: event.target.name.value,
+        year: event.target.year?.value,
+      })
 
-      fetch(`/api/shows/search?show=${event.target?.name?.value}`)
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.length < 1) {
-            throw new Error('res.length is 0')
-          }
-
-          setResults(res)
-          setLoading(false)
-        })
-        .catch((error) => setFormError('No show found'))
+      router.push(`/shows/search?show=${event.target.name.value}`)
     }
   }
 
@@ -56,6 +77,7 @@ const SearchShowPage = () => {
           type="search"
           name="name"
           placeholder="Show name"
+          defaultValue={show?.name}
           required
         />
         <button type="submit" className="ml-auto bg-accent py-3 px-10 h-full rounded-lg">
