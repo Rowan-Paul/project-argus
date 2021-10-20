@@ -43,16 +43,16 @@ const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
         where: { name: show.name, year: parseInt(show.year) },
       })
 
-      res.json(result)
+      return res.json(result)
     } else {
       const result = await prisma.shows.findMany({
         where: { id: parseInt(req.query.show as string) },
       })
 
-      res.json(result)
+      return res.json(result)
     }
   } catch (error) {
-    res.status(404).end()
+    return res.status(404).end()
   }
 }
 

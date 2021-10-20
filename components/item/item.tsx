@@ -16,7 +16,7 @@ const Item = (props: IItemProps): JSX.Element => {
         ) : (
           <div style={{ height: '272px', width: '185px' }} />
         )}
-        <span className="block">{props.title}</span>
+        <span className="block px-2">{props.title}</span>
       </a>
     </Link>
   )

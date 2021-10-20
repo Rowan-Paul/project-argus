@@ -22,17 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const deleteMethod = async (req: NextApiRequest, res: NextApiResponse, id: string) => {
   try {
-    try {
-      await prisma.history.delete({
-        where: {
-          id: parseInt(req.query.item as string),
-        },
-      })
+    await prisma.history.delete({
+      where: {
+        id: parseInt(req.query.item as string),
+      },
+    })
 
-      res.status(200).end()
-    } catch (error) {
-      res.status(500).end()
-    }
+    return res.status(200).end()
   } catch (error) {
     return res.status(500).end()
   }

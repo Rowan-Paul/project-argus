@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -6,18 +6,23 @@ import { useEffect, useState } from 'react'
 import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
 import SearchResults from '../../components/search-results/search-results'
-import { getLastWord, removeLastWord } from '../../lib/utils'
 
 interface IShow {
   name: string
   year: number
 }
 
+interface IResults {
+  results: IShow[]
+  total_results: number
+}
+
 const NewShowPage = (): JSX.Element => {
   const [show, setShow] = useState<IShow>()
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IShow[]>()
+  const [results, setResults] = useState<IResults>()
+  const [page, setPage] = useState<number>(1)
   const [showExists, setShowExists] = useState<boolean>()
   const router = useRouter()
   const { status } = useSession()
@@ -27,27 +32,26 @@ const NewShowPage = (): JSX.Element => {
 
     if (router.query?.show) {
       setShow({
-        name: removeLastWord(router.query.show, '-'),
-        year: parseInt(getLastWord(router.query.show.toString(), '-')),
+        name: router.query.show as string,
+        year: parseInt(router.query.year as string),
       })
 
       fetch(
         `https://api.themoviedb.org/3/search/tv?api_key=${
           process.env.NEXT_PUBLIC_TMDB_API_KEY
-        }&language=en-US&page=1&query=${removeLastWord(
-          router.query.show,
-          '-'
-        )}&include_adult=false&first_air_date_year=${parseInt(getLastWord(router.query.show.toString(), '-'))}`
+        }&language=en-US&page=1&query=${router.query.show}&include_adult=false${
+          router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`
+        }`
       )
         .then((res) => res.json())
         .then((res) => {
           if (res.length < 1) {
-            throw new Error('res.length is 0')
+            throw new Error('No show returned')
           }
-          setResults(res.results)
+          setResults(res)
           setLoading(false)
         })
-        .catch(() => setFormError('No movie found'))
+        .catch(() => setFormError('No show found'))
 
       fetch(`/api/shows/${router.query.show}`)
         .then((res) => res.json())
@@ -57,14 +61,14 @@ const NewShowPage = (): JSX.Element => {
           }
         })
     }
-  }, [router.isReady, router.query.show])
+  }, [router.isReady, router.query.show, router.query.year])
 
   switch (status) {
     case 'loading':
       return <Loading />
 
     case 'unauthenticated':
-      router.push('/404')
+      signIn()
       return <Loading />
   }
   if (showExists) {
@@ -84,34 +88,58 @@ const NewShowPage = (): JSX.Element => {
         year: event.target.year?.value,
       })
 
-      if (event.target?.year?.value) {
-        fetch(
-          `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&query=${event.target.name.value}&include_adult=false&first_air_date_year=${event.target.year.value}`
-        )
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.length < 1) {
-              throw new Error('res.length is 0')
-            }
-            setResults(res.results)
-            setLoading(false)
-          })
-          .catch(() => setFormError('No movie found'))
-      } else {
-        fetch(
-          `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&query=${event.target.name.value}&include_adult=false}`
-        )
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.length < 1) {
-              throw new Error('res.length is 0')
-            }
-            setResults(res.results)
-            setLoading(false)
-          })
-          .catch(() => setFormError('No movie found'))
-      }
+      router.push(
+        `/shows/new?show=${event.target.name.value}${event.target.year.value && `&year=${event.target.year.value}`}`
+      )
     }
+  }
+
+  const nextPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(
+      `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
+        page + 1
+      }&query=${router.query.show}&include_adult=false${
+        router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`
+      }`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page + 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
+  const prevPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(
+      `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
+        page - 1
+      }&query=${router.query.show}&include_adult=false${
+        router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`
+      }`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page - 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
   }
 
   return (
@@ -163,10 +191,26 @@ const NewShowPage = (): JSX.Element => {
           </svg>
         </button>
       </form>
-      {formError ? <p className="text-red-500">{formError}</p> : ''}
+      {results?.total_results && <span>Total results: {results?.total_results}</span>}
 
-      {loading && <Loading />}
-      {results?.length > 0 && <SearchResults results={results} />}
+      {formError ? (
+        <p className="text-red-500">{formError}</p>
+      ) : loading ? (
+        <Loading />
+      ) : (
+        results?.results?.length > 0 && <SearchResults results={results.results} button />
+      )}
+
+      {page > 1 && (
+        <span className="inline-block p-5 cursor-pointer" onClick={prevPage}>
+          Previous page
+        </span>
+      )}
+      {results?.total_results / 20 > page && (
+        <span className="inline-block p-5 cursor-pointer" onClick={nextPage}>
+          Next page
+        </span>
+      )}
     </>
   )
 }

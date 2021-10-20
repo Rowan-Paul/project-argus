@@ -1,31 +1,31 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
+import { useRouter } from 'next/router'
 import SearchResults from '../../components/search-results/search-results'
-import { signIn, useSession } from 'next-auth/react'
 
 interface IMovie {
   title: string
   year: number
+  overview?: string
+  id?: number
 }
 
 interface IResults {
-  results: IMovie[]
-  total_results: number
+  moviesCount: number
+  movies: IMovie[]
 }
 
-const NewMoviePage = () => {
-  const [movie, setMovie] = useState<IMovie>()
+const SearchMoviePage = () => {
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
   const [results, setResults] = useState<IResults>()
-  const [page, setPage] = useState<number>(1)
-  const [movieExists, setMovieExists] = useState<boolean>()
+  const [movie, setMovie] = useState<IMovie>()
+  const [page, setPage] = useState<number>(0)
+
   const router = useRouter()
-  const { status } = useSession()
 
   useEffect(() => {
     if (!router.isReady) return
@@ -36,57 +36,33 @@ const NewMoviePage = () => {
         year: parseInt(router.query.year as string),
       })
 
-      fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${
-          process.env.NEXT_PUBLIC_TMDB_API_KEY
-        }&language=en-US&page=1&query=${router.query.movie}&include_adult=false${
-          router.query.year && `&year=${parseInt(router.query.year as string)}`
-        }`
-      )
+      fetch(`/api/movies/search?movie=${router.query.movie}`)
         .then((res) => res.json())
         .then((res) => {
           if (res.length < 1) {
-            throw new Error('No show returned')
+            throw new Error('No results')
           }
+
           setResults(res)
           setLoading(false)
         })
-        .catch(() => setFormError('No show found'))
-
-      fetch(`/api/movies/${router.query.movie}`)
-        .then((res) => res.json())
-        .then((result) => {
-          if (result.length > 0) {
-            setMovieExists(true)
-          }
-        })
+        .catch(() => setFormError('No movie found for this query'))
     }
   }, [router.isReady, router.query.movie, router.query.year])
-
-  switch (status) {
-    case 'loading':
-      return <Loading />
-
-    case 'unauthenticated':
-      signIn()
-      return <Loading />
-  }
-  if (movieExists) {
-    router.push(`/movies/${router.query.movie}-${router.query.year}`)
-    return <Loading />
-  }
 
   const submitForm = async (event) => {
     event.preventDefault()
     if (!(document.getElementById('searchForm') as HTMLInputElement).checkValidity()) {
-      setFormError('Search field cannot be empty and year has to be in between 1900 and 2099')
+      setFormError('Search field cannot be empty')
     } else {
       setFormError(undefined)
       setLoading(true)
+      setMovie({
+        title: event.target.title.value,
+        year: event.target.year?.value,
+      })
 
-      router.push(
-        `/movies/new?movie=${event.target.title.value}${event.target.year.value && `&year=${event.target.year.value}`}`
-      )
+      router.push(`/movies/search?movie=${event.target.title.value}`)
     }
   }
 
@@ -94,13 +70,7 @@ const NewMoviePage = () => {
     setFormError(undefined)
     setLoading(true)
 
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
-        page + 1
-      }&query=${router.query.movie}&include_adult=false${
-        router.query.year && `&year=${parseInt(router.query.year as string)}`
-      }`
-    )
+    fetch(`/api/movies/search?movie=${router.query.movie}&page=${page + 1}`)
       .then((res) => res.json())
       .then((res) => {
         if (res.length < 1) {
@@ -118,13 +88,7 @@ const NewMoviePage = () => {
     setFormError(undefined)
     setLoading(true)
 
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
-        page - 1
-      }&query=${router.query.movie}&include_adult=false${
-        router.query.year && `&year=${parseInt(router.query.year as string)}`
-      }`
-    )
+    fetch(`/api/movies/search?movie=${router.query.movie}&page=${page - 1}`)
       .then((res) => res.json())
       .then((res) => {
         if (res.length < 1) {
@@ -141,37 +105,22 @@ const NewMoviePage = () => {
   return (
     <>
       <Head>
-        <title>Add a new movie | Movies | project argus</title>
+        <title>Search | Movies | project argus</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Add a new movie</h1>
+      <h1>Search</h1>
 
-      <form
-        onSubmit={submitForm}
-        id="searchForm"
-        noValidate
-        className="grid grid-cols-7 my-10 relative mx-auto text-gray-600"
-      >
+      <form onSubmit={submitForm} id="searchForm" noValidate className="w-full flex my-10 relative text-gray-600">
         <input
-          className="col-span-4 border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-sm focus:outline-none mr-2"
+          className="w-full border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-sm focus:outline-none mr-2"
           type="search"
           name="title"
-          defaultValue={movie?.title && movie.title}
           placeholder="Movie title"
+          defaultValue={movie?.title}
           required
         />
-        <input
-          className="col-span-2 border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-sm focus:outline-none"
-          type="number"
-          name="year"
-          min="1900"
-          max="2099"
-          step="1"
-          defaultValue={movie?.year && movie.year}
-          placeholder="Year"
-        />
-        <button type="submit" className="ml-3 bg-accent py-3 px-5 rounded-lg">
+        <button type="submit" className="ml-auto bg-accent py-3 px-10 h-full rounded-lg">
           <svg
             className="text-white h-4 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -187,22 +136,22 @@ const NewMoviePage = () => {
           </svg>
         </button>
       </form>
-      {results?.total_results && <span>Total results: {results?.total_results}</span>}
+      {results?.moviesCount && <span>Total results: {results?.moviesCount}</span>}
 
       {formError ? (
         <p className="text-red-500">{formError}</p>
       ) : loading ? (
         <Loading />
       ) : (
-        results?.results.length > 0 && <SearchResults results={results.results} button />
+        results?.movies.length > 0 && <SearchResults results={results.movies} />
       )}
 
-      {page > 1 && (
+      {page > 0 && (
         <span className="inline-block p-5 cursor-pointer" onClick={prevPage}>
           Previous page
         </span>
       )}
-      {results?.total_results / 20 > page && (
+      {results?.moviesCount / 20 > page + 1 && (
         <span className="inline-block p-5 cursor-pointer" onClick={nextPage}>
           Next page
         </span>
@@ -211,8 +160,8 @@ const NewMoviePage = () => {
   )
 }
 
-NewMoviePage.getLayout = function getLayout(page: JSX.Element) {
+SearchMoviePage.getLayout = function getLayout(page: JSX.Element) {
   return <Layout>{page}</Layout>
 }
 
-export default NewMoviePage
+export default SearchMoviePage

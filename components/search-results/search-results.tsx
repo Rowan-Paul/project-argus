@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { titleCase } from '../../lib/utils'
 import ItemHorizontal from '../item-horizontal/item-horizontal'
 import Loading from '../loading/loading'
 
 interface ISearchResultsProps {
   results: any[]
+  button?: boolean
 }
 
 const SearchResults = (props: ISearchResultsProps): JSX.Element => {
@@ -75,23 +77,26 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
   }
 
   return (
-    <div className="grid lg:grid-cols-2 gap-6 mt-2">
-      {Object.values(props.results)
-        .slice(0, 6)
-        .map((item: any) => (
-          <ItemHorizontal
-            key={item.poster_path}
-            name={item.title ? item.title : item.name}
-            title={item.title ? item.title : item.name}
-            subtitle={`Release date: ${
-              item.release_date ? formatDate(item.release_date) : formatDate(item.first_air_date)
-            }`}
-            description={item.overview}
-            image={item.poster_path}
-            handleClick={() => handleClick(item)}
-            type={item.title ? 'movie' : 'show'}
-          />
-        ))}
+    <div className="grid md:grid-cols-2 gap-6 mt-2">
+      {Object.values(props.results).map((item: any) => (
+        <ItemHorizontal
+          key={item.poster_path + item.title}
+          name={item.title ? item.title : item.name}
+          title={titleCase(item.title ? item.title : item.name)}
+          subtitle={
+            item.release_date
+              ? `Release date: ${formatDate(item.release_date)}`
+              : item.first_air_date
+              ? `Release date: ${formatDate(item.first_air_date)}`
+              : ''
+          }
+          description={item.overview}
+          image={item.poster_path}
+          handleClick={props.button ? () => handleClick(item) : undefined}
+          type={item.title ? 'movie' : 'show'}
+          url={props.button ? undefined : `/${item.title ? `movies/${item.title}` : `shows/${item.name}`}-${item.year}`}
+        />
+      ))}
     </div>
   )
 }
