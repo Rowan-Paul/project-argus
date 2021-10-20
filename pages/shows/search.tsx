@@ -7,6 +7,7 @@ import Loading from '../../components/loading/loading'
 import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
 import { titleCase } from '../../lib/utils'
 import { useRouter } from 'next/router'
+import SearchResults from '../../components/search-results/search-results'
 
 interface IShow {
   name: string
@@ -101,24 +102,7 @@ const SearchShowPage = () => {
       ) : loading ? (
         <Loading />
       ) : (
-        results?.length > 0 && (
-          <div className="grid lg:grid-cols-2 gap-6 mt-2">
-            {Object.values(results).map((item: IShow) => (
-              <Link href={`/shows/${item.name}-${item.year}`} key={item.id}>
-                <a className="no-underline">
-                  <ItemHorizontal
-                    name={item.name}
-                    title={titleCase(item.name)}
-                    subtitle={``}
-                    description={item.overview}
-                    image={''}
-                    type={'show'}
-                  />
-                </a>
-              </Link>
-            ))}
-          </div>
-        )
+        results?.length > 0 && <SearchResults results={results} />
       )}
     </>
   )

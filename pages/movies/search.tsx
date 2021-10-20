@@ -7,6 +7,7 @@ import Loading from '../../components/loading/loading'
 import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
 import { titleCase } from '../../lib/utils'
 import { useRouter } from 'next/router'
+import SearchResults from '../../components/search-results/search-results'
 
 interface IMovie {
   title: string
@@ -101,24 +102,7 @@ const SearchMoviePage = () => {
       ) : loading ? (
         <Loading />
       ) : (
-        results?.length > 0 && (
-          <div className="grid lg:grid-cols-2 gap-6 mt-2">
-            {Object.values(results).map((item: IMovie) => (
-              <Link href={`/movies/${item.title}-${item.year}`} key={item.id}>
-                <a className="no-underline">
-                  <ItemHorizontal
-                    name={item.title}
-                    title={titleCase(item.title)}
-                    subtitle={``}
-                    description={item.overview}
-                    image={''}
-                    type={'movie'}
-                  />
-                </a>
-              </Link>
-            ))}
-          </div>
-        )
+        results?.length > 0 && <SearchResults results={results} />
       )}
 
       {}

@@ -136,7 +136,7 @@ const NewMoviePage = () => {
       {formError ? <p className="text-red-500">{formError}</p> : ''}
 
       {loading && <Loading />}
-      {results?.length > 0 && <SearchResults results={results} />}
+      {results?.length > 0 && <SearchResults results={results} button />}
     </>
   )
 }
