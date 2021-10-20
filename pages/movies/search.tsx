@@ -74,27 +74,33 @@ const SearchMoviePage = () => {
           </svg>
         </button>
       </form>
-      {formError ? <p className="text-red-500">{formError}</p> : ''}
-
-      {loading && <Loading />}
-      {results?.length > 0 && (
-        <div className="grid lg:grid-cols-2 gap-6 mt-2">
-          {Object.values(results).map((item: IMovie) => (
-            <Link href={`/movies/${item.title}-${item.year}`} key={item.id}>
-              <a className="no-underline">
-                <ItemHorizontal
-                  name={item.title}
-                  title={titleCase(item.title)}
-                  subtitle={``}
-                  description={item.overview}
-                  image={''}
-                  type={'movie'}
-                />
-              </a>
-            </Link>
-          ))}
-        </div>
+      {formError ? (
+        <p className="text-red-500">{formError}</p>
+      ) : loading ? (
+        <Loading />
+      ) : (
+        results?.length > 0 && (
+          <div className="grid lg:grid-cols-2 gap-6 mt-2">
+            {Object.values(results).map((item: IMovie) => (
+              <Link href={`/movies/${item.title}-${item.year}`} key={item.id}>
+                <a className="no-underline">
+                  <ItemHorizontal
+                    name={item.title}
+                    title={titleCase(item.title)}
+                    subtitle={``}
+                    description={item.overview}
+                    image={''}
+                    type={'movie'}
+                  />
+                </a>
+              </Link>
+            ))}
+          </div>
+        )
       )}
+
+      {}
+      {}
     </>
   )
 }

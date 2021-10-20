@@ -74,26 +74,29 @@ const SearchShowPage = () => {
           </svg>
         </button>
       </form>
-      {formError ? <p className="text-red-500">{formError}</p> : ''}
-
-      {loading && <Loading />}
-      {results?.length > 0 && !formerror && (
-        <div className="grid lg:grid-cols-2 gap-6 mt-2">
-          {Object.values(results).map((item: IShow) => (
-            <Link href={`/shows/${item.name}-${item.year}`} key={item.id}>
-              <a className="no-underline">
-                <ItemHorizontal
-                  name={item.name}
-                  title={titleCase(item.name)}
-                  subtitle={``}
-                  description={item.overview}
-                  image={''}
-                  type={'show'}
-                />
-              </a>
-            </Link>
-          ))}
-        </div>
+      {formError ? (
+        <p className="text-red-500">{formError}</p>
+      ) : loading ? (
+        <Loading />
+      ) : (
+        results?.length > 0 && (
+          <div className="grid lg:grid-cols-2 gap-6 mt-2">
+            {Object.values(results).map((item: IShow) => (
+              <Link href={`/shows/${item.name}-${item.year}`} key={item.id}>
+                <a className="no-underline">
+                  <ItemHorizontal
+                    name={item.name}
+                    title={titleCase(item.name)}
+                    subtitle={``}
+                    description={item.overview}
+                    image={''}
+                    type={'show'}
+                  />
+                </a>
+              </Link>
+            ))}
+          </div>
+        )
       )}
     </>
   )
