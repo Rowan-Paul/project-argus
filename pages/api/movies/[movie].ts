@@ -49,10 +49,10 @@ const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
         where: { id: parseInt(req.query.movie as string) },
       })
 
-      res.json(result)
+      return res.json(result)
     }
   } catch (error) {
-    res.status(404).end()
+    return res.status(404).end()
   }
 }
 

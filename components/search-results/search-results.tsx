@@ -94,6 +94,7 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
           image={item.poster_path}
           handleClick={props.button ? () => handleClick(item) : undefined}
           type={item.title ? 'movie' : 'show'}
+          url={props.button ? undefined : `/${item.title ? `movies/${item.title}` : `shows/${item.name}`}-${item.year}`}
         />
       ))}
     </div>

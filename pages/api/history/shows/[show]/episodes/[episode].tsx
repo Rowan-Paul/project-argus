@@ -54,7 +54,7 @@ const createMethod = async (req: NextApiRequest, res: NextApiResponse, id: strin
 
     await prisma.history.create({ data })
 
-    res.status(201).end()
+    return res.status(201).end()
   } catch (error) {
     return res.status(500).end()
   }
@@ -74,9 +74,9 @@ const readMethod = async (req: NextApiRequest, res: NextApiResponse, id: string)
       },
     })
 
-    res.json(result)
+    return res.json(result)
   } catch (error) {
-    res.status(404).end()
+    return res.status(404).end()
   }
 }
 

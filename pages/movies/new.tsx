@@ -12,11 +12,17 @@ interface IMovie {
   year: number
 }
 
+interface IResults {
+  results: IMovie[]
+  total_results: number
+}
+
 const NewMoviePage = () => {
   const [movie, setMovie] = useState<IMovie>()
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IMovie[]>()
+  const [results, setResults] = useState<IResults>()
+  const [page, setPage] = useState<number>(1)
   const [movieExists, setMovieExists] = useState<boolean>()
   const router = useRouter()
   const { status } = useSession()
@@ -42,7 +48,7 @@ const NewMoviePage = () => {
           if (res.length < 1) {
             throw new Error('No show returned')
           }
-          setResults(res.results)
+          setResults(res)
           setLoading(false)
         })
         .catch(() => setFormError('No show found'))
@@ -84,6 +90,54 @@ const NewMoviePage = () => {
     }
   }
 
+  const nextPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
+        page + 1
+      }&query=${router.query.movie}&include_adult=false${
+        router.query.year && `&year=${parseInt(router.query.year as string)}`
+      }`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page + 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
+  const prevPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
+        page - 1
+      }&query=${router.query.movie}&include_adult=false${
+        router.query.year && `&year=${parseInt(router.query.year as string)}`
+      }`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page - 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
   return (
     <>
       <Head>
@@ -103,7 +157,7 @@ const NewMoviePage = () => {
           className="col-span-4 border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-sm focus:outline-none mr-2"
           type="search"
           name="title"
-          defaultValue={movie?.title}
+          defaultValue={movie?.title && movie.title}
           placeholder="Movie title"
           required
         />
@@ -114,7 +168,7 @@ const NewMoviePage = () => {
           min="1900"
           max="2099"
           step="1"
-          defaultValue={movie?.year}
+          defaultValue={movie?.year && movie.year}
           placeholder="Year"
         />
         <button type="submit" className="ml-3 bg-accent py-3 px-5 rounded-lg">
@@ -133,10 +187,26 @@ const NewMoviePage = () => {
           </svg>
         </button>
       </form>
-      {formError ? <p className="text-red-500">{formError}</p> : ''}
+      {results?.total_results && <span>Total results: {results?.total_results}</span>}
 
-      {loading && <Loading />}
-      {results?.length > 0 && <SearchResults results={results} button />}
+      {formError ? (
+        <p className="text-red-500">{formError}</p>
+      ) : loading ? (
+        <Loading />
+      ) : (
+        results?.results.length > 0 && <SearchResults results={results.results} button />
+      )}
+
+      {page > 1 && (
+        <span className="inline-block p-5 cursor-pointer" onClick={prevPage}>
+          Previous page
+        </span>
+      )}
+      {results?.total_results / 20 > page && (
+        <span className="inline-block p-5 cursor-pointer" onClick={nextPage}>
+          Next page
+        </span>
+      )}
     </>
   )
 }

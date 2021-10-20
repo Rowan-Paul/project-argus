@@ -9,14 +9,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return readMethod(req, res)
 
     default:
-      res.status(405).end()
+      return res.status(405).end()
       break
   }
 }
 
 const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const pageSize = 20
+    const skip = req.query.page ? parseInt(req.query.page as string) * pageSize : 0
+
     const results = await prisma.movies.findMany({
+      where: {
+        title: {
+          contains: req.query.movie as string,
+          mode: 'insensitive',
+        },
+      },
+      take: pageSize,
+      skip,
+    })
+    const totalResults = await prisma.movies.count({
       where: {
         title: {
           contains: req.query.movie as string,
@@ -25,10 +38,10 @@ const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
 
-    if (results.length > 0) res.json(results)
-    else res.status(404).end()
+    if (results.length > 0) return res.json({ movies: results, moviesCount: totalResults })
+    else return res.status(404).end()
   } catch (error) {
-    res.status(404).end()
+    return res.status(404).end()
   }
 }
 

@@ -16,6 +16,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const pageSize = 20
+    const skip = req.query.page ? parseInt(req.query.page as string) * pageSize : 0
+
     const results = await prisma.shows.findMany({
       where: {
         name: {
@@ -23,12 +26,22 @@ const readMethod = async (req: NextApiRequest, res: NextApiResponse) => {
           mode: 'insensitive',
         },
       },
+      take: pageSize,
+      skip,
+    })
+    const totalResults = await prisma.shows.count({
+      where: {
+        name: {
+          contains: req.query.shows as string,
+          mode: 'insensitive',
+        },
+      },
     })
 
-    if (results.length > 0) res.json(results)
-    else res.status(404).end()
+    if (results.length > 0) return res.json({ shows: results, showsCount: totalResults })
+    else return res.status(404).end()
   } catch (error) {
-    res.status(404).end()
+    return res.status(404).end()
   }
 }
 

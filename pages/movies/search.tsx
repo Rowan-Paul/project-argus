@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 
 import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
-import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
-import { titleCase } from '../../lib/utils'
 import { useRouter } from 'next/router'
 import SearchResults from '../../components/search-results/search-results'
 
@@ -16,11 +13,17 @@ interface IMovie {
   id?: number
 }
 
+interface IResults {
+  moviesCount: number
+  movies: IMovie[]
+}
+
 const SearchMoviePage = () => {
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IMovie[]>()
+  const [results, setResults] = useState<IResults>()
   const [movie, setMovie] = useState<IMovie>()
+  const [page, setPage] = useState<number>(0)
 
   const router = useRouter()
 
@@ -63,6 +66,42 @@ const SearchMoviePage = () => {
     }
   }
 
+  const nextPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(`/api/movies/search?movie=${router.query.movie}&page=${page + 1}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page + 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
+  const prevPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(`/api/movies/search?movie=${router.query.movie}&page=${page - 1}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page - 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
   return (
     <>
       <Head>
@@ -97,16 +136,26 @@ const SearchMoviePage = () => {
           </svg>
         </button>
       </form>
+      {results?.moviesCount && <span>Total results: {results?.moviesCount}</span>}
+
       {formError ? (
         <p className="text-red-500">{formError}</p>
       ) : loading ? (
         <Loading />
       ) : (
-        results?.length > 0 && <SearchResults results={results} />
+        results?.movies.length > 0 && <SearchResults results={results.movies} />
       )}
 
-      {}
-      {}
+      {page > 0 && (
+        <span className="inline-block p-5 cursor-pointer" onClick={prevPage}>
+          Previous page
+        </span>
+      )}
+      {results?.moviesCount / 20 > page + 1 && (
+        <span className="inline-block p-5 cursor-pointer" onClick={nextPage}>
+          Next page
+        </span>
+      )}
     </>
   )
 }

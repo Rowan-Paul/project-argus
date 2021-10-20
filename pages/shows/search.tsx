@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 
 import Layout from '../../components/layout/layout'
 import Loading from '../../components/loading/loading'
-import ItemHorizontal from '../../components/item-horizontal/item-horizontal'
-import { titleCase } from '../../lib/utils'
 import { useRouter } from 'next/router'
 import SearchResults from '../../components/search-results/search-results'
 
@@ -16,11 +13,17 @@ interface IShow {
   id?: number
 }
 
+interface IResults {
+  showsCount: number
+  shows: IShow[]
+}
+
 const SearchShowPage = () => {
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IShow[]>()
+  const [results, setResults] = useState<IResults>()
   const [show, setShow] = useState<IShow>()
+  const [page, setPage] = useState<number>(0)
 
   const router = useRouter()
 
@@ -63,6 +66,42 @@ const SearchShowPage = () => {
     }
   }
 
+  const nextPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(`/api/shows/search?show=${router.query.show}&page=${page - 1}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page + 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
+  const prevPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(`/api/shows/search?show=${router.query.show}&page=${page}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page - 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
   return (
     <>
       <Head>
@@ -102,7 +141,18 @@ const SearchShowPage = () => {
       ) : loading ? (
         <Loading />
       ) : (
-        results?.length > 0 && <SearchResults results={results} />
+        results?.shows.length > 0 && <SearchResults results={results.shows} />
+      )}
+
+      {page > 0 && (
+        <span className="block p-5 cursor-pointer" onClick={prevPage}>
+          Previous page
+        </span>
+      )}
+      {results?.showsCount / 20 > page + 1 && (
+        <span className="block p-5 cursor-pointer" onClick={nextPage}>
+          Next page
+        </span>
       )}
     </>
   )

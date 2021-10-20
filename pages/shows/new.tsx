@@ -12,11 +12,17 @@ interface IShow {
   year: number
 }
 
+interface IResults {
+  results: IShow[]
+  total_results: number
+}
+
 const NewShowPage = (): JSX.Element => {
   const [show, setShow] = useState<IShow>()
   const [loading, setLoading] = useState<boolean>()
   const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IShow[]>()
+  const [results, setResults] = useState<IResults>()
+  const [page, setPage] = useState<number>(1)
   const [showExists, setShowExists] = useState<boolean>()
   const router = useRouter()
   const { status } = useSession()
@@ -33,15 +39,16 @@ const NewShowPage = (): JSX.Element => {
       fetch(
         `https://api.themoviedb.org/3/search/tv?api_key=${
           process.env.NEXT_PUBLIC_TMDB_API_KEY
-        }&language=en-US&page=1&query=${router.query.show}&include_adult=false
-          ${router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`}`
+        }&language=en-US&page=1&query=${router.query.show}&include_adult=false${
+          router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`
+        }`
       )
         .then((res) => res.json())
         .then((res) => {
           if (res.length < 1) {
             throw new Error('No show returned')
           }
-          setResults(res.results)
+          setResults(res)
           setLoading(false)
         })
         .catch(() => setFormError('No show found'))
@@ -85,6 +92,54 @@ const NewShowPage = (): JSX.Element => {
         `/shows/new?show=${event.target.name.value}${event.target.year.value && `&year=${event.target.year.value}`}`
       )
     }
+  }
+
+  const nextPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(
+      `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
+        page + 1
+      }&query=${router.query.show}&include_adult=false${
+        router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`
+      }`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page + 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
+  }
+
+  const prevPage = async () => {
+    setFormError(undefined)
+    setLoading(true)
+
+    fetch(
+      `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
+        page - 1
+      }&query=${router.query.show}&include_adult=false${
+        router.query.year && `&first_air_date_year=${parseInt(router.query.year as string)}`
+      }`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length < 1) {
+          throw new Error('No results')
+        }
+
+        setPage(page - 1)
+        setResults(res)
+        setLoading(false)
+      })
+      .catch(() => setFormError('Something went wrong...'))
   }
 
   return (
@@ -136,10 +191,26 @@ const NewShowPage = (): JSX.Element => {
           </svg>
         </button>
       </form>
-      {formError ? <p className="text-red-500">{formError}</p> : ''}
+      {results?.total_results && <span>Total results: {results?.total_results}</span>}
 
-      {loading && <Loading />}
-      {results?.length > 0 && <SearchResults results={results} button />}
+      {formError ? (
+        <p className="text-red-500">{formError}</p>
+      ) : loading ? (
+        <Loading />
+      ) : (
+        results?.results?.length > 0 && <SearchResults results={results.results} button />
+      )}
+
+      {page > 1 && (
+        <span className="inline-block p-5 cursor-pointer" onClick={prevPage}>
+          Previous page
+        </span>
+      )}
+      {results?.total_results / 20 > page && (
+        <span className="inline-block p-5 cursor-pointer" onClick={nextPage}>
+          Next page
+        </span>
+      )}
     </>
   )
 }
