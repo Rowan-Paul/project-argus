@@ -10,6 +10,11 @@ module.exports = {
         'text-color': '#dadce1',
         'bg-hover': '#525357',
       },
+      keyframes: {
+        dropdown: {
+          to: { transform: 'rotate(-180deg)' },
+        },
+      },
     },
   },
   variants: {
