@@ -37,3 +37,28 @@ input:focus-within ~ label,
 input:not(:placeholder-shown) ~ label {
   @apply transform scale-75 -translate-y-6;
 }
+
+.dropdown {
+  animation: rotate 0.5s forwards;
+}
+
+.dropdownOpen {
+  animation: rotateCounter 0.5s forwards;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes rotateCounter {
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes rotateCounter {
+  to {
+    transform: rotate(180deg);
+  }
+}

@@ -2,14 +2,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import ConditionalLink from '../../lib/ConditionalLink'
 
 interface INavItemProps {
   link?: string
   icon?: string
   name?: string
+  dropdownItems?: dropdownItem[]
   onClick?: React.MouseEventHandler<HTMLButtonElement>
+}
+
+interface dropdownItem {
+  name: string
+  link: string
 }
 
 interface ISessionUser {
@@ -41,8 +47,20 @@ const Navbar = (): JSX.Element => {
           </Link>
         </li>
 
-        <NavItem link="/shows" name="Shows" />
-        <NavItem link="/movies" name="Movies" />
+        <NavItem
+          name="Shows"
+          dropdownItems={[
+            { name: 'Discover', link: '/shows' },
+            { name: 'Search', link: '/shows/search' },
+          ]}
+        />
+        <NavItem
+          name="Movies"
+          dropdownItems={[
+            { name: 'Discover', link: '/movies' },
+            { name: 'Search', link: '/movies/search' },
+          ]}
+        />
         {status === 'authenticated' ? (
           <>
             <NavItem link={`/users/${user.name}`} icon={user?.image ? user.image : '/assets/icons/person.svg'} />
@@ -58,21 +76,72 @@ const Navbar = (): JSX.Element => {
 }
 
 const NavItem = (props: INavItemProps): JSX.Element => {
+  const [isOpen, setIsOpen] = useState<boolean>()
+  const handleClick = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const dropdown = useRef(null)
+  useOutsideAlerter(dropdown)
+
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setIsOpen(false)
+        }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [ref])
+  }
+
   return (
-    <ConditionalLink href={props.link} condition={props.link}>
-      <li className="">
-        {props.icon ? (
+    <li ref={dropdown}>
+      {props.icon ? (
+        <ConditionalLink href={props.link} condition={props.link}>
           <span
             className="text-text-color no-underline icon-button h-8 w-8 bg-accent hover:bg-bg-hover rounded-2xl p-1 flex items-center justify-center cursor-pointer"
             onClick={props.onClick}
           >
-            <Image src={props.icon} alt="Sign in svg" width="20px" height="20px" />
+            <Image src={props.icon} alt="Icon" width="20px" height="20px" />
           </span>
-        ) : (
-          <span className="text-text-color no-underline hover:bg-accent p-2 rounded-2xl">{props.name}</span>
-        )}
-      </li>
-    </ConditionalLink>
+        </ConditionalLink>
+      ) : (
+        <>
+          <span className={`flex align-middle text-text-color no-underline p-2 cursor-pointer`} onClick={handleClick}>
+            {props.name}
+            {props.dropdownItems && (
+              <Image
+                src="/assets/icons/expand-more.svg"
+                alt="Dropdown icon"
+                width="20px"
+                height="20px"
+                className={isOpen ? 'dropdownOpen' : 'dropdown'}
+              />
+            )}
+          </span>
+          {props.dropdownItems && (
+            <span
+              className={`absolute bg-accent rounded-b-2xl overflow-hidden z-50 ${
+                isOpen ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              {props.dropdownItems.map((item) => (
+                <Link href={item.link} key={item.name}>
+                  <a className="no-underline" onClick={() => setIsOpen(false)}>
+                    <div className="p-3 hover:bg-bg-hover">{item.name}</div>
+                  </a>
+                </Link>
+              ))}
+            </span>
+          )}
+        </>
+      )}
+    </li>
   )
 }
 
