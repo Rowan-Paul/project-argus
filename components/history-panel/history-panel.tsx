@@ -50,7 +50,7 @@ const HistoryPanel = (props: IHistoryProps): JSX.Element => {
     return (
       <div className="text-white bg-black bg-opacity-75 text-xs p-3 m-2 inline-block divide-x-2 divide-solid">
         <span>
-          <Image src="/assets/svg/check.svg" width="16px" height="16px" alt="Check" />
+          <Image src="/assets/icons/check.svg" width="16px" height="16px" alt="Check" />
           <span className="align-top">Watched {history?.length} times</span>
         </span>
         <span className="ml-2">

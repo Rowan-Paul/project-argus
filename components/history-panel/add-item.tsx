@@ -56,7 +56,7 @@ const AddItem = (props: IAddItemProps): JSX.Element => {
 
   return (
     <span className="pl-2 cursor-pointer" onClick={addToHistory}>
-      <Image src="/assets/svg/playlist-add.svg" alt="Add to history icon" width="16px" height="16px" />
+      <Image src="/assets/icons/playlist-add.svg" alt="Add to history icon" width="16px" height="16px" />
       {props.text && <span className="pl-1 align-top">Add to history</span>}
     </span>
   )

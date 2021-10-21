@@ -39,7 +39,7 @@ const HistoryModal = (props: IHistoryModalProps): JSX.Element => {
   return (
     <span className="ml-2 pl-2 cursor-pointer">
       <span onClick={handleClick}>
-        <Image src="/assets/svg/history.svg" width="16px" height="16px" alt="History icon" />
+        <Image src="/assets/icons/history.svg" width="16px" height="16px" alt="History icon" />
       </span>
 
       <Modal
@@ -76,7 +76,7 @@ const HistoryModal = (props: IHistoryModalProps): JSX.Element => {
                     {error ? (
                       'Something went wrong...'
                     ) : (
-                      <Image src="/assets/svg/bin.svg" alt="Bin icon" width="16px" height="16px" />
+                      <Image src="/assets/icons/bin.svg" alt="Bin icon" width="16px" height="16px" />
                     )}
                   </td>
                 </tr>

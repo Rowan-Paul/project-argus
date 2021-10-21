@@ -89,7 +89,7 @@ const AddItemModal = (props: IAddItemModalProps): JSX.Element => {
   return (
     <span className="pl-2 cursor-pointer">
       <span onClick={handleModal}>
-        <Image src="/assets/svg/more.svg" width="16px" height="16px" alt="Open modal" />
+        <Image src="/assets/icons/more.svg" width="16px" height="16px" alt="Open modal" />
       </span>
 
       <Modal

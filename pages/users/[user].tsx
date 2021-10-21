@@ -25,7 +25,7 @@ const UserPage = (props: IUserPageProps): JSX.Element => {
 
         <div className="flex flex-col items-center justify-center w-full flex-1 px-10 md:px-20 text-center min-h-s50">
           <Image
-            src={props.user?.image ? props.user.image : '/assets/svg/person.svg'}
+            src={props.user?.image ? props.user.image : '/assets/icons/person.svg'}
             alt="Profile picture"
             width={96}
             height={96}

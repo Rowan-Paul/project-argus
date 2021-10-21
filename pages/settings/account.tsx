@@ -147,7 +147,7 @@ const Settings = (props: ISettingsProps): JSX.Element => {
 
         <div className="relative border-b-2 focus-within:border-blue-500">
           <Image
-            src={localImage ? localImage : props.user?.image ? props.user?.image : '/assets/svg/person.svg'}
+            src={localImage ? localImage : props.user?.image ? props.user?.image : '/assets/icons/person.svg'}
             alt="Profile picture"
             width="96px"
             height="96px"
