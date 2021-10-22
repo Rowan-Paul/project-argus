@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { titleCase } from '../../lib/utils'
 
 interface IItemProps {
   url: string
   image?: string
   title: string
+  subtitle?: string
 }
 
 const Item = (props: IItemProps): JSX.Element => {
@@ -16,7 +18,8 @@ const Item = (props: IItemProps): JSX.Element => {
         ) : (
           <div style={{ height: '272px', width: '185px' }} />
         )}
-        <span className="block px-2">{props.title}</span>
+        {props.subtitle && <span className="text-xs">{props.subtitle}</span>}
+        <span className="block px-2">{titleCase(props.title)}</span>
       </a>
     </Link>
   )
