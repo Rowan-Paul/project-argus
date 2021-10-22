@@ -124,7 +124,7 @@ const NavItem = (props: INavItemProps): JSX.Element => {
               />
             )}
           </span>
-          {props.dropdownItems && (
+          {props.dropdownItems && isOpen && (
             <span
               className={`absolute bg-accent rounded-b-2xl overflow-hidden z-50 ${
                 isOpen ? 'opacity-100' : 'opacity-0'
