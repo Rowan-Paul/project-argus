@@ -17,7 +17,6 @@ interface IHistoryPageProps {
     title?: string
     year?: number
     name?: string
-    tmdb_id: number
     datetime: string
     show?: {
       name: string
@@ -37,7 +36,7 @@ const HistoryPage = (props: IHistoryPageProps): JSX.Element => {
     return (
       <>
         <Head>
-          <title>{props.user?.name}&apos;s history | project argus</title>
+          <title>{props.user?.name}&apos;s history | Users | project argus</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
