@@ -112,7 +112,11 @@ const NavItem = (props: INavItemProps): JSX.Element => {
         </ConditionalLink>
       ) : (
         <>
-          <span className={`flex align-middle text-text-color no-underline p-2 cursor-pointer`} onClick={handleClick}>
+          <span
+            className={`flex align-middle text-text-color no-underline p-2 cursor-pointer`}
+            onClick={handleClick}
+            style={{ transition: 'all ease-in-out 5s' }}
+          >
             {props.name}
             {props.dropdownItems && (
               <Image
@@ -124,11 +128,12 @@ const NavItem = (props: INavItemProps): JSX.Element => {
               />
             )}
           </span>
-          {props.dropdownItems && isOpen && (
+          {props.dropdownItems && (
             <span
               className={`absolute bg-accent rounded-b-2xl overflow-hidden z-50 ${
-                isOpen ? 'opacity-100' : 'opacity-0'
+                isOpen ? 'opacity-100 max-h-60' : 'opacity-0 max-h-0'
               }`}
+              style={{ transition: 'max-height ease-in-out 0.5s' }}
             >
               {props.dropdownItems.map((item) => (
                 <Link href={item.link} key={item.name}>
