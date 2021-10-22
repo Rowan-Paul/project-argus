@@ -48,6 +48,7 @@ model User {
   history       history[] @relation("historyTousers")
   initialized   Boolean   @default(false)
   admin         Boolean   @default(false)
+  signUpDate    DateTime  @default(now())
 }
 
 model VerificationToken {

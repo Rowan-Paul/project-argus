@@ -8,11 +8,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
 
   switch (req.method) {
-    case 'DELETE':
+    case 'GET':
       if (session) {
-        return deleteMethod(req, res, session.user.id)
+        return getMethod(req, res, session.user.id)
+      } else {
+        return res.status(401).end()
       }
-      return res.status(401).end()
 
     default:
       res.status(405).end()
@@ -20,18 +21,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const deleteMethod = async (req: NextApiRequest, res: NextApiResponse, id: string) => {
+const getMethod = async (req: NextApiRequest, res: NextApiResponse, id: string) => {
   try {
-    const data = {
-      id: parseInt(req.query.item as string),
-      user_id: id,
-    }
-
-    await prisma.history.deleteMany({
-      where: data,
+    const results = await prisma.history.findMany({
+      where: {
+        user_id: id,
+      },
     })
 
-    return res.status(200).end()
+    if (results.length > 0) return res.json(results)
+    else return res.status(404).end()
   } catch (error) {
     return res.status(500).end()
   }
