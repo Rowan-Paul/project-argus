@@ -14,18 +14,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
       return res.status(401).end()
 
+    case 'GET':
+      if (session) {
+        return getMethod(req, res, session.user.id)
+      }
+
     default:
       res.status(405).end()
       break
   }
 }
 
+const getMethod = async (req: NextApiRequest, res: NextApiResponse, id: string) => {
+  try {
+    return res.status(200).end()
+  } catch (error) {
+    return res.status(500).end()
+  }
+}
+
 const deleteMethod = async (req: NextApiRequest, res: NextApiResponse, id: string) => {
   try {
-    await prisma.history.delete({
-      where: {
-        id: parseInt(req.query.item as string),
-      },
+    const data = {
+      id: parseInt(req.query.item as string),
+      user_id: id,
+    }
+
+    await prisma.history.deleteMany({
+      where: data,
     })
 
     return res.status(200).end()
