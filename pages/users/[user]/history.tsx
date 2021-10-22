@@ -62,7 +62,11 @@ const HistoryPage = (props: IHistoryPageProps): JSX.Element => {
                           result.episode_number
                         }`
                   }
-                  title={result.title ? result.title : `${result.show.name} - ${result.name}`}
+                  title={
+                    result.title
+                      ? result.title
+                      : `${result.show.name} ${result.season.season_number}x${result.episode_number} - ${result.name}`
+                  }
                   subtitle={result.datetime ? formatDate(result.datetime) : 'No datetime'}
                   key={result.title ? result.title + i : result.name + i}
                 />
@@ -94,6 +98,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       where: {
         user_id: user.id,
       },
+      take: 24,
     })
 
     let history = []
