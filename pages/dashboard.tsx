@@ -86,7 +86,11 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
                         result.episode_number
                       }`
                 }
-                title={result.title ? result.title : `${result.show.name} - ${result.name}`}
+                title={
+                  result.title
+                    ? result.title
+                    : `${result.show.name} ${result.season.season_number}x${result.episode_number} - ${result.name}`
+                }
                 key={result.title ? result.title + i : result.name + i}
               />
             )
