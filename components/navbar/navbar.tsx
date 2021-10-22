@@ -39,13 +39,16 @@ const Navbar = (): JSX.Element => {
   }, [router, session, status])
 
   return (
-    <nav className="bg-primary p-4 border-b-2 border-solid border-accent no-underline">
+    <nav className="navbar bg-primary p-4 border-b-2 border-solid border-accent no-underline">
       <ul className="flex items-center align-middle justify-end gap-1">
-        <li className="inline-block mr-auto">
+        <li className="hidden md:inline-block mr-auto">
           <Link href="/">
             <a className="no-underline">project-argus</a>
           </Link>
         </li>
+        <span className="mr-auto md:hidden">
+          <NavItem link="/" icon={'/assets/icons/home.svg'} />
+        </span>
 
         <NavItem
           name="Shows"
