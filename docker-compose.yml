@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  nextjs:
+    build:
+      context: .
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        EMAIL_SERVER: ${EMAIL_SERVER}
+        EMAIL_FROM: ${EMAIL_FROM}
+        NEXT_PUBLIC_TMDB_API_KEY: ${NEXT_PUBLIC_TMDB_API_KEY}
+        NEXT_PUBLIC_CLOUDINARY_CLOUDNAME: ${NEXT_PUBLIC_CLOUDINARY_CLOUDNAME}
+        NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: ${NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
+        NEXTAUTH_URL: ${NEXTAUTH_URL}
+        LETSENCRYPT_HOST: projectarg.us
+        VIRTUAL_HOST: projectarg.us
+    ports:
+      - "3001:3001"
+    
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: projectargus
+      POSTGRES_USER: projectargus
+      POSTGRES_PASSWORD: projectargus
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.db/:/var/lib/postgresql/data
