@@ -22,5 +22,6 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             docker stop projectargus
+            docker rm projectargus
             docker build . -t projectargus
-            docker run -e VIRTUAL_HOST=projectarg.us -e LETSENCRYPT_HOST=projectarg.us -d projectargus
+            docker run -e VIRTUAL_HOST=projectarg.us -e LETSENCRYPT_HOST=projectarg.us -d --name projectargus projectargus
