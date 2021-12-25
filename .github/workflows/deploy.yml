@@ -1,0 +1,26 @@
+name: Build and deploy app
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: CI/CD
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /var/www/project-argus
+            git fetch --all
+            git reset --hard origin/main
+            docker stop projectargus
+            docker build . -t projectargus
+            docker run -e VIRTUAL_HOST=projectarg.us -e LETSENCRYPT_HOST=projectarg.us -d projectargus
