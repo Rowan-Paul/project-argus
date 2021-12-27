@@ -66,4 +66,7 @@ EXPOSE 3001
 
 ENV PORT 3001
 
+ENV LETSENCRYPT_HOST projectarg.us
+ENV VIRTUAL_HOST projectarg.us
+
 CMD ["node_modules/.bin/next", "start"]
