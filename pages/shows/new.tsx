@@ -1,40 +1,40 @@
-import { signIn, useSession } from 'next-auth/react'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { signIn, useSession } from 'next-auth/react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-import Layout from '../../components/layout/layout'
-import Loading from '../../components/loading/loading'
-import SearchResults from '../../components/search-results/search-results'
+import Layout from '../../components/layout/layout';
+import Loading from '../../components/loading/loading';
+import SearchResults from '../../components/search-results/search-results';
 
 interface IShow {
-  name: string
-  year: number
+  name: string;
+  year: number;
 }
 
 interface IResults {
-  results: IShow[]
-  total_results: number
+  results: IShow[];
+  total_results: number;
 }
 
 const NewShowPage = (): JSX.Element => {
-  const [show, setShow] = useState<IShow>()
-  const [loading, setLoading] = useState<boolean>()
-  const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IResults>()
-  const [page, setPage] = useState<number>(1)
-  const [showExists, setShowExists] = useState<boolean>()
-  const router = useRouter()
-  const { status } = useSession()
+  const [show, setShow] = useState<IShow>();
+  const [loading, setLoading] = useState<boolean>();
+  const [formError, setFormError] = useState<string>();
+  const [results, setResults] = useState<IResults>();
+  const [page, setPage] = useState<number>(1);
+  const [showExists, setShowExists] = useState<boolean>();
+  const router = useRouter();
+  const { status } = useSession();
 
   useEffect(() => {
-    if (!router.isReady) return
+    if (!router.isReady) return;
 
     if (router.query?.show) {
       setShow({
         name: router.query.show as string,
-        year: parseInt(router.query.year as string),
-      })
+        year: parseInt(router.query.year as string)
+      });
 
       fetch(
         `https://api.themoviedb.org/3/search/tv?api_key=${
@@ -46,57 +46,57 @@ const NewShowPage = (): JSX.Element => {
         .then((res) => res.json())
         .then((res) => {
           if (res.length < 1) {
-            throw new Error('No show returned')
+            throw new Error('No show returned');
           }
-          setResults(res)
-          setLoading(false)
+          setResults(res);
+          setLoading(false);
         })
-        .catch(() => setFormError('No show found'))
+        .catch(() => setFormError('No show found'));
 
       fetch(`/api/shows/${router.query.show}`)
-        .then((res) => res.json())
+        .then((res) => res.status === 200 && res.json())
         .then((result) => {
           if (result.length > 0) {
-            setShowExists(true)
+            setShowExists(true);
           }
-        })
+        });
     }
-  }, [router.isReady, router.query.show, router.query.year])
+  }, [router.isReady, router.query.show, router.query.year]);
 
   switch (status) {
     case 'loading':
-      return <Loading />
+      return <Loading />;
 
     case 'unauthenticated':
-      signIn()
-      return <Loading />
+      signIn();
+      return <Loading />;
   }
   if (showExists) {
-    router.push(`/shows/${router.query.show}`)
-    return <Loading />
+    router.push(`/shows/${router.query.show}`);
+    return <Loading />;
   }
 
   const submitForm = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     if (!(document.getElementById('searchForm') as HTMLInputElement).checkValidity()) {
-      setFormError('Search field cannot be empty and year has to be in between 1900 and 2099')
+      setFormError('Search field cannot be empty and year has to be in between 1900 and 2099');
     } else {
-      setFormError(undefined)
-      setLoading(true)
+      setFormError(undefined);
+      setLoading(true);
       setShow({
         name: event.target.name.value,
-        year: event.target.year?.value,
-      })
+        year: event.target.year?.value
+      });
 
       router.push(
         `/shows/new?show=${event.target.name.value}${event.target.year.value && `&year=${event.target.year.value}`}`
-      )
+      );
     }
-  }
+  };
 
   const nextPage = async () => {
-    setFormError(undefined)
-    setLoading(true)
+    setFormError(undefined);
+    setLoading(true);
 
     fetch(
       `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
@@ -108,19 +108,19 @@ const NewShowPage = (): JSX.Element => {
       .then((res) => res.json())
       .then((res) => {
         if (res.length < 1) {
-          throw new Error('No results')
+          throw new Error('No results');
         }
 
-        setPage(page + 1)
-        setResults(res)
-        setLoading(false)
+        setPage(page + 1);
+        setResults(res);
+        setLoading(false);
       })
-      .catch(() => setFormError('Something went wrong...'))
-  }
+      .catch(() => setFormError('Something went wrong...'));
+  };
 
   const prevPage = async () => {
-    setFormError(undefined)
-    setLoading(true)
+    setFormError(undefined);
+    setLoading(true);
 
     fetch(
       `https://api.themoviedb.org/3/search/tv?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
@@ -132,15 +132,15 @@ const NewShowPage = (): JSX.Element => {
       .then((res) => res.json())
       .then((res) => {
         if (res.length < 1) {
-          throw new Error('No results')
+          throw new Error('No results');
         }
 
-        setPage(page - 1)
-        setResults(res)
-        setLoading(false)
+        setPage(page - 1);
+        setResults(res);
+        setLoading(false);
       })
-      .catch(() => setFormError('Something went wrong...'))
-  }
+      .catch(() => setFormError('Something went wrong...'));
+  };
 
   return (
     <>
@@ -212,11 +212,11 @@ const NewShowPage = (): JSX.Element => {
         </span>
       )}
     </>
-  )
-}
+  );
+};
 
 NewShowPage.getLayout = function getLayout(page: JSX.Element) {
-  return <Layout>{page}</Layout>
-}
+  return <Layout>{page}</Layout>;
+};
 
-export default NewShowPage
+export default NewShowPage;

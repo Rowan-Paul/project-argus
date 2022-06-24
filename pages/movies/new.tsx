@@ -1,40 +1,40 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import Head from 'next/head'
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
 
-import Layout from '../../components/layout/layout'
-import Loading from '../../components/loading/loading'
-import SearchResults from '../../components/search-results/search-results'
-import { signIn, useSession } from 'next-auth/react'
+import Layout from '../../components/layout/layout';
+import Loading from '../../components/loading/loading';
+import SearchResults from '../../components/search-results/search-results';
+import { signIn, useSession } from 'next-auth/react';
 
 interface IMovie {
-  title: string
-  year: number
+  title: string;
+  year: number;
 }
 
 interface IResults {
-  results: IMovie[]
-  total_results: number
+  results: IMovie[];
+  total_results: number;
 }
 
 const NewMoviePage = () => {
-  const [movie, setMovie] = useState<IMovie>()
-  const [loading, setLoading] = useState<boolean>()
-  const [formError, setFormError] = useState<string>()
-  const [results, setResults] = useState<IResults>()
-  const [page, setPage] = useState<number>(1)
-  const [movieExists, setMovieExists] = useState<boolean>()
-  const router = useRouter()
-  const { status } = useSession()
+  const [movie, setMovie] = useState<IMovie>();
+  const [loading, setLoading] = useState<boolean>();
+  const [formError, setFormError] = useState<string>();
+  const [results, setResults] = useState<IResults>();
+  const [page, setPage] = useState<number>(1);
+  const [movieExists, setMovieExists] = useState<boolean>();
+  const router = useRouter();
+  const { status } = useSession();
 
   useEffect(() => {
-    if (!router.isReady) return
+    if (!router.isReady) return;
 
     if (router.query?.movie) {
       setMovie({
         title: router.query.movie as string,
-        year: parseInt(router.query.year as string),
-      })
+        year: parseInt(router.query.year as string)
+      });
 
       fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${
@@ -46,53 +46,53 @@ const NewMoviePage = () => {
         .then((res) => res.json())
         .then((res) => {
           if (res.length < 1) {
-            throw new Error('No show returned')
+            throw new Error('No show returned');
           }
-          setResults(res)
-          setLoading(false)
+          setResults(res);
+          setLoading(false);
         })
-        .catch(() => setFormError('No show found'))
+        .catch(() => setFormError('No show found'));
 
       fetch(`/api/movies/${router.query.movie}`)
-        .then((res) => res.json())
+        .then((res) => res.status === 200 && res.json())
         .then((result) => {
           if (result.length > 0) {
-            setMovieExists(true)
+            setMovieExists(true);
           }
-        })
+        });
     }
-  }, [router.isReady, router.query.movie, router.query.year])
+  }, [router.isReady, router.query.movie, router.query.year]);
 
   switch (status) {
     case 'loading':
-      return <Loading />
+      return <Loading />;
 
     case 'unauthenticated':
-      signIn()
-      return <Loading />
+      signIn();
+      return <Loading />;
   }
   if (movieExists) {
-    router.push(`/movies/${router.query.movie}-${router.query.year}`)
-    return <Loading />
+    router.push(`/movies/${router.query.movie}-${router.query.year}`);
+    return <Loading />;
   }
 
   const submitForm = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     if (!(document.getElementById('searchForm') as HTMLInputElement).checkValidity()) {
-      setFormError('Search field cannot be empty and year has to be in between 1900 and 2099')
+      setFormError('Search field cannot be empty and year has to be in between 1900 and 2099');
     } else {
-      setFormError(undefined)
-      setLoading(true)
+      setFormError(undefined);
+      setLoading(true);
 
       router.push(
         `/movies/new?movie=${event.target.title.value}${event.target.year.value && `&year=${event.target.year.value}`}`
-      )
+      );
     }
-  }
+  };
 
   const nextPage = async () => {
-    setFormError(undefined)
-    setLoading(true)
+    setFormError(undefined);
+    setLoading(true);
 
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
@@ -104,19 +104,19 @@ const NewMoviePage = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.length < 1) {
-          throw new Error('No results')
+          throw new Error('No results');
         }
 
-        setPage(page + 1)
-        setResults(res)
-        setLoading(false)
+        setPage(page + 1);
+        setResults(res);
+        setLoading(false);
       })
-      .catch(() => setFormError('Something went wrong...'))
-  }
+      .catch(() => setFormError('Something went wrong...'));
+  };
 
   const prevPage = async () => {
-    setFormError(undefined)
-    setLoading(true)
+    setFormError(undefined);
+    setLoading(true);
 
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=${
@@ -128,15 +128,15 @@ const NewMoviePage = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.length < 1) {
-          throw new Error('No results')
+          throw new Error('No results');
         }
 
-        setPage(page - 1)
-        setResults(res)
-        setLoading(false)
+        setPage(page - 1);
+        setResults(res);
+        setLoading(false);
       })
-      .catch(() => setFormError('Something went wrong...'))
-  }
+      .catch(() => setFormError('Something went wrong...'));
+  };
 
   return (
     <>
@@ -208,11 +208,11 @@ const NewMoviePage = () => {
         </span>
       )}
     </>
-  )
-}
+  );
+};
 
 NewMoviePage.getLayout = function getLayout(page: JSX.Element) {
-  return <Layout>{page}</Layout>
-}
+  return <Layout>{page}</Layout>;
+};
 
-export default NewMoviePage
+export default NewMoviePage;
